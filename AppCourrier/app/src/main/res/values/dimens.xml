@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="ce_spacing_xs">8dp</dimen>
+    <dimen name="ce_spacing_sm">12dp</dimen>
+    <dimen name="ce_spacing_md">16dp</dimen>
+    <dimen name="ce_spacing_lg">24dp</dimen>
+
+    <dimen name="ce_radius_sm">12dp</dimen>
+    <dimen name="ce_radius_md">16dp</dimen>
+    <dimen name="ce_radius_lg">24dp</dimen>
+
+    <dimen name="ce_banner_height">200dp</dimen>
+</resources>

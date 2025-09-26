@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">currier</string>
+    <string name="title_activity_nueva_compra">nueva_compra</string>
+    <string name="title_activity_compras">ComprasActivity</string>
+
+    <string-array name="depositos_array">
+        <item>Miami Florida</item>
+        <item>New York</item>
+        <item>Los Angeles</item>
+        <item>Madrid</item>
+    </string-array>
+
+</resources>
