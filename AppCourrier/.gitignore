@@ -1,0 +1,58 @@
+# Android / Gradle / Android Studio recommended ignores
+
+# Built application files
+*.apk
+*.ap_
+*.aab
+
+# Files for the ART/Dalvik VM
+*.dex
+
+# Java class files
+*.class
+
+# Generated files
+/build/
+**/build/
+
+# Gradle
+/.gradle/
+.gradle/
+
+# Local configuration
+/local.properties
+local.properties
+
+# Keystore files
+*.jks
+*.keystore
+
+# Android Studio
+.idea/
+*.iml
+
+# IntelliJ
+*.iws
+*.ipr
+
+# Crashlytics/Google services
+google-services.json
+
+# NDK
+.cxx/
+.externalNativeBuild/
+
+# Captures and logs
+/captures/
+*.log
+
+# Misc
+.DS_Store
+Thumbs.db
+
+# Ignore Gradle cache and wrapper output directories inside module
+/.gradle
+AppCourrier/.gradle
+
+# Optional: ignore build artifacts from other modules
+/*/build/
