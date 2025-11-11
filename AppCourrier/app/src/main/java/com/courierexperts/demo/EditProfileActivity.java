@@ -4,22 +4,33 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class EditProfileActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.perfil_datos_activity);
 
         View btnCancelar = findViewById(R.id.btnCancelarPerfil);
-        View btnGuardar = findViewById(R.id.btnGuardardatosPerfil);
-        if (btnCancelar != null) btnCancelar.setOnClickListener(v -> finish());
-        if (btnGuardar != null) btnGuardar.setOnClickListener(v -> startActivity(new Intent(EditProfileActivity.this, HomeActivity.class)));
+        View btnGuardar  = findViewById(R.id.btnGuardardatosPerfil);
 
+        if (btnCancelar != null) {
+            btnCancelar.setOnClickListener(v -> finish());
+        }
+        if (btnGuardar != null) {
+            btnGuardar.setOnClickListener(v ->
+                    startActivity(new Intent(EditProfileActivity.this, HomeActivity.class))
+            );
+        }
+
+        // Bottom bar SIN nav_add (el FAB hace esa acción en otras pantallas)
         BottomNavigationView bottom = findViewById(R.id.bottomNav);
         if (bottom != null) {
             bottom.setSelectedItemId(R.id.nav_profile);
@@ -30,10 +41,8 @@ public class EditProfileActivity extends AppCompatActivity {
                     if (id == R.id.nav_home) {
                         startActivity(new Intent(EditProfileActivity.this, HomeActivity.class));
                         return true;
-                    } else if (id == R.id.nav_add) {
-                        startActivity(new Intent(EditProfileActivity.this, NewPurchaseActivity.class));
-                        return true;
                     } else if (id == R.id.nav_profile) {
+                        // Ya estás en Perfil/Editar Perfil. Podés no hacer nada o ir a ProfileActivity.
                         startActivity(new Intent(EditProfileActivity.this, ProfileActivity.class));
                         return true;
                     }

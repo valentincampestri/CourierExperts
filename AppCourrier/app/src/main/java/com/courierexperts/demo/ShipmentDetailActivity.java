@@ -6,12 +6,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ShipmentDetailActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,26 +41,35 @@ public class ShipmentDetailActivity extends AppCompatActivity {
             if (containerList != null) containerList.setVisibility(View.VISIBLE);
         }
 
-        BottomNavigationView bottom = findViewById(R.id.bottomNav);
-        if (bottom != null) {
-            bottom.setSelectedItemId(R.id.nav_home);
-            bottom.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    int id = item.getItemId();
-                    if (id == R.id.nav_home) {
-                        startActivity(new Intent(ShipmentDetailActivity.this, HomeActivity.class));
-                        return true;
-                    } else if (id == R.id.nav_add) {
-                        startActivity(new Intent(ShipmentDetailActivity.this, NewPurchaseActivity.class));
-                        return true;
-                    } else if (id == R.id.nav_profile) {
-                        startActivity(new Intent(ShipmentDetailActivity.this, ProfileActivity.class));
-                        return true;
-                    }
-                    return false;
-                }
-            });
+        setupBottomBar();
+
+        // Si este layout tiene FAB, podés manejarlo así (opcional):
+        View fab = findViewById(R.id.fabAdd);
+        if (fab != null) {
+            fab.setOnClickListener(v ->
+                    startActivity(new Intent(ShipmentDetailActivity.this, NewPurchaseActivity.class))
+            );
         }
+    }
+
+    private void setupBottomBar() {
+        BottomNavigationView bottom = findViewById(R.id.bottomNav);
+        if (bottom == null) return;
+
+        bottom.setSelectedItemId(R.id.nav_home);
+        bottom.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.nav_home) {
+                    startActivity(new Intent(ShipmentDetailActivity.this, HomeActivity.class));
+                    return true;
+                } else if (id == R.id.nav_profile) {
+                    startActivity(new Intent(ShipmentDetailActivity.this, ProfileActivity.class));
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 }

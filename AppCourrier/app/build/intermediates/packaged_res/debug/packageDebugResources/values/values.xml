@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="depositos_array">
+        <item>Miami Florida</item>
+        <item>New York</item>
+        <item>Los Angeles</item>
+        <item>Madrid</item>
+    </string-array>
+    <color name="black">#000000</color>
+    <color name="purple_200">#BB86FC</color>
+    <color name="purple_500">#6200EE</color>
+    <color name="purple_700">#745296</color>
+    <color name="teal_200">#03DAC5</color>
+    <color name="teal_700">#018786</color>
+    <color name="white">#FFFFFF</color>
+    <dimen name="ce_banner_height">200dp</dimen>
+    <dimen name="ce_radius_lg">24dp</dimen>
+    <dimen name="ce_radius_md">16dp</dimen>
+    <dimen name="ce_radius_sm">12dp</dimen>
+    <dimen name="ce_spacing_lg">24dp</dimen>
+    <dimen name="ce_spacing_md">16dp</dimen>
+    <dimen name="ce_spacing_sm">12dp</dimen>
+    <dimen name="ce_spacing_xs">8dp</dimen>
+    <string name="app_name">currier</string>
+    <string name="title_activity_compras">ComprasActivity</string>
+    <string name="title_activity_nueva_compra">nueva_compra</string>
+    <style name="ShapeAppearanceOverlay.Courier" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+    <style name="ShapeAppearanceOverlay.Courier.FAB" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+    <style name="Text.CE.Body" parent="TextAppearance.Material3.BodySmall"/>
+    <style name="Text.CE.Subtitle" parent="TextAppearance.Material3.BodyMedium"/>
+    <style name="Text.CE.Title" parent="TextAppearance.Material3.TitleLarge"/>
+    <style name="Theme.AppCourrier" parent="Theme.Material3.Light.NoActionBar">
+        
+        <item name="colorPrimary">@color/purple_700</item>
+        <item name="colorPrimaryContainer">@color/purple_200</item>
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
+    </style>
+    <style name="Widget.CE.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton"/>
+    <style name="Widget.CE.Button.Primary" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/purple_700</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+    <style name="Widget.CE.Card" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardElevation">2dp</item>
+    </style>
+</resources>

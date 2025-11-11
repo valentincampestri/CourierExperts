@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!-- Cards -->
     <style name="Widget.CE.Card" parent="Widget.Material3.CardView.Elevated">
         <item name="cardCornerRadius">12dp</item>
@@ -18,4 +19,16 @@
     <style name="Text.CE.Title" parent="TextAppearance.Material3.TitleLarge"/>
     <style name="Text.CE.Subtitle" parent="TextAppearance.Material3.BodyMedium"/>
     <style name="Text.CE.Body" parent="TextAppearance.Material3.BodySmall"/>
+
+    <style name="ShapeAppearanceOverlay.Courier.FAB" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.Courier" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+
 </resources>

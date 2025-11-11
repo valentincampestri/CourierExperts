@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:label="CourierExpertsDemo"
-        android:theme="@style/Theme.AppCourrier"
         android:allowBackup="true"
-        android:supportsRtl="true">
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCourrier">
         <activity android:name=".WelcomeActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,5 +25,6 @@
         <activity android:name=".EditProfileActivity" />
         <activity android:name=".PurchaseDetailActivity" />
         <activity android:name=".ShipmentDetailActivity" />
+        <activity android:name=".PackageDetailActivity" />
     </application>
 </manifest>
