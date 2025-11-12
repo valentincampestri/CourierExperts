@@ -54,18 +54,17 @@
             app:layout_constraintEnd_toStartOf="@id/imgAvatar"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Amazon banner -->
-    <ImageView
-        android:id="@+id/bannerAmazon"
+    <!-- Carousel de banners -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvBanner"
         android:layout_width="0dp"
         android:layout_height="200dp"
-        android:src="@drawable/ic_amazon"
-        android:scaleType="fitCenter"
-        android:contentDescription="Amazon banner"
+        android:clipToPadding="false"
+        android:paddingStart="@dimen/ce_spacing_md"
+        android:paddingEnd="@dimen/ce_spacing_md"
         app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="@dimen/ce_spacing_md"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- Menú principal -->
     <LinearLayout
@@ -75,7 +74,7 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_marginTop="@dimen/ce_spacing_md"
-        app:layout_constraintTop_toBottomOf="@id/bannerAmazon"
+        app:layout_constraintTop_toBottomOf="@id/rvBanner"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 

@@ -10,6 +10,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import com.courierexperts.demo.ui.home.BannerAdapter;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -19,6 +23,8 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setupBottomBar(R.id.nav_home);
+
+        setupBannerCarousel();
 
         View btnCompras = findViewById(R.id.btnCompras);
         View btnPaquetes = findViewById(R.id.btnPaquetes);
@@ -79,5 +85,57 @@ public class HomeActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    private final android.os.Handler bannerHandler = new android.os.Handler(android.os.Looper.getMainLooper());
+    private boolean bannerPaused = false;
+    private int bannerPosition = 0;
+
+    private void setupBannerCarousel() {
+        RecyclerView rv = findViewById(R.id.rvBanner);
+        if (rv == null) return;
+
+        LinearLayoutManager lm = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+        rv.setLayoutManager(lm);
+        new PagerSnapHelper().attachToRecyclerView(rv);
+
+        java.util.List<Integer> imgs = java.util.Arrays.asList(
+                R.drawable.ic_amazon,
+                R.drawable.ic_envios,
+                R.drawable.ic_compras
+        );
+        BannerAdapter adapter = new BannerAdapter(imgs);
+        rv.setAdapter(adapter);
+
+        rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                bannerPaused = (newState == RecyclerView.SCROLL_STATE_DRAGGING);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    bannerPosition = lm.findFirstVisibleItemPosition();
+                }
+            }
+        });
+        rv.setOnTouchListener((v, e) -> {
+            switch (e.getAction()) {
+                case android.view.MotionEvent.ACTION_DOWN:
+                case android.view.MotionEvent.ACTION_MOVE:
+                    bannerPaused = true; break;
+                case android.view.MotionEvent.ACTION_UP:
+                case android.view.MotionEvent.ACTION_CANCEL:
+                    bannerPaused = false; break;
+            }
+            return false;
+        });
+
+        bannerHandler.postDelayed(new Runnable() {
+            @Override public void run() {
+                if (!bannerPaused && adapter.getItemCount() > 0) {
+                    bannerPosition++;
+                    rv.smoothScrollToPosition(bannerPosition);
+                }
+                bannerHandler.postDelayed(this, 4000);
+            }
+        }, 4000);
     }
 }
