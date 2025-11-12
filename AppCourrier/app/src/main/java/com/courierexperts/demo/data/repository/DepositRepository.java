@@ -31,19 +31,19 @@ public class DepositRepository {
             try {
                 if (dao.count() == 0) {
                     List<DepositEntity> list = new ArrayList<>();
-                    list.add(make("Miami"));
-                    list.add(make("New York"));
-                    list.add(make("Los Angeles"));
+                    list.add(make(1L, "Miami"));
+                    list.add(make(2L, "New York"));
+                    list.add(make(3L, "Los Angeles"));
                     dao.insertAll(list);
                 }
             } catch (Exception ignored) { }
         });
     }
 
-    private static DepositEntity make(String name) {
+    private static DepositEntity make(Long id, String name) {
         DepositEntity e = new DepositEntity();
+        e.id = id != null ? id : 0L;
         e.name = name;
         return e;
     }
 }
-

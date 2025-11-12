@@ -26,6 +26,16 @@ public class HomeActivity extends AppCompatActivity {
 
         setupBannerCarousel();
 
+        // Bind saludo Hola, {Nombre}
+        final android.widget.TextView tvSaludo = findViewById(R.id.tvSaludo);
+        if (tvSaludo != null) {
+            com.courierexperts.demo.data.repository.UserProfileRepository repo = new com.courierexperts.demo.data.repository.UserProfileRepository(this);
+            repo.observeProfile().observe(this, profile -> {
+                String name = (profile != null && profile.name != null) ? profile.name.trim() : "";
+                tvSaludo.setText(name.isEmpty() ? "Hola" : ("Hola, " + name));
+            });
+        }
+
         View btnCompras = findViewById(R.id.btnCompras);
         View btnPaquetes = findViewById(R.id.btnPaquetes);
         View btnEnvios = findViewById(R.id.btnEnvios);

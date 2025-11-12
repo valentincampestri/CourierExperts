@@ -78,12 +78,49 @@ public class EditProfileActivity extends AppCompatActivity {
                         new com.courierexperts.demo.data.repository.UserProfileRepository(this).updatePhone(phone);
                     }
                 }
+
+                // Validación de nombre (2..80, solo letras y espacios)
+                View etNameView = findViewById(R.id.etNombrePerfil);
+                if (etNameView instanceof com.google.android.material.textfield.TextInputEditText) {
+                    String name = ((com.google.android.material.textfield.TextInputEditText) etNameView).getText() != null ? ((com.google.android.material.textfield.TextInputEditText) etNameView).getText().toString().trim() : "";
+                    boolean ok = name.matches("[\\p{L} ]{2,80}");
+                    View parent = (View) etNameView.getParent().getParent();
+                    if (!ok) {
+                        if (parent instanceof com.google.android.material.textfield.TextInputLayout) {
+                            ((com.google.android.material.textfield.TextInputLayout) parent).setError("Nombre inválido (solo letras y espacios, 2 a 80)");
+                        }
+                        return;
+                    } else {
+                        if (parent instanceof com.google.android.material.textfield.TextInputLayout) {
+                            ((com.google.android.material.textfield.TextInputLayout) parent).setError(null);
+                        }
+                        new com.courierexperts.demo.data.repository.UserProfileRepository(this).updateName(name);
+                    }
+                }
+
+                // Validación de email
+                View etMailView = findViewById(R.id.etMailPerfil);
+                if (etMailView instanceof com.google.android.material.textfield.TextInputEditText) {
+                    String email = ((com.google.android.material.textfield.TextInputEditText) etMailView).getText() != null ? ((com.google.android.material.textfield.TextInputEditText) etMailView).getText().toString().trim() : "";
+                    boolean ok = android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+                    View parent = (View) etMailView.getParent().getParent();
+                    if (!ok) {
+                        if (parent instanceof com.google.android.material.textfield.TextInputLayout) {
+                            ((com.google.android.material.textfield.TextInputLayout) parent).setError("Email inválido");
+                        }
+                        return;
+                    } else {
+                        if (parent instanceof com.google.android.material.textfield.TextInputLayout) {
+                            ((com.google.android.material.textfield.TextInputLayout) parent).setError(null);
+                        }
+                        new com.courierexperts.demo.data.repository.UserProfileRepository(this).updateEmail(email);
+                    }
+                }
                 if (spinner != null && spinner.getAdapter() != null) {
                     int pos = spinner.getSelectedItemPosition();
                     if (pos >= 0 && pos < depositsCache.size()) {
                         long id = depositsCache.get(pos).id;
-                        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
-                        prefs.edit().putLong(KEY_SELECTED_DEPOSIT_ID, id).apply();
+                        new com.courierexperts.demo.data.repository.UserProfileRepository(this).updateDepositId(id);
                     }
                 }
                 startActivity(new Intent(EditProfileActivity.this, HomeActivity.class));
@@ -104,15 +141,17 @@ public class EditProfileActivity extends AppCompatActivity {
                 a.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner.setAdapter(a);
 
-                SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
-                long savedId = prefs.getLong(KEY_SELECTED_DEPOSIT_ID, -1L);
-                int sel = 0;
-                if (savedId != -1L) {
-                    for (int i = 0; i < depositsCache.size(); i++) {
-                        if (depositsCache.get(i).id == savedId) { sel = i; break; }
+                // Seleccionamos según UserProfile.depositId
+                new com.courierexperts.demo.data.repository.UserProfileRepository(this).observeProfile().observe(this, profile -> {
+                    long savedId = (profile != null && profile.depositId != null) ? profile.depositId : -1L;
+                    int sel = 0;
+                    if (savedId != -1L) {
+                        for (int i = 0; i < depositsCache.size(); i++) {
+                            if (depositsCache.get(i).id == savedId) { sel = i; break; }
+                        }
                     }
-                }
-                if (!names.isEmpty()) spinner.setSelection(sel);
+                    if (!names.isEmpty()) spinner.setSelection(sel);
+                });
             });
         }
 
@@ -123,6 +162,29 @@ public class EditProfileActivity extends AppCompatActivity {
             upRepo.observeProfile().observe(this, profile -> {
                 String addr = (profile != null && profile.address != null) ? profile.address : "";
                 ((com.google.android.material.textfield.TextInputEditText) etDirView).setText(addr);
+            });
+        }
+
+        // Cargar nombre, email y telefono actuales
+        View etNameViewInit = findViewById(R.id.etNombrePerfil);
+        if (etNameViewInit instanceof com.google.android.material.textfield.TextInputEditText) {
+            new com.courierexperts.demo.data.repository.UserProfileRepository(this).observeProfile().observe(this, profile -> {
+                String name = (profile != null && profile.name != null) ? profile.name : "";
+                ((com.google.android.material.textfield.TextInputEditText) etNameViewInit).setText(name);
+            });
+        }
+        View etMailViewInit = findViewById(R.id.etMailPerfil);
+        if (etMailViewInit instanceof com.google.android.material.textfield.TextInputEditText) {
+            new com.courierexperts.demo.data.repository.UserProfileRepository(this).observeProfile().observe(this, profile -> {
+                String email = (profile != null && profile.email != null) ? profile.email : "";
+                ((com.google.android.material.textfield.TextInputEditText) etMailViewInit).setText(email);
+            });
+        }
+        View etPhoneViewInit = findViewById(R.id.etTelefonoPerfil);
+        if (etPhoneViewInit instanceof com.google.android.material.textfield.TextInputEditText) {
+            new com.courierexperts.demo.data.repository.UserProfileRepository(this).observeProfile().observe(this, profile -> {
+                String phone = (profile != null && profile.phone != null) ? profile.phone : "";
+                ((com.google.android.material.textfield.TextInputEditText) etPhoneViewInit).setText(phone);
             });
         }
 
@@ -150,3 +212,6 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 }
+
+
+

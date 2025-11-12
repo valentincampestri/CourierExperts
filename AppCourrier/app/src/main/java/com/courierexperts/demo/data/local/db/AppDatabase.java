@@ -19,7 +19,7 @@ import com.courierexperts.demo.data.local.entity.ShipmentEntity;
 
 @Database(
         entities = { PurchaseEntity.class, PackageEntity.class, ShipmentEntity.class, DepositEntity.class, UserProfileEntity.class },
-        version = 7,
+        version = 8,
         exportSchema = false
 )
 public abstract class AppDatabase extends RoomDatabase {

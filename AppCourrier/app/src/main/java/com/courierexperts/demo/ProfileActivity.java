@@ -73,9 +73,37 @@ public class ProfileActivity extends AppCompatActivity {
                 tvTel.setText(phone);
             });
         }
-    }
+        // Bind saludo y email
+        final TextView tvSaludo = findViewById(R.id.tvSaludo);
+        final TextView tvMail = findViewById(R.id.tvMail);
+        {
+            com.courierexperts.demo.data.repository.UserProfileRepository repo3 = new com.courierexperts.demo.data.repository.UserProfileRepository(this);
+            repo3.observeProfile().observe(this, profile -> {
+                String name = (profile != null && profile.name != null) ? profile.name.trim() : "";
+                if (tvSaludo != null) tvSaludo.setText(name.isEmpty() ? "Hola" : ("Hola, " + name));
+                String email = (profile != null && profile.email != null) ? profile.email.trim() : "";
+                if (tvMail != null) tvMail.setText(email);
+            });
+        }
 
-    
+        // Notificaciones: bind switch y solicitar permiso si aplica
+        com.google.android.material.switchmaterial.SwitchMaterial sw = findViewById(R.id.switchNotificaciones);
+        if (sw != null) {
+            com.courierexperts.demo.data.repository.UserProfileRepository repo4 = new com.courierexperts.demo.data.repository.UserProfileRepository(this);
+            repo4.observeProfile().observe(this, profile -> {
+                boolean enabled = profile != null && profile.notificationsEnabled != null && profile.notificationsEnabled;
+                if (sw.isChecked() != enabled) sw.setChecked(enabled);
+            });
+            sw.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked && android.os.Build.VERSION.SDK_INT >= 33) {
+                    if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                        requestPermissions(new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 1001);
+                    }
+                }
+                new com.courierexperts.demo.data.repository.UserProfileRepository(this).updateNotifications(isChecked);
+            });
+        }
+    }
 
     private void setupBottomBar(int selectedItemId) {
         BottomNavigationView bottom = findViewById(R.id.bottomNav);
@@ -104,6 +132,8 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 }
+
+
 
 
 
