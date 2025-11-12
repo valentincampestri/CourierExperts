@@ -51,6 +51,9 @@ public class ProfileActivity extends AppCompatActivity {
                 if (id == R.id.nav_home) {
                     startActivity(new Intent(ProfileActivity.this, HomeActivity.class));
                     return true;
+                } else if (id == R.id.nav_add) {
+                    startActivity(new Intent(ProfileActivity.this, NewPurchaseActivity.class));
+                    return true;
                 } else if (id == R.id.nav_profile) {
                     // ya estás en Perfil
                     return true;

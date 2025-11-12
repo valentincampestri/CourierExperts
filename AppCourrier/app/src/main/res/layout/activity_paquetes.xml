@@ -95,6 +95,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:menu="@menu/bottom_nav_menu"
+        app:itemIconSize="36dp"
+        app:itemIconTint="@null"
         android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

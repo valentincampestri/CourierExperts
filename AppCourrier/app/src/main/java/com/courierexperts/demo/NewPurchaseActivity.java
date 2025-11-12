@@ -70,6 +70,9 @@ public class NewPurchaseActivity extends AppCompatActivity {
                 if (id == R.id.nav_home) {
                     startActivity(new Intent(NewPurchaseActivity.this, HomeActivity.class));
                     return true;
+                } else if (id == R.id.nav_add) {
+                    // Ya estamos en Nueva Compra; confirmamos selección.
+                    return true;
                 } else if (id == R.id.nav_profile) {
                     startActivity(new Intent(NewPurchaseActivity.this, ProfileActivity.class));
                     return true;

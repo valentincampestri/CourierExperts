@@ -79,6 +79,9 @@ public class ShipmentsActivity extends AppCompatActivity {
                 if (id == R.id.nav_home) {
                     startActivity(new Intent(ShipmentsActivity.this, HomeActivity.class));
                     return true;
+                } else if (id == R.id.nav_add) {
+                    startActivity(new Intent(ShipmentsActivity.this, NewPurchaseActivity.class));
+                    return true;
                 } else if (id == R.id.nav_profile) {
                     startActivity(new Intent(ShipmentsActivity.this, ProfileActivity.class));
                     return true;

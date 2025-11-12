@@ -69,6 +69,9 @@ public class HomeActivity extends AppCompatActivity {
                 if (id == R.id.nav_home) {
                     // ya estás en Home
                     return true;
+                } else if (id == R.id.nav_add) {
+                    startActivity(new Intent(HomeActivity.this, NewPurchaseActivity.class));
+                    return true;
                 } else if (id == R.id.nav_profile) {
                     startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
                     return true;

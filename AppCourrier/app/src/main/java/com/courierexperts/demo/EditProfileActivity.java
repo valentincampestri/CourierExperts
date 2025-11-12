@@ -41,6 +41,9 @@ public class EditProfileActivity extends AppCompatActivity {
                     if (id == R.id.nav_home) {
                         startActivity(new Intent(EditProfileActivity.this, HomeActivity.class));
                         return true;
+                    } else if (id == R.id.nav_add) {
+                        startActivity(new Intent(EditProfileActivity.this, NewPurchaseActivity.class));
+                        return true;
                     } else if (id == R.id.nav_profile) {
                         // Ya estás en Perfil/Editar Perfil. Podés no hacer nada o ir a ProfileActivity.
                         startActivity(new Intent(EditProfileActivity.this, ProfileActivity.class));

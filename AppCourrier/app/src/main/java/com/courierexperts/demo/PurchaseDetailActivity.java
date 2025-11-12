@@ -37,6 +37,9 @@ public class PurchaseDetailActivity extends AppCompatActivity {
                 if (id == R.id.nav_home) {
                     startActivity(new Intent(PurchaseDetailActivity.this, HomeActivity.class));
                     return true;
+                } else if (id == R.id.nav_add) {
+                    startActivity(new Intent(PurchaseDetailActivity.this, NewPurchaseActivity.class));
+                    return true;
                 } else if (id == R.id.nav_profile) {
                     startActivity(new Intent(PurchaseDetailActivity.this, ProfileActivity.class));
                     return true;

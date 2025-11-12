@@ -1,0 +1,8 @@
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ic_profile"
+    android:insetLeft="6dp"
+    android:insetRight="6dp"
+    android:insetTop="6dp"
+    android:insetBottom="6dp"
+    android:tint="@color/black" />
+
