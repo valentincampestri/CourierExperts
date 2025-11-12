@@ -11,3 +11,11 @@ captures/
 
 # Archivos de Google Services
 google-services.json
+
+# Global Android/Gradle ignores (recursivos)
+**/build/
+**/.gradle/
+**/.cxx/
+**/.externalNativeBuild/
+*.apk
+*.aab
