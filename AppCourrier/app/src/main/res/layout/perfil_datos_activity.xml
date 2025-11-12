@@ -100,7 +100,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="phone"
-                    android:text="+54 5369-8751"/>
+                    android:digits="+0123456789"
+                    android:maxLength="20"
+                    android:text=""/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Dirección -->
@@ -116,6 +118,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
+                    android:maxLength="80"
                     android:text="Av. Corrientes 1000"/>
             </com.google.android.material.textfield.TextInputLayout>
 
