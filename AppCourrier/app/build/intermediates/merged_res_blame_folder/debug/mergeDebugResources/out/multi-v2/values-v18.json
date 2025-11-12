@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.courierexperts.demo.app-mergeDebugResources-36:/values-v18/values-v18.xml",
+            "outputFile": "com.courierexperts.demo.app-mergeDebugResources-37:/values-v18/values-v18.xml",
             "map": [
                 {
                     "source": "C:\\Users\\alexd\\.gradle\\caches\\9.0-milestone-1\\transforms\\eda1eda68f831362391e282464974493\\transformed\\appcompat-1.7.0\\res\\values-v18\\values-v18.xml",

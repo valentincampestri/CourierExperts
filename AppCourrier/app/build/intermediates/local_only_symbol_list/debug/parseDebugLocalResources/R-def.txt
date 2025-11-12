@@ -67,6 +67,8 @@ id direccion
 id etDireccionPerfil
 id etMailPerfil
 id etNombrePerfil
+id etOrderId
+id etStoreName
 id etTelefonoPerfil
 id fabAdd
 id groupButtons
@@ -88,6 +90,7 @@ id rvCompras
 id rvEnvios
 id rvPaquetes
 id spinnerDeposito
+id srlEnvios
 id switchNotificaciones
 id telefono
 id toolbar

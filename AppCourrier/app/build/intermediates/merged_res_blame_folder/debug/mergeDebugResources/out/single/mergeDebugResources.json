@@ -1,238 +1,238 @@
 [
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_bg_rounded_grey.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/bg_rounded_grey.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/layout_activity_paquetes.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/layout/activity_paquetes.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/mipmap-xhdpi_ic_launcher_round.webp.flat",
-        "source": "com.courierexperts.demo.app-main-40:/mipmap-xhdpi/ic_launcher_round.webp"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_circle_background.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/circle_background.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/mipmap-hdpi_ic_launcher_round.webp.flat",
-        "source": "com.courierexperts.demo.app-main-40:/mipmap-hdpi/ic_launcher_round.webp"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_header_background.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/header_background.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_bg_spinner.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/bg_spinner.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_ic_envios.png.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/ic_envios.png"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/layout_activity_nueva_compra.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/layout/activity_nueva_compra.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/layout_perfil_activity.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/layout/perfil_activity.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/layout_perfil_activity.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/layout/perfil_activity.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "com.courierexperts.demo.app-main-41:/mipmap-xhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_bg_bottom_bar.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/bg_bottom_bar.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_logo.png.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/logo.png"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
-        "source": "com.courierexperts.demo.app-main-40:/mipmap-xxxhdpi/ic_launcher_round.webp"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_ic_add_24.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/ic_add_24.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/mipmap-anydpi-v26/ic_launcher.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_ic_location.png.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/ic_location.png"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/layout_activity_compras.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/layout/activity_compras.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "com.courierexperts.demo.app-main-41:/mipmap-xxxhdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_ic_home.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/ic_home.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/layout_item_package.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/layout/item_package.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/layout_activity_paquetes.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/layout/activity_paquetes.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "com.courierexperts.demo.app-main-41:/mipmap-hdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
-        "source": "com.courierexperts.demo.app-main-40:/mipmap-xxhdpi/ic_launcher_round.webp"
+        "merged": "com.courierexperts.demo.app-debug-39:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "com.courierexperts.demo.app-main-41:/mipmap-xhdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/layout_activity_signup_step1.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/layout/activity_signup_step1.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/xml_backup_rules.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/xml/backup_rules.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_ic_notifiaction.png.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/ic_notifiaction.png"
+        "merged": "com.courierexperts.demo.app-debug-39:/xml_data_extraction_rules.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/xml/data_extraction_rules.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_ic_add_24.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/ic_add_24.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/layout_activity_shipment_detail.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/layout/activity_shipment_detail.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_ic_launcher_foreground.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/ic_launcher_foreground.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_ic_phone.png.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/ic_phone.png"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/xml_data_extraction_rules.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/xml/data_extraction_rules.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/layout_activity_signin.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/layout/activity_signin.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_ic_location.png.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/ic_location.png"
+        "merged": "com.courierexperts.demo.app-debug-39:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/mipmap-anydpi-v26/ic_launcher.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_ic_account.png.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/ic_account.png"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_bg_bottom_bar.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/bg_bottom_bar.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_circle_background.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/circle_background.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_ic_avatar.png.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/ic_avatar.png"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/layout_activity_main.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/layout/activity_main.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_ic_arrow.png.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/ic_arrow.png"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_header_background.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/header_background.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/layout_item_purchase.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/layout/item_purchase.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/xml_backup_rules.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/xml/backup_rules.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.courierexperts.demo.app-main-41:/mipmap-xxxhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/mipmap-xxxhdpi_ic_launcher.webp.flat",
-        "source": "com.courierexperts.demo.app-main-40:/mipmap-xxxhdpi/ic_launcher.webp"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_ic_home.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/ic_home.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_logo.png.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/logo.png"
+        "merged": "com.courierexperts.demo.app-debug-39:/layout_activity_nueva_compra.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/layout/activity_nueva_compra.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/mipmap-mdpi_ic_launcher.webp.flat",
-        "source": "com.courierexperts.demo.app-main-40:/mipmap-mdpi/ic_launcher.webp"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_ic_box.png.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/ic_box.png"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/layout_activity_signin.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/layout/activity_signin.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_ic_add.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/ic_add.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/mipmap-xhdpi_ic_launcher.webp.flat",
-        "source": "com.courierexperts.demo.app-main-40:/mipmap-xhdpi/ic_launcher.webp"
+        "merged": "com.courierexperts.demo.app-debug-39:/layout_activity_compras.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/layout/activity_compras.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/layout_activity_envios.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/layout/activity_envios.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "com.courierexperts.demo.app-main-41:/mipmap-hdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/layout_activity_welcome.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/layout/activity_welcome.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_ic_account.png.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/ic_account.png"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/layout_item_package.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/layout/item_package.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "com.courierexperts.demo.app-main-41:/mipmap-xxhdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/layout_item_purchase.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/layout/item_purchase.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.courierexperts.demo.app-main-41:/mipmap-xxhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_ic_amazon.jpg.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/ic_amazon.jpg"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_bg_estado_entregado.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/bg_estado_entregado.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/layout_activity_signup_step2.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/layout/activity_signup_step2.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/mipmap-anydpi-v26/ic_launcher_round.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/layout_activity_package_detail.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/layout/activity_package_detail.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/layout_item_shipment.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/layout/item_shipment.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_ic_avatar.png.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/ic_avatar.png"
+        "merged": "com.courierexperts.demo.app-debug-39:/layout_perfil_datos_activity.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/layout/perfil_datos_activity.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_ic_paquetes.png.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/ic_paquetes.png"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_ic_compras.png.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/ic_compras.png"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_ic_envios.png.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/ic_envios.png"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/ic_launcher_background.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_ic_compras.png.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/ic_compras.png"
+        "merged": "com.courierexperts.demo.app-debug-39:/layout_activity_signup_step1.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/layout/activity_signup_step1.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/mipmap-anydpi-v26/ic_launcher_round.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/layout_activity_package_detail.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/layout/activity_package_detail.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_ic_box.png.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/ic_box.png"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_ic_paquetes.png.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/ic_paquetes.png"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/layout_item_shipment.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/layout/item_shipment.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_bg_rounded_blue.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/bg_rounded_blue.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/mipmap-hdpi_ic_launcher.webp.flat",
-        "source": "com.courierexperts.demo.app-main-40:/mipmap-hdpi/ic_launcher.webp"
+        "merged": "com.courierexperts.demo.app-debug-39:/menu_bottom_nav_menu.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/menu/bottom_nav_menu.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_bg_rounded_blue.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/bg_rounded_blue.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/layout_activity_envios.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/layout/activity_envios.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_bg_estado_entregado.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/bg_estado_entregado.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/layout_activity_welcome.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/layout/activity_welcome.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_ic_add.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/ic_add.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/layout_activity_detalle_compra.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/layout/activity_detalle_compra.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_ic_profile.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/ic_profile.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_ic_amazon.jpg.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/ic_amazon.jpg"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/layout_perfil_datos_activity.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/layout/perfil_datos_activity.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/ic_launcher_foreground.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/layout_activity_detalle_compra.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/layout/activity_detalle_compra.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/layout_activity_main.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/layout/activity_main.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_bg_circle_purple.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/bg_circle_purple.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_ic_notifiaction.png.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/ic_notifiaction.png"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/mipmap-mdpi_ic_launcher_round.webp.flat",
-        "source": "com.courierexperts.demo.app-main-40:/mipmap-mdpi/ic_launcher_round.webp"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_bg_rounded_grey.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/bg_rounded_grey.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_ic_phone.png.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/ic_phone.png"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_bg_spinner.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/bg_spinner.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/menu_bottom_nav_menu.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/menu/bottom_nav_menu.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_bg_estado_transito.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/bg_estado_transito.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/mipmap-xxhdpi_ic_launcher.webp.flat",
-        "source": "com.courierexperts.demo.app-main-40:/mipmap-xxhdpi/ic_launcher.webp"
+        "merged": "com.courierexperts.demo.app-debug-39:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "com.courierexperts.demo.app-main-41:/mipmap-mdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_ic_arrow.png.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/ic_arrow.png"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_ic_profile.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/ic_profile.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_ic_launcher_background.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/ic_launcher_background.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "com.courierexperts.demo.app-main-41:/mipmap-mdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/drawable_bg_estado_transito.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/drawable/bg_estado_transito.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/drawable_bg_circle_purple.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/drawable/bg_circle_purple.xml"
     },
     {
-        "merged": "com.courierexperts.demo.app-debug-38:/layout_activity_shipment_detail.xml.flat",
-        "source": "com.courierexperts.demo.app-main-40:/layout/activity_shipment_detail.xml"
+        "merged": "com.courierexperts.demo.app-debug-39:/layout_activity_signup_step2.xml.flat",
+        "source": "com.courierexperts.demo.app-main-41:/layout/activity_signup_step2.xml"
     }
 ]

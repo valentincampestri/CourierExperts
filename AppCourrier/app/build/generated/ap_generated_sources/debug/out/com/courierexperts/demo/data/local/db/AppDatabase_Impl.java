@@ -41,14 +41,14 @@ public final class AppDatabase_Impl extends AppDatabase {
   @Override
   @NonNull
   protected SupportSQLiteOpenHelper createOpenHelper(@NonNull final DatabaseConfiguration config) {
-    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(3) {
+    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(4) {
       @Override
       public void createAllTables(@NonNull final SupportSQLiteDatabase db) {
-        db.execSQL("CREATE TABLE IF NOT EXISTS `purchases` (`id` INTEGER NOT NULL, `storeName` TEXT, `orderId` TEXT, `status` TEXT, `createdAt` TEXT, `thumbnailUrl` TEXT, PRIMARY KEY(`id`))");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `purchases` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `storeName` TEXT, `orderId` TEXT, `status` TEXT, `createdAt` TEXT, `thumbnailUrl` TEXT, `pendingSync` INTEGER NOT NULL)");
         db.execSQL("CREATE TABLE IF NOT EXISTS `packages` (`id` INTEGER NOT NULL, `label` TEXT, `description` TEXT, `status` TEXT, `lastUpdate` TEXT, `thumbnailUrl` TEXT, PRIMARY KEY(`id`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS `shipments` (`id` INTEGER NOT NULL, `title` TEXT, `trackingNumber` TEXT, `status` TEXT, `lastUpdate` TEXT, `thumbnailUrl` TEXT, PRIMARY KEY(`id`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1c37d30b89a29bcd5a3d07ae00073cbd')");
+        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '033d4566d8ad32c18af28688b5bbdc1d')");
       }
 
       @Override
@@ -99,13 +99,14 @@ public final class AppDatabase_Impl extends AppDatabase {
       @NonNull
       public RoomOpenHelper.ValidationResult onValidateSchema(
           @NonNull final SupportSQLiteDatabase db) {
-        final HashMap<String, TableInfo.Column> _columnsPurchases = new HashMap<String, TableInfo.Column>(6);
+        final HashMap<String, TableInfo.Column> _columnsPurchases = new HashMap<String, TableInfo.Column>(7);
         _columnsPurchases.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsPurchases.put("storeName", new TableInfo.Column("storeName", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsPurchases.put("orderId", new TableInfo.Column("orderId", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsPurchases.put("status", new TableInfo.Column("status", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsPurchases.put("createdAt", new TableInfo.Column("createdAt", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsPurchases.put("thumbnailUrl", new TableInfo.Column("thumbnailUrl", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsPurchases.put("pendingSync", new TableInfo.Column("pendingSync", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysPurchases = new HashSet<TableInfo.ForeignKey>(0);
         final HashSet<TableInfo.Index> _indicesPurchases = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoPurchases = new TableInfo("purchases", _columnsPurchases, _foreignKeysPurchases, _indicesPurchases);
@@ -149,7 +150,7 @@ public final class AppDatabase_Impl extends AppDatabase {
         }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "1c37d30b89a29bcd5a3d07ae00073cbd", "198f0286431c7e7f18733794d7fa6519");
+    }, "033d4566d8ad32c18af28688b5bbdc1d", "c16c7919508aefa9030af8886fa1a43b");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(config.context).name(config.name).callback(_openCallback).build();
     final SupportSQLiteOpenHelper _helper = config.sqliteOpenHelperFactory.create(_sqliteConfig);
     return _helper;

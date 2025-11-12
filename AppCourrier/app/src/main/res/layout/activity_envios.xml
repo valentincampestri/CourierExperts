@@ -51,19 +51,26 @@
             app:layout_constraintBottom_toBottomOf="@id/imgEnvios"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- LISTA -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvEnvios"
+    <!-- LISTA con Pull-to-Refresh -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srlEnvios"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:paddingStart="@dimen/ce_spacing_md"
-        android:paddingEnd="@dimen/ce_spacing_md"
-        android:paddingBottom="96dp"
-    android:clipToPadding="false"
-    app:layout_constraintTop_toBottomOf="@id/header"
-    app:layout_constraintBottom_toTopOf="@id/bottomNav"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvEnvios"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="@dimen/ce_spacing_md"
+            android:paddingEnd="@dimen/ce_spacing_md"
+            android:paddingBottom="96dp"
+            android:clipToPadding="false"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <!-- EMPTY STATE -->
     <TextView

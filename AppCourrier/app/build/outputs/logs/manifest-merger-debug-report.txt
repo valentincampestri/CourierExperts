@@ -11,6 +11,7 @@ MERGED from [androidx.appcompat:appcompat-resources:1.7.0] C:\Users\alexd\.gradl
 MERGED from [androidx.appcompat:appcompat:1.7.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\eda1eda68f831362391e282464974493\transformed\appcompat-1.7.0\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.viewpager2:viewpager2:1.1.0-beta02] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\2a0c32fdbc416e2f3a789617e36b60a3\transformed\viewpager2-1.1.0-beta02\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.recyclerview:recyclerview:1.3.2] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\aff7446b188f15a657228bb2b7df4db5\transformed\recyclerview-1.3.2\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.1.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\8e571314d29759fa7cce637b12c8108b\transformed\swiperefreshlayout-1.1.0\AndroidManifest.xml:17:1-24:12
 MERGED from [com.github.bumptech.glide:glide:4.16.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\3ebc5386376abc2f45dfaa9ca84da695\transformed\glide-4.16.0\AndroidManifest.xml:2:1-9:12
 MERGED from [androidx.fragment:fragment:1.5.4] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\839f538f4555ba60b67e3a62d4f1c34a\transformed\fragment-1.5.4\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.activity:activity:1.8.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\45d2259438a8cf0240bf61e40f44b492\transformed\activity-1.8.0\AndroidManifest.xml:17:1-22:12
@@ -46,12 +47,12 @@ MERGED from [androidx.annotation:annotation-experimental:1.4.0] C:\Users\alexd\.
 MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\bac827da03ee208d6c7ffdd9c62c5765\transformed\cardview-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\7db6787516be6660a449d358d46aa94e\transformed\cursoradapter-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\9f549d17035d253b606dac77ed5992f8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:17:1-55:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\5adee297264732da705241c730dbe440\transformed\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\78417824c30eaef8f61c0b7b3c6b61c4\transformed\core-runtime-2.2.0\AndroidManifest.xml:17:1-22:12
 MERGED from [com.github.bumptech.glide:gifdecoder:4.16.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\db45c76d8678149f1be405ef137984e1\transformed\gifdecoder-4.16.0\AndroidManifest.xml:2:1-9:12
 MERGED from [androidx.exifinterface:exifinterface:1.3.6] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\7bd5233de665f421c561dc8353c8819b\transformed\exifinterface-1.3.6\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\56486086f233b793e0a0264d8f2dee6a\transformed\startup-runtime-1.1.1\AndroidManifest.xml:17:1-33:12
 MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\deb4b03982da5de51428e32813e65f2f\transformed\tracing-1.0.0\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\5adee297264732da705241c730dbe440\transformed\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\3daedcb8b521ffa49d7961f3cb84d67f\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:17:1-27:12
 MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\3c4ac161bf0598aee7141dfea254e4be\transformed\documentfile-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\89d0d701d6ecc4ced4eef50ecf62297d\transformed\localbroadcastmanager-1.0.0\AndroidManifest.xml:17:1-22:12
@@ -191,6 +192,8 @@ MERGED from [androidx.viewpager2:viewpager2:1.1.0-beta02] C:\Users\alexd\.gradle
 MERGED from [androidx.viewpager2:viewpager2:1.1.0-beta02] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\2a0c32fdbc416e2f3a789617e36b60a3\transformed\viewpager2-1.1.0-beta02\AndroidManifest.xml:5:5-44
 MERGED from [androidx.recyclerview:recyclerview:1.3.2] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\aff7446b188f15a657228bb2b7df4db5\transformed\recyclerview-1.3.2\AndroidManifest.xml:20:5-44
 MERGED from [androidx.recyclerview:recyclerview:1.3.2] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\aff7446b188f15a657228bb2b7df4db5\transformed\recyclerview-1.3.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.1.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\8e571314d29759fa7cce637b12c8108b\transformed\swiperefreshlayout-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.1.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\8e571314d29759fa7cce637b12c8108b\transformed\swiperefreshlayout-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [com.github.bumptech.glide:glide:4.16.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\3ebc5386376abc2f45dfaa9ca84da695\transformed\glide-4.16.0\AndroidManifest.xml:5:5-7:41
 MERGED from [com.github.bumptech.glide:glide:4.16.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\3ebc5386376abc2f45dfaa9ca84da695\transformed\glide-4.16.0\AndroidManifest.xml:5:5-7:41
 MERGED from [androidx.fragment:fragment:1.5.4] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\839f538f4555ba60b67e3a62d4f1c34a\transformed\fragment-1.5.4\AndroidManifest.xml:20:5-22:41
@@ -261,6 +264,8 @@ MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\alexd\.gradle\
 MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\7db6787516be6660a449d358d46aa94e\transformed\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\9f549d17035d253b606dac77ed5992f8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:21:5-44
 MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\9f549d17035d253b606dac77ed5992f8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:21:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\5adee297264732da705241c730dbe440\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\5adee297264732da705241c730dbe440\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\78417824c30eaef8f61c0b7b3c6b61c4\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\78417824c30eaef8f61c0b7b3c6b61c4\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
 MERGED from [com.github.bumptech.glide:gifdecoder:4.16.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\db45c76d8678149f1be405ef137984e1\transformed\gifdecoder-4.16.0\AndroidManifest.xml:5:5-7:41
@@ -271,8 +276,6 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\alexd\.gradle\cach
 MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\56486086f233b793e0a0264d8f2dee6a\transformed\startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
 MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\deb4b03982da5de51428e32813e65f2f\transformed\tracing-1.0.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\deb4b03982da5de51428e32813e65f2f\transformed\tracing-1.0.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\5adee297264732da705241c730dbe440\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\5adee297264732da705241c730dbe440\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\3daedcb8b521ffa49d7961f3cb84d67f\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\3daedcb8b521ffa49d7961f3cb84d67f\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\alexd\.gradle\caches\9.0-milestone-1\transforms\3c4ac161bf0598aee7141dfea254e4be\transformed\documentfile-1.0.0\AndroidManifest.xml:20:5-44

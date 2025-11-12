@@ -47,14 +47,104 @@ public class PurchaseRepository {
                         e.status = p.status;
                         e.createdAt = p.createdAt;
                         e.thumbnailUrl = p.thumbnailUrl;
+                        e.pendingSync = false;
                         list.add(e);
                     }
-                    dao.clear();
                     dao.upsertAll(list);
                 }
             } catch (Exception e) {
                 // Podés loguear si querés: Log.e("Repository", "refresh error", e);
             }
         });
+    }
+
+    /** Crea localmente y trata de sincronizar con backend (mock). */
+    public void createLocalAndSync(String storeName, String orderId, String createdAtIso) {
+        AppExecutors.io().execute(() -> {
+            try {
+                PurchaseEntity e = new PurchaseEntity();
+                e.id = 0; // autogenerado local
+                e.storeName = storeName;
+                e.orderId = orderId;
+                e.status = "pending";
+                e.createdAt = createdAtIso;
+                e.thumbnailUrl = "";
+                long localId = dao.insert(e);
+
+                // Intentar POST
+                Purchase payload = new Purchase(0, storeName, orderId, e.status, createdAtIso, e.thumbnailUrl);
+                try {
+                    Response<Purchase> resp = RetrofitClient.api(app).createPurchase(payload).execute();
+                    if (resp.isSuccessful() && resp.body() != null) {
+                        Purchase p = resp.body();
+                        // Reemplazar registro local con el id del servidor
+                        PurchaseEntity server = new PurchaseEntity();
+                        server.id = p.id; // usar id del server
+                        server.storeName = p.storeName;
+                        server.orderId = p.orderId;
+                        server.status = p.status;
+                        server.createdAt = p.createdAt;
+                        server.thumbnailUrl = p.thumbnailUrl;
+                        server.pendingSync = false;
+                        dao.deleteById(localId);
+                        List<PurchaseEntity> list = new ArrayList<>();
+                        list.add(server);
+                        dao.upsertAll(list);
+                    }
+                } catch (Exception ignored) {
+                    // Offline: queda local con id autogenerado
+                }
+            } catch (Exception ignored) { }
+        });
+    }
+
+    public void syncPendingIfNetworkAvailable() {
+        if (!isNetworkAvailable()) return;
+        AppExecutors.io().execute(() -> {
+            List<PurchaseEntity> pendings;
+            try {
+                pendings = dao.listPending();
+            } catch (Exception e) { return; }
+            if (pendings == null || pendings.isEmpty()) return;
+            for (PurchaseEntity e : pendings) {
+                try {
+                    Purchase payload = new Purchase(0, e.storeName, e.orderId, e.status, e.createdAt, e.thumbnailUrl);
+                    Response<Purchase> resp = RetrofitClient.api(app).createPurchase(payload).execute();
+                    if (resp.isSuccessful() && resp.body() != null) {
+                        Purchase p = resp.body();
+                        dao.deleteById(e.id);
+                        PurchaseEntity server = new PurchaseEntity();
+                        server.id = p.id;
+                        server.storeName = p.storeName;
+                        server.orderId = p.orderId;
+                        server.status = p.status;
+                        server.createdAt = p.createdAt;
+                        server.thumbnailUrl = p.thumbnailUrl;
+                        server.pendingSync = false;
+                        List<PurchaseEntity> list = new ArrayList<>();
+                        list.add(server);
+                        dao.upsertAll(list);
+                    }
+                } catch (Exception ignored) { }
+            }
+        });
+    }
+
+    private boolean isNetworkAvailable() {
+        try {
+            android.net.ConnectivityManager cm = (android.net.ConnectivityManager) app.getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (cm == null) return false;
+            if (android.os.Build.VERSION.SDK_INT >= 23) {
+                android.net.Network network = cm.getActiveNetwork();
+                if (network == null) return false;
+                android.net.NetworkCapabilities caps = cm.getNetworkCapabilities(network);
+                return caps != null && (caps.hasTransport(android.net.NetworkCapabilities.TRANSPORT_CELLULAR)
+                        || caps.hasTransport(android.net.NetworkCapabilities.TRANSPORT_WIFI)
+                        || caps.hasTransport(android.net.NetworkCapabilities.TRANSPORT_ETHERNET));
+            } else {
+                android.net.NetworkInfo info = cm.getActiveNetworkInfo();
+                return info != null && info.isConnected();
+            }
+        } catch (Exception e) { return false; }
     }
 }

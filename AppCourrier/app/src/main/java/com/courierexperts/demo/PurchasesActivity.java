@@ -61,6 +61,14 @@ public class PurchasesActivity extends AppCompatActivity {
         setupBottomBar();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (vm != null) {
+            vm.syncPendingIfNetworkAvailable();
+        }
+    }
+
     private void setupBottomBar() {
         BottomNavigationView bottom = b.bottomNav;
         if (bottom == null) return;

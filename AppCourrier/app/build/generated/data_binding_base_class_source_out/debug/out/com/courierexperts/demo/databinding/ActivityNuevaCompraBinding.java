@@ -14,6 +14,7 @@ import androidx.viewbinding.ViewBindings;
 import com.courierexperts.demo.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import java.lang.NullPointerException;
 import java.lang.Override;
 import java.lang.String;
@@ -32,6 +33,12 @@ public final class ActivityNuevaCompraBinding implements ViewBinding {
   public final MaterialButton btnGuardarNuevaCompra;
 
   @NonNull
+  public final TextInputEditText etOrderId;
+
+  @NonNull
+  public final TextInputEditText etStoreName;
+
+  @NonNull
   public final ConstraintLayout header;
 
   @NonNull
@@ -45,13 +52,16 @@ public final class ActivityNuevaCompraBinding implements ViewBinding {
 
   private ActivityNuevaCompraBinding(@NonNull ConstraintLayout rootView,
       @NonNull BottomNavigationView bottomNav, @NonNull MaterialButton btnCancelarnuevaCompra,
-      @NonNull MaterialButton btnGuardarNuevaCompra, @NonNull ConstraintLayout header,
+      @NonNull MaterialButton btnGuardarNuevaCompra, @NonNull TextInputEditText etOrderId,
+      @NonNull TextInputEditText etStoreName, @NonNull ConstraintLayout header,
       @NonNull ImageView imgNuevacompra, @NonNull TextView tvMensaje,
       @NonNull TextView tvNuevacompra) {
     this.rootView = rootView;
     this.bottomNav = bottomNav;
     this.btnCancelarnuevaCompra = btnCancelarnuevaCompra;
     this.btnGuardarNuevaCompra = btnGuardarNuevaCompra;
+    this.etOrderId = etOrderId;
+    this.etStoreName = etStoreName;
     this.header = header;
     this.imgNuevacompra = imgNuevacompra;
     this.tvMensaje = tvMensaje;
@@ -103,6 +113,18 @@ public final class ActivityNuevaCompraBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.etOrderId;
+      TextInputEditText etOrderId = ViewBindings.findChildViewById(rootView, id);
+      if (etOrderId == null) {
+        break missingId;
+      }
+
+      id = R.id.etStoreName;
+      TextInputEditText etStoreName = ViewBindings.findChildViewById(rootView, id);
+      if (etStoreName == null) {
+        break missingId;
+      }
+
       id = R.id.header;
       ConstraintLayout header = ViewBindings.findChildViewById(rootView, id);
       if (header == null) {
@@ -128,8 +150,8 @@ public final class ActivityNuevaCompraBinding implements ViewBinding {
       }
 
       return new ActivityNuevaCompraBinding((ConstraintLayout) rootView, bottomNav,
-          btnCancelarnuevaCompra, btnGuardarNuevaCompra, header, imgNuevacompra, tvMensaje,
-          tvNuevacompra);
+          btnCancelarnuevaCompra, btnGuardarNuevaCompra, etOrderId, etStoreName, header,
+          imgNuevacompra, tvMensaje, tvNuevacompra);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

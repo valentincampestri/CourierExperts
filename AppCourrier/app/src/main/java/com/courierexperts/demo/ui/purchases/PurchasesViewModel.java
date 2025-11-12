@@ -29,4 +29,8 @@ public class PurchasesViewModel extends AndroidViewModel {
     public void refresh() {
         repo.refreshFromNetwork();
     }
+
+    public void syncPendingIfNetworkAvailable() {
+        repo.syncPendingIfNetworkAvailable();
+    }
 }

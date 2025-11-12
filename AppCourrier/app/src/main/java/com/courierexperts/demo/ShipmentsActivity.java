@@ -3,12 +3,15 @@ package com.courierexperts.demo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.courierexperts.demo.databinding.ActivityEnviosBinding;
+import com.courierexperts.demo.ui.shipments.ShipmentAdapter;
+import com.courierexperts.demo.ui.shipments.ShipmentsViewModel;
 // imports de tu adapter/viewmodel si los usás
 // import com.courierexperts.demo.ui.shipments.ShipmentAdapter;
 // import com.courierexperts.demo.ui.shipments.ShipmentsViewModel;
@@ -16,6 +19,8 @@ import com.courierexperts.demo.databinding.ActivityEnviosBinding;
 public class ShipmentsActivity extends AppCompatActivity {
 
     private ActivityEnviosBinding b;
+    private ShipmentsViewModel vm;
+    private ShipmentAdapter adapter;
 //    private ShipmentsViewModel vm;
 //    private ShipmentAdapter adapter;
 
@@ -24,6 +29,24 @@ public class ShipmentsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         b = ActivityEnviosBinding.inflate(getLayoutInflater());
         setContentView(b.getRoot());
+
+        // --- RecyclerView wiring ---
+        adapter = new ShipmentAdapter();
+        b.rvEnvios.setLayoutManager(new LinearLayoutManager(this));
+        b.rvEnvios.setAdapter(adapter);
+
+        vm = new ViewModelProvider(this).get(ShipmentsViewModel.class);
+        vm.getShipments().observe(this, list -> {
+            adapter.submit(list);
+            boolean empty = (list == null || list.isEmpty());
+            b.tvEmptyEnvios.setVisibility(empty ? View.VISIBLE : View.GONE);
+            b.rvEnvios.setVisibility(empty ? View.GONE : View.VISIBLE);
+            // detener spinner si venimos de pull-to-refresh
+            if (b.srlEnvios.isRefreshing()) b.srlEnvios.setRefreshing(false);
+        });
+
+        // Pull-to-refresh
+        b.srlEnvios.setOnRefreshListener(() -> vm.refresh());
 
         // --- RecyclerView (si ya lo tenés armado podés dejar lo tuyo) ---
 //        adapter = new ShipmentAdapter();

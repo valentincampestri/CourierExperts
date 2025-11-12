@@ -19,6 +19,15 @@ public interface PurchaseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void upsertAll(List<PurchaseEntity> items);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long insert(PurchaseEntity item);
+
+    @Query("SELECT * FROM purchases WHERE pendingSync = 1")
+    List<PurchaseEntity> listPending();
+
+    @Query("DELETE FROM purchases WHERE id = :id")
+    void deleteById(long id);
+
     @Query("DELETE FROM purchases")
     void clear();
 }

@@ -14,6 +14,7 @@ import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.courierexperts.demo.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.lang.NullPointerException;
 import java.lang.Override;
 import java.lang.String;
@@ -24,6 +25,9 @@ public final class ActivityComprasBinding implements ViewBinding {
 
   @NonNull
   public final BottomNavigationView bottomNav;
+
+  @NonNull
+  public final FloatingActionButton fabAdd;
 
   @NonNull
   public final ConstraintLayout header;
@@ -44,11 +48,13 @@ public final class ActivityComprasBinding implements ViewBinding {
   public final TextView tvMensaje;
 
   private ActivityComprasBinding(@NonNull ConstraintLayout rootView,
-      @NonNull BottomNavigationView bottomNav, @NonNull ConstraintLayout header,
-      @NonNull ImageView imgCompras, @NonNull RecyclerView rvCompras, @NonNull TextView tvCompras,
-      @NonNull TextView tvEmpty, @NonNull TextView tvMensaje) {
+      @NonNull BottomNavigationView bottomNav, @NonNull FloatingActionButton fabAdd,
+      @NonNull ConstraintLayout header, @NonNull ImageView imgCompras,
+      @NonNull RecyclerView rvCompras, @NonNull TextView tvCompras, @NonNull TextView tvEmpty,
+      @NonNull TextView tvMensaje) {
     this.rootView = rootView;
     this.bottomNav = bottomNav;
+    this.fabAdd = fabAdd;
     this.header = header;
     this.imgCompras = imgCompras;
     this.rvCompras = rvCompras;
@@ -90,6 +96,12 @@ public final class ActivityComprasBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.fabAdd;
+      FloatingActionButton fabAdd = ViewBindings.findChildViewById(rootView, id);
+      if (fabAdd == null) {
+        break missingId;
+      }
+
       id = R.id.header;
       ConstraintLayout header = ViewBindings.findChildViewById(rootView, id);
       if (header == null) {
@@ -126,8 +138,8 @@ public final class ActivityComprasBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivityComprasBinding((ConstraintLayout) rootView, bottomNav, header, imgCompras,
-          rvCompras, tvCompras, tvEmpty, tvMensaje);
+      return new ActivityComprasBinding((ConstraintLayout) rootView, bottomNav, fabAdd, header,
+          imgCompras, rvCompras, tvCompras, tvEmpty, tvMensaje);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

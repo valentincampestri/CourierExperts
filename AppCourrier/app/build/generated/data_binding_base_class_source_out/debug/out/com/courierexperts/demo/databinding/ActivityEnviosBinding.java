@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.courierexperts.demo.R;
@@ -39,6 +40,9 @@ public final class ActivityEnviosBinding implements ViewBinding {
   public final RecyclerView rvEnvios;
 
   @NonNull
+  public final SwipeRefreshLayout srlEnvios;
+
+  @NonNull
   public final TextView tvEmptyEnvios;
 
   @NonNull
@@ -50,14 +54,15 @@ public final class ActivityEnviosBinding implements ViewBinding {
   private ActivityEnviosBinding(@NonNull ConstraintLayout rootView,
       @NonNull BottomNavigationView bottomNav, @NonNull FloatingActionButton fabAdd,
       @NonNull ConstraintLayout header, @NonNull ImageView imgEnvios,
-      @NonNull RecyclerView rvEnvios, @NonNull TextView tvEmptyEnvios, @NonNull TextView tvEnvios,
-      @NonNull TextView tvMensaje) {
+      @NonNull RecyclerView rvEnvios, @NonNull SwipeRefreshLayout srlEnvios,
+      @NonNull TextView tvEmptyEnvios, @NonNull TextView tvEnvios, @NonNull TextView tvMensaje) {
     this.rootView = rootView;
     this.bottomNav = bottomNav;
     this.fabAdd = fabAdd;
     this.header = header;
     this.imgEnvios = imgEnvios;
     this.rvEnvios = rvEnvios;
+    this.srlEnvios = srlEnvios;
     this.tvEmptyEnvios = tvEmptyEnvios;
     this.tvEnvios = tvEnvios;
     this.tvMensaje = tvMensaje;
@@ -120,6 +125,12 @@ public final class ActivityEnviosBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.srlEnvios;
+      SwipeRefreshLayout srlEnvios = ViewBindings.findChildViewById(rootView, id);
+      if (srlEnvios == null) {
+        break missingId;
+      }
+
       id = R.id.tvEmptyEnvios;
       TextView tvEmptyEnvios = ViewBindings.findChildViewById(rootView, id);
       if (tvEmptyEnvios == null) {
@@ -139,7 +150,7 @@ public final class ActivityEnviosBinding implements ViewBinding {
       }
 
       return new ActivityEnviosBinding((ConstraintLayout) rootView, bottomNav, fabAdd, header,
-          imgEnvios, rvEnvios, tvEmptyEnvios, tvEnvios, tvMensaje);
+          imgEnvios, rvEnvios, srlEnvios, tvEmptyEnvios, tvEnvios, tvMensaje);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

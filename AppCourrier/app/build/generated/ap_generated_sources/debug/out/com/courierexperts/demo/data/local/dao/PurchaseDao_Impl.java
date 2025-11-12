@@ -30,6 +30,8 @@ public final class PurchaseDao_Impl implements PurchaseDao {
 
   private final EntityInsertionAdapter<PurchaseEntity> __insertionAdapterOfPurchaseEntity;
 
+  private final SharedSQLiteStatement __preparedStmtOfDeleteById;
+
   private final SharedSQLiteStatement __preparedStmtOfClear;
 
   public PurchaseDao_Impl(@NonNull final RoomDatabase __db) {
@@ -38,7 +40,7 @@ public final class PurchaseDao_Impl implements PurchaseDao {
       @Override
       @NonNull
       protected String createQuery() {
-        return "INSERT OR REPLACE INTO `purchases` (`id`,`storeName`,`orderId`,`status`,`createdAt`,`thumbnailUrl`) VALUES (?,?,?,?,?,?)";
+        return "INSERT OR REPLACE INTO `purchases` (`id`,`storeName`,`orderId`,`status`,`createdAt`,`thumbnailUrl`,`pendingSync`) VALUES (nullif(?, 0),?,?,?,?,?,?)";
       }
 
       @Override
@@ -70,6 +72,16 @@ public final class PurchaseDao_Impl implements PurchaseDao {
         } else {
           statement.bindString(6, entity.thumbnailUrl);
         }
+        final int _tmp = entity.pendingSync ? 1 : 0;
+        statement.bindLong(7, _tmp);
+      }
+    };
+    this.__preparedStmtOfDeleteById = new SharedSQLiteStatement(__db) {
+      @Override
+      @NonNull
+      public String createQuery() {
+        final String _query = "DELETE FROM purchases WHERE id = ?";
+        return _query;
       }
     };
     this.__preparedStmtOfClear = new SharedSQLiteStatement(__db) {
@@ -91,6 +103,38 @@ public final class PurchaseDao_Impl implements PurchaseDao {
       __db.setTransactionSuccessful();
     } finally {
       __db.endTransaction();
+    }
+  }
+
+  @Override
+  public long insert(final PurchaseEntity item) {
+    __db.assertNotSuspendingTransaction();
+    __db.beginTransaction();
+    try {
+      final long _result = __insertionAdapterOfPurchaseEntity.insertAndReturnId(item);
+      __db.setTransactionSuccessful();
+      return _result;
+    } finally {
+      __db.endTransaction();
+    }
+  }
+
+  @Override
+  public void deleteById(final long id) {
+    __db.assertNotSuspendingTransaction();
+    final SupportSQLiteStatement _stmt = __preparedStmtOfDeleteById.acquire();
+    int _argIndex = 1;
+    _stmt.bindLong(_argIndex, id);
+    try {
+      __db.beginTransaction();
+      try {
+        _stmt.executeUpdateDelete();
+        __db.setTransactionSuccessful();
+      } finally {
+        __db.endTransaction();
+      }
+    } finally {
+      __preparedStmtOfDeleteById.release(_stmt);
     }
   }
 
@@ -127,6 +171,7 @@ public final class PurchaseDao_Impl implements PurchaseDao {
           final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
           final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
           final int _cursorIndexOfThumbnailUrl = CursorUtil.getColumnIndexOrThrow(_cursor, "thumbnailUrl");
+          final int _cursorIndexOfPendingSync = CursorUtil.getColumnIndexOrThrow(_cursor, "pendingSync");
           final List<PurchaseEntity> _result = new ArrayList<PurchaseEntity>(_cursor.getCount());
           while (_cursor.moveToNext()) {
             final PurchaseEntity _item;
@@ -157,6 +202,9 @@ public final class PurchaseDao_Impl implements PurchaseDao {
             } else {
               _item.thumbnailUrl = _cursor.getString(_cursorIndexOfThumbnailUrl);
             }
+            final int _tmp;
+            _tmp = _cursor.getInt(_cursorIndexOfPendingSync);
+            _item.pendingSync = _tmp != 0;
             _result.add(_item);
           }
           return _result;
@@ -170,6 +218,62 @@ public final class PurchaseDao_Impl implements PurchaseDao {
         _statement.release();
       }
     });
+  }
+
+  @Override
+  public List<PurchaseEntity> listPending() {
+    final String _sql = "SELECT * FROM purchases WHERE pendingSync = 1";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
+    __db.assertNotSuspendingTransaction();
+    final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+    try {
+      final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+      final int _cursorIndexOfStoreName = CursorUtil.getColumnIndexOrThrow(_cursor, "storeName");
+      final int _cursorIndexOfOrderId = CursorUtil.getColumnIndexOrThrow(_cursor, "orderId");
+      final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
+      final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
+      final int _cursorIndexOfThumbnailUrl = CursorUtil.getColumnIndexOrThrow(_cursor, "thumbnailUrl");
+      final int _cursorIndexOfPendingSync = CursorUtil.getColumnIndexOrThrow(_cursor, "pendingSync");
+      final List<PurchaseEntity> _result = new ArrayList<PurchaseEntity>(_cursor.getCount());
+      while (_cursor.moveToNext()) {
+        final PurchaseEntity _item;
+        _item = new PurchaseEntity();
+        _item.id = _cursor.getLong(_cursorIndexOfId);
+        if (_cursor.isNull(_cursorIndexOfStoreName)) {
+          _item.storeName = null;
+        } else {
+          _item.storeName = _cursor.getString(_cursorIndexOfStoreName);
+        }
+        if (_cursor.isNull(_cursorIndexOfOrderId)) {
+          _item.orderId = null;
+        } else {
+          _item.orderId = _cursor.getString(_cursorIndexOfOrderId);
+        }
+        if (_cursor.isNull(_cursorIndexOfStatus)) {
+          _item.status = null;
+        } else {
+          _item.status = _cursor.getString(_cursorIndexOfStatus);
+        }
+        if (_cursor.isNull(_cursorIndexOfCreatedAt)) {
+          _item.createdAt = null;
+        } else {
+          _item.createdAt = _cursor.getString(_cursorIndexOfCreatedAt);
+        }
+        if (_cursor.isNull(_cursorIndexOfThumbnailUrl)) {
+          _item.thumbnailUrl = null;
+        } else {
+          _item.thumbnailUrl = _cursor.getString(_cursorIndexOfThumbnailUrl);
+        }
+        final int _tmp;
+        _tmp = _cursor.getInt(_cursorIndexOfPendingSync);
+        _item.pendingSync = _tmp != 0;
+        _result.add(_item);
+      }
+      return _result;
+    } finally {
+      _cursor.close();
+      _statement.release();
+    }
   }
 
   @NonNull
