@@ -11,7 +11,9 @@ import com.courierexperts.demo.data.local.entity.PackageEntity;
 import com.courierexperts.demo.databinding.ItemPackageBinding;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.VH> {
 
@@ -19,12 +21,21 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.VH> {
     private OnItemClickListener listener;
     public void setOnItemClickListener(OnItemClickListener l) { this.listener = l; }
 
+    public interface OnSelectionChangeListener { void onSelectionChanged(int count); }
+    private OnSelectionChangeListener selectionListener;
+    public void setOnSelectionChangeListener(OnSelectionChangeListener l) { this.selectionListener = l; }
+
     private final List<PackageEntity> items = new ArrayList<>();
+    private final Set<Long> selectedIds = new HashSet<>();
     public void submit(List<PackageEntity> data) {
         items.clear();
         if (data != null) items.addAll(data);
+        selectedIds.clear();
         notifyDataSetChanged();
+        if (selectionListener != null) selectionListener.onSelectionChanged(0);
     }
+
+    public List<Long> getSelectedIds() { return new ArrayList<>(selectedIds); }
 
     static class VH extends RecyclerView.ViewHolder {
         ItemPackageBinding b;
@@ -46,6 +57,16 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.VH> {
         h.b.tvDesc.setText(it.description);
         Glide.with(h.b.getRoot()).load(it.thumbnailUrl).into(h.b.ivThumb);
 
+        // checkbox state
+        boolean checked = selectedIds.contains(it.id);
+        h.b.cbSelect.setOnCheckedChangeListener(null);
+        h.b.cbSelect.setChecked(checked);
+        h.b.cbSelect.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) selectedIds.add(it.id); else selectedIds.remove(it.id);
+            if (selectionListener != null) selectionListener.onSelectionChanged(selectedIds.size());
+        });
+
+        // click en fila mantiene navegación existente
         h.b.getRoot().setOnClickListener(v -> { if (listener != null) listener.onClick(it); });
     }
 

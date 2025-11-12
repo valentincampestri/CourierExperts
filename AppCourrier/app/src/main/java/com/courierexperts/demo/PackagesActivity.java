@@ -31,6 +31,9 @@ public class PackagesActivity extends AppCompatActivity {
         adapter = new PackageAdapter();
         b.rvPaquetes.setLayoutManager(new LinearLayoutManager(this));
         b.rvPaquetes.setAdapter(adapter);
+        // Estado inicial: deshabilitado hasta que haya selección
+        b.btnSolicitar.setEnabled(false);
+        adapter.setOnSelectionChangeListener(count -> b.btnSolicitar.setEnabled(count > 0));
 
         adapter.setOnItemClickListener(item ->
                 startActivity(new Intent(this, PackageDetailActivity.class)
@@ -46,9 +49,7 @@ public class PackagesActivity extends AppCompatActivity {
         });
 
         // CTA: ir a Envíos
-        b.btnSolicitar.setOnClickListener(v ->
-                startActivity(new Intent(PackagesActivity.this, ShipmentsActivity.class))
-        );
+        b.btnSolicitar.setOnClickListener(v -> onSolicitarEnvio());
 
         setupBottomBar();
     }
@@ -76,4 +77,29 @@ public class PackagesActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void onSolicitarEnvio() {
+        java.util.List<Long> ids = adapter.getSelectedIds();
+        if (ids == null || ids.isEmpty()) {
+            android.widget.Toast.makeText(this, "Seleccioná al menos un paquete", android.widget.Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        android.widget.Toast.makeText(this, "Creando envío con " + ids.size() + " paquete(s)…", android.widget.Toast.LENGTH_SHORT).show();
+
+        com.courierexperts.demo.data.repository.ShipmentRepository repo = new com.courierexperts.demo.data.repository.ShipmentRepository(this);
+        repo.createShipment(ids, new com.courierexperts.demo.data.repository.ShipmentRepository.Callback() {
+            @Override public void onSuccess(long shipmentId) {
+                startActivity(new Intent(PackagesActivity.this, ShipmentsActivity.class)
+                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
+            }
+            @Override public void onHttpError(int code) {
+                android.widget.Toast.makeText(PackagesActivity.this, "En este momento no hay servicio, intentar más tarde", android.widget.Toast.LENGTH_LONG).show();
+            }
+            @Override public void onOffline() {
+                android.widget.Toast.makeText(PackagesActivity.this, "Sin internet. Intenta nuevamente cuando tengas conexión", android.widget.Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 }
+

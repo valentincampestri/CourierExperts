@@ -24,4 +24,7 @@ public interface ApiService {
 
     @POST("/purchases")
     Call<Purchase> createPurchase(@Body Purchase purchase);
+
+    @POST("/shipments")
+    Call<Shipment> createShipment(@Body com.courierexperts.demo.domain.model.CreateShipmentRequest body);
 }

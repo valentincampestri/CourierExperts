@@ -53,4 +53,39 @@ public class ShipmentRepository {
             } catch (Exception ignored) { }
         });
     }
+
+    public interface Callback {
+        void onSuccess(long shipmentId);
+        void onHttpError(int code);
+        void onOffline();
+    }
+
+    public void createShipment(List<Long> packageIds, Callback cb) {
+        AppExecutors.io().execute(() -> {
+            try {
+                com.courierexperts.demo.domain.model.CreateShipmentRequest req =
+                        new com.courierexperts.demo.domain.model.CreateShipmentRequest(packageIds);
+                Response<Shipment> resp = RetrofitClient.api(app).createShipment(req).execute();
+                if (resp.isSuccessful() && resp.body() != null) {
+                    Shipment s = resp.body();
+                    ShipmentEntity e = new ShipmentEntity();
+                    e.id = s.id;
+                    e.title = s.title;
+                    e.trackingNumber = s.trackingNumber;
+                    e.status = s.status;
+                    e.lastUpdate = s.lastUpdate;
+                    e.thumbnailUrl = s.thumbnailUrl;
+                    List<ShipmentEntity> one = new ArrayList<>();
+                    one.add(e);
+                    dao.upsertAll(one);
+                    AppExecutors.main().execute(() -> cb.onSuccess(s.id));
+                } else {
+                    int code = resp != null ? resp.code() : 500;
+                    AppExecutors.main().execute(() -> cb.onHttpError(code));
+                }
+            } catch (Exception e) {
+                AppExecutors.main().execute(cb::onOffline);
+            }
+        });
+    }
 }

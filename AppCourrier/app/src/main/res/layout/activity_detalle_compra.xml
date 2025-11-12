@@ -82,7 +82,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:menu="@menu/bottom_nav_menu"
-        app:itemIconSize="36dp"
+        app:itemIconSize="40dp"
         app:itemIconTint="@null"
         android:background="@color/white" />
 
