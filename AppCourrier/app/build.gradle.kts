@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -71,4 +72,38 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
+    // Firebase Auth + Google Sign-In
+    implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
+
+    // Credential Manager + Google Identity Services (nuevo flujo de Google Sign-In)
+    implementation("androidx.credentials:credentials:1.3.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
+}
+
+// Task helpers to compile with -Xlint flags and surface deprecation details
+tasks.register("compileDebugWithLint") {
+    doFirst {
+        tasks.withType<org.gradle.api.tasks.compile.JavaCompile>().configureEach {
+            options.compilerArgs.addAll(listOf("-Xlint:deprecation", "-Xlint:unchecked"))
+        }
+    }
+    dependsOn("compileDebugJavaWithJavac")
+}
+
+tasks.register("compileReleaseWithLint") {
+    doFirst {
+        tasks.withType<org.gradle.api.tasks.compile.JavaCompile>().configureEach {
+            options.compilerArgs.addAll(listOf("-Xlint:deprecation", "-Xlint:unchecked"))
+        }
+    }
+    dependsOn("compileReleaseJavaWithJavac")
+}
+
+// Always enable -Xlint:deprecation details for Java compile tasks (visible in Android Studio builds)
+tasks.withType<org.gradle.api.tasks.compile.JavaCompile>().configureEach {
+    options.compilerArgs.addAll(listOf("-Xlint:deprecation", "-Xlint:unchecked"))
 }

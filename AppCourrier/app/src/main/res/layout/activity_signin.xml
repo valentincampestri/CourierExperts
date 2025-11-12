@@ -69,6 +69,7 @@
             android:layout_height="wrap_content"
             app:hintEnabled="false">
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEmailSignin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
@@ -89,6 +90,7 @@
             android:layout_height="wrap_content"
             app:hintEnabled="false">
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPasswordSignin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
@@ -122,6 +124,15 @@
             android:layout_height="wrap_content"
             android:text="Ingresar"
             style="@style/Widget.CE.Button.Primary"/>
+
+        <Space android:layout_width="match_parent" android:layout_height="8dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGoogle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Continuar con Google"
+            style="@style/Widget.CE.Button.Outlined"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

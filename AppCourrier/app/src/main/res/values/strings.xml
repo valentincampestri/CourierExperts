@@ -10,4 +10,7 @@
         <item>Madrid</item>
     </string-array>
 
+    
+    <string name="default_web_client_id">REEMPLAZAR_CON_CLIENT_ID</string>
 </resources>
+

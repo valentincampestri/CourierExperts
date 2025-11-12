@@ -99,7 +99,7 @@ public class PurchaseRepository {
     }
 
     public void syncPendingIfNetworkAvailable() {
-        if (!isNetworkAvailable()) return;
+        if (!com.courierexperts.demo.util.NetworkUtils.isOnline(app)) return;
         AppExecutors.io().execute(() -> {
             List<PurchaseEntity> pendings;
             try {
@@ -130,21 +130,5 @@ public class PurchaseRepository {
         });
     }
 
-    private boolean isNetworkAvailable() {
-        try {
-            android.net.ConnectivityManager cm = (android.net.ConnectivityManager) app.getSystemService(Context.CONNECTIVITY_SERVICE);
-            if (cm == null) return false;
-            if (android.os.Build.VERSION.SDK_INT >= 23) {
-                android.net.Network network = cm.getActiveNetwork();
-                if (network == null) return false;
-                android.net.NetworkCapabilities caps = cm.getNetworkCapabilities(network);
-                return caps != null && (caps.hasTransport(android.net.NetworkCapabilities.TRANSPORT_CELLULAR)
-                        || caps.hasTransport(android.net.NetworkCapabilities.TRANSPORT_WIFI)
-                        || caps.hasTransport(android.net.NetworkCapabilities.TRANSPORT_ETHERNET));
-            } else {
-                android.net.NetworkInfo info = cm.getActiveNetworkInfo();
-                return info != null && info.isConnected();
-            }
-        } catch (Exception e) { return false; }
-    }
+    
 }

@@ -28,6 +28,18 @@ public class ProfileActivity extends AppCompatActivity {
             );
         }
 
+        // Cerrar sesión
+        View cardLogout = findViewById(R.id.cardLogout);
+        if (cardLogout != null) {
+            cardLogout.setOnClickListener(v -> {
+                try { com.google.firebase.auth.FirebaseAuth.getInstance().signOut(); } catch (Exception ignored) {}
+                Intent i = new Intent(ProfileActivity.this, WelcomeActivity.class)
+                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(i);
+                finish();
+            });
+        }
+
         // Hacer clickeable el bloque de dirección para editar
         View direccion = findViewById(R.id.direccion);
         if (direccion != null) {

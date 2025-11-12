@@ -15,6 +15,16 @@ public class SignUpStep1Activity extends AppCompatActivity {
         View btnBack = findViewById(R.id.btnBack);
         View btnNext = findViewById(R.id.btnNext);
         btnBack.setOnClickListener(v -> finish());
-        btnNext.setOnClickListener(v -> startActivity(new Intent(SignUpStep1Activity.this, SignUpStep2Activity.class)));
+        btnNext.setOnClickListener(v -> {
+            com.google.android.material.textfield.TextInputEditText et = findViewById(R.id.etNombreSignup);
+            String name = et != null && et.getText()!=null ? et.getText().toString().trim(): "";
+            if (!name.matches("[\\p{L} ]{2,80}")) {
+                android.widget.Toast.makeText(this, "Nombre inválido", android.widget.Toast.LENGTH_SHORT).show();
+                return;
+            }
+            // Persistimos nombre localmente para saludo inmediato
+            new com.courierexperts.demo.data.repository.UserProfileRepository(this).updateName(name);
+            startActivity(new Intent(SignUpStep1Activity.this, SignUpStep2Activity.class));
+        });
     }
 }
