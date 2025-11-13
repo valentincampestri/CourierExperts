@@ -38,15 +38,18 @@ public class SignUpStep2Activity extends AppCompatActivity {
         // Campos del paso 2
         com.google.android.material.textfield.TextInputEditText etDireccion = findViewById(R.id.etDireccionSignup);
         android.widget.Spinner spProvincia = findViewById(R.id.spProvinciaSignup);
+        com.google.android.material.textfield.TextInputEditText etTelefono = findViewById(R.id.etTelefonoSignup);
         com.google.android.material.textfield.TextInputEditText etEmail = findViewById(R.id.etEmailSignup);
         com.google.android.material.textfield.TextInputEditText etPass = findViewById(R.id.etPasswordSignup);
         String direccion = etDireccion != null && etDireccion.getText()!=null ? etDireccion.getText().toString().trim(): "";
         String provincia = (spProvincia != null && spProvincia.getSelectedItem()!=null) ? spProvincia.getSelectedItem().toString().trim() : "";
         String pais      = "Argentina";
+        String telefono  = etTelefono  != null && etTelefono.getText()!=null  ? etTelefono.getText().toString().trim()  : "";
         String email     = etEmail     != null && etEmail.getText()!=null     ? etEmail.getText().toString().trim()     : "";
         String pass      = etPass      != null && etPass.getText()!=null      ? etPass.getText().toString()              : "";
         if (direccion.length() < 2 || direccion.length() > 50) { toast("Dirección 2 a 50"); return; }
         if ("Seleccionar".equalsIgnoreCase(provincia) || provincia.length() < 2 || provincia.length() > 50) { toast("Seleccioná una provincia"); return; }
+        if (!telefono.matches("[+0-9]{6,20}")) { toast("Teléfono inválido (usar + y dígitos, 6 a 20)"); return; }
         
         // Email y contraseña
         
@@ -74,12 +77,13 @@ public class SignUpStep2Activity extends AppCompatActivity {
                     map.put("province", provincia);
                     map.put("country", pais);
                     map.put("email", email);
+                    map.put("phone", telefono);
                     map.put("updatedAt", new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", java.util.Locale.US){ { setTimeZone(java.util.TimeZone.getTimeZone("UTC")); } }.format(new java.util.Date()));
                     com.google.firebase.firestore.FirebaseFirestore.getInstance().collection("users").document(uid).set(map);
                 }
                 // Persistir Room por uid
                 new com.courierexperts.demo.data.repository.UserProfileRepository(this)
-                        .saveAllSignupProfile(nombre, apellido, dni, cuil, direccion, provincia, pais, email);
+                        .saveAllSignupProfile(nombre, apellido, dni, cuil, direccion, provincia, pais, email, telefono);
                 startActivity(new Intent(SignUpStep2Activity.this, HomeActivity.class)
                         .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK));
                 finish();

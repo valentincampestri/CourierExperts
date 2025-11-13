@@ -176,6 +176,7 @@ public class SignInActivity extends AppCompatActivity {
         com.courierexperts.demo.data.repository.UserProfileRepository repo = new com.courierexperts.demo.data.repository.UserProfileRepository(this); repo.updateEmail(user.getEmail()!=null?user.getEmail():"");
         if (user.getDisplayName()!=null) repo.updateName(user.getDisplayName());
         repo.syncFromFirestore();
+        repo.enqueueSyncNow();
         startActivity(new Intent(SignInActivity.this, HomeActivity.class)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK));
         finish();

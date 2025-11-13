@@ -33,6 +33,18 @@ public class HomeActivity extends AppCompatActivity {
             repo.observeProfile().observe(this, profile -> {
                 String name = (profile != null && profile.name != null) ? profile.name.trim() : "";
                 tvSaludo.setText(name.isEmpty() ? "Hola" : ("Hola, " + name));
+                // Si falta depósito, sugerir completar perfil (una sola vez por uid)
+                if (profile != null && profile.depositId == null) {
+                    String uid = null;
+                    try { uid = com.google.firebase.auth.FirebaseAuth.getInstance().getUid(); } catch (Exception ignored) {}
+                    String key = "prompt_deposit_done_" + (uid != null ? uid : "");
+                    android.content.SharedPreferences sp = getSharedPreferences("profile_prefs", MODE_PRIVATE);
+                    if (!sp.getBoolean(key, false)) {
+                        android.widget.Toast.makeText(this, "Completá tu depósito en Perfil", android.widget.Toast.LENGTH_SHORT).show();
+                        sp.edit().putBoolean(key, true).apply();
+                        startActivity(new Intent(HomeActivity.this, EditProfileActivity.class));
+                    }
+                }
             });
         }
 

@@ -79,6 +79,12 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:21.2.0")
     // Firestore for profile sync
     implementation("com.google.firebase:firebase-firestore")
+    // WorkManager for offline retries
+    implementation("androidx.work:work-runtime:2.9.0")
+    // ListenableFuture API required by WorkManager
+    implementation("androidx.concurrent:concurrent-futures:1.1.0")
+    // Provide actual Guava ListenableFuture (android variant)
+    implementation("com.google.guava:guava:32.1.3-android")
 
     // Credential Manager + Google Identity Services (nuevo flujo de Google Sign-In)
     implementation("androidx.credentials:credentials:1.3.0")

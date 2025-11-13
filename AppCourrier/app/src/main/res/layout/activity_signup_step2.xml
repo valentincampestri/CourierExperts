@@ -89,6 +89,25 @@
             android:layout_height="wrap_content"
             android:entries="@array/provincias_ar"/>
 
+        <Space android:layout_width="match_parent" android:layout_height="12dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Telefono"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="false">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etTelefonoSignup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="+5491122334455"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
         <Space android:layout_width="match_parent" android:layout_height="16dp"/>
 
         <TextView

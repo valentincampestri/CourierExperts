@@ -139,7 +139,7 @@ public class UserProfileRepository {
     }
 
     public void saveAllSignupProfile(String nombre, String apellido, String dni, String cuil,
-                                     String direccion, String provincia, String pais, String email) {
+                                     String direccion, String provincia, String pais, String email, String phone) {
         AppExecutors.io().execute(() -> {
             String uid = currentUid();
             if (uid == null) return;
@@ -153,6 +153,7 @@ public class UserProfileRepository {
             e.province = provincia;
             e.country = pais;
             e.email = email;
+            e.phone = phone;
             stamp(e);
             dao.upsert(e);
             pushToFirestoreAsync(e);
@@ -213,6 +214,10 @@ public class UserProfileRepository {
                     put("updatedAt", e.updatedAt);
                 }})
                 .addOnSuccessListener(v -> AppExecutors.io().execute(() -> { e.dirty = Boolean.FALSE; dao.upsert(e);} ))
-                .addOnFailureListener(err -> { /* opcional: log, reintentar con WorkManager en futura iteración */});
+                .addOnFailureListener(err -> { try { com.courierexperts.demo.work.ProfileSyncWorker.enqueue(app); } catch (Exception ignored) {} });
+    }
+
+    public void enqueueSyncNow() {
+        try { com.courierexperts.demo.work.ProfileSyncWorker.enqueue(app); } catch (Exception ignored) {}
     }
 }
