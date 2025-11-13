@@ -38,7 +38,14 @@ public class SignInActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         btnLogin.setOnClickListener(v -> doEmailLogin());
-        if (btnGoogle != null) { btnGoogle.setOnClickListener(v -> doGoogle()); }
+        boolean enableGoogle = getResources().getBoolean(R.bool.config_enable_google_login);
+        if (btnGoogle != null) {
+            if (enableGoogle) {
+                btnGoogle.setOnClickListener(v -> doGoogle());
+            } else {
+                btnGoogle.setVisibility(View.GONE);
+            }
+        }
 
         // Config clásico de Google Sign-In (API deprecada, suprimimos warning por ahora)
         @SuppressWarnings("deprecation")

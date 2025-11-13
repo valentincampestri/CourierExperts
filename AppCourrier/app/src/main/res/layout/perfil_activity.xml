@@ -181,13 +181,13 @@
            android:layout_marginEnd="16dp"/>
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Cerrar sesión -->
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardLogout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/ce_spacing_md"
-        app:layout_constraintTop_toBottomOf="@id/cardCuenta"
+        app:layout_constraintTop_toBottomOf="@id/cardNotificaciones"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         style="@style/Widget.CE.Card"
@@ -202,10 +202,12 @@
             android:padding="@dimen/ce_spacing_md"
             android:gravity="center_vertical">
 
+
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_arrow"
+                android:src="@drawable/ic_logout_24"
+                android:tint="#555555"
                 android:contentDescription="Icono salir" />
 
             <TextView
@@ -213,7 +215,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Cerrar sesión"
-                android:textColor="#D32F2F"
+                android:textColor="#555555"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_marginStart="16dp"/>
@@ -223,6 +225,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:id="@+id/cardNotificaciones"
         app:layout_constraintTop_toBottomOf="@id/cardCuenta"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -32,11 +32,19 @@ public class ProfileActivity extends AppCompatActivity {
         View cardLogout = findViewById(R.id.cardLogout);
         if (cardLogout != null) {
             cardLogout.setOnClickListener(v -> {
-                try { com.google.firebase.auth.FirebaseAuth.getInstance().signOut(); } catch (Exception ignored) {}
-                Intent i = new Intent(ProfileActivity.this, WelcomeActivity.class)
-                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(i);
-                finish();
+                new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                        .setTitle("Cerrar sesión")
+                        .setMessage("¿Seguro que querés cerrar sesión?")
+                        .setNegativeButton("Cancelar", null)
+                        .setPositiveButton("Sí, cerrar sesión", (d, w) -> {
+                            try { com.google.firebase.auth.FirebaseAuth.getInstance().signOut(); } catch (Exception ignored) {}
+                            clearLocalData();
+                            Intent i = new Intent(ProfileActivity.this, WelcomeActivity.class)
+                                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(i);
+                            finish();
+                        })
+                        .show();
             });
         }
 
@@ -81,7 +89,7 @@ public class ProfileActivity extends AppCompatActivity {
             repo2.observeProfile().observe(this, profile -> {
                 String phone = (profile != null && profile.phone != null && !profile.phone.trim().isEmpty())
                         ? profile.phone.trim()
-                        : "";
+                        : "Sin teléfono";
                 tvTel.setText(phone);
             });
         }
@@ -117,6 +125,54 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
+    private void clearLocalData() {
+        com.courierexperts.demo.util.AppExecutors.io().execute(() -> {
+            com.courierexperts.demo.data.local.db.AppDatabase db = com.courierexperts.demo.data.local.db.AppDatabase.get(getApplicationContext());
+            try { db.purchaseDao().clear(); } catch (Exception ignored) {}
+            try { db.packageDao().clear(); } catch (Exception ignored) {}
+            try { db.shipmentDao().clear(); } catch (Exception ignored) {}
+            try { db.depositDao().clear(); } catch (Exception ignored) {}
+            com.courierexperts.demo.data.local.entity.UserProfileEntity e = new com.courierexperts.demo.data.local.entity.UserProfileEntity();
+            e.id = 1L;
+            e.name = "";
+            e.email = "";
+            e.address = "";
+            e.phone = "";
+            e.depositId = null;
+            e.notificationsEnabled = Boolean.FALSE;
+            e.updatedAt = null;
+            e.lastSyncedAt = null;
+            e.remoteVersion = null;
+            e.dirty = Boolean.FALSE;
+            db.userProfileDao().upsert(e);
+
+            // Limpiar SharedPreferences específicos
+            try {
+                android.content.SharedPreferences sp = getApplicationContext().getSharedPreferences("profile_prefs", MODE_PRIVATE);
+                sp.edit().clear().apply();
+            } catch (Exception ignored) {}
+
+            // Limpiar caches de disco (Glide y cache dirs)
+            try { com.bumptech.glide.Glide.get(getApplicationContext()).clearDiskCache(); } catch (Exception ignored) {}
+            try { deleteDirQuiet(getCacheDir()); } catch (Exception ignored) {}
+            try { if (getExternalCacheDir() != null) deleteDirQuiet(getExternalCacheDir()); } catch (Exception ignored) {}
+        });
+
+        // Limpiar cache de memoria de imágenes en hilo principal
+        try { com.bumptech.glide.Glide.get(this).clearMemory(); } catch (Exception ignored) {}
+    }
+
+    private static void deleteDirQuiet(java.io.File dir) {
+        if (dir == null || !dir.exists()) return;
+        java.io.File[] files = dir.listFiles();
+        if (files != null) {
+            for (java.io.File f : files) {
+                if (f.isDirectory()) deleteDirQuiet(f); else { try { f.delete(); } catch (Exception ignored) {} }
+            }
+        }
+        try { dir.delete(); } catch (Exception ignored) {}
+    }
+
     private void setupBottomBar(int selectedItemId) {
         BottomNavigationView bottom = findViewById(R.id.bottomNav);
         if (bottom == null) return;
@@ -144,7 +200,6 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 }
-
 
 
 
