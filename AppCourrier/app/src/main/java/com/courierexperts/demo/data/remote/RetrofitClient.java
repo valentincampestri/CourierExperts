@@ -24,20 +24,24 @@ public class RetrofitClient {
             synchronized (RetrofitClient.class) {
                 if (API == null) {
                     // Logs de red (útiles en desarrollo)
-                    HttpLoggingInterceptor log = new HttpLoggingInterceptor();
-                    log.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-                    OkHttpClient client = new OkHttpClient.Builder()
-                            .addInterceptor(new MockInterceptor()) // <-- quitar cuando uses backend real
-                            .addInterceptor(log)
-                            .build();
+                    OkHttpClient.Builder http = new OkHttpClient.Builder();
+                    if (com.courierexperts.demo.BuildConfig.DEBUG) {
+                        HttpLoggingInterceptor log = new HttpLoggingInterceptor();
+                        log.setLevel(HttpLoggingInterceptor.Level.BODY);
+                        http.addInterceptor(log);
+                    }
+                    // Interceptor de Auth opcional
+                    if (AuthTokenInterceptor.ENABLED) {
+                        http.addInterceptor(new AuthTokenInterceptor());
+                    }
+                    OkHttpClient client = http.build();
 
                     Gson gson = new GsonBuilder()
                             .setLenient()
                             .create();
 
                     Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl("https://mock.local/") // <-- reemplazar por tu base URL real
+                             .baseUrl(com.courierexperts.demo.BuildConfig.BASE_URL)
                             .addConverterFactory(GsonConverterFactory.create(gson))
                             .client(client)
                             .build();

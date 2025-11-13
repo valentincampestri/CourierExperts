@@ -1,6 +1,7 @@
 package com.courierexperts.demo.data.remote;
 
 import com.courierexperts.demo.domain.model.Purchase;
+import com.courierexperts.demo.domain.model.CreatePurchaseRequest;
 import com.courierexperts.demo.domain.model.Shipment;
 import com.courierexperts.demo.domain.model.UserPackage;
 
@@ -23,7 +24,7 @@ public interface ApiService {
     Call<List<Shipment>> getShipments();
 
     @POST("/purchases")
-    Call<Purchase> createPurchase(@Body Purchase purchase);
+    Call<Purchase> createPurchase(@Body CreatePurchaseRequest purchase);
 
     @POST("/shipments")
     Call<Shipment> createShipment(@Body com.courierexperts.demo.domain.model.CreateShipmentRequest body);

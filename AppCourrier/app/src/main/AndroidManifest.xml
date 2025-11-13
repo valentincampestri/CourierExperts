@@ -5,6 +5,8 @@
     <application
         android:label="CourierExpertsDemo"
         android:allowBackup="true"
+        android:usesCleartextTraffic="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCourrier">
         <activity android:name=".WelcomeActivity" android:exported="true">
