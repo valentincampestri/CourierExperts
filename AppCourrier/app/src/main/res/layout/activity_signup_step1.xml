@@ -75,6 +75,7 @@
             android:layout_height="wrap_content"
             app:hintEnabled="false">
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etApellidoSignup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Gomez"/>
@@ -87,6 +88,7 @@
             android:layout_height="wrap_content"
             app:hintEnabled="false">
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDniSignUp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="DNI / Pasaporte"/>
@@ -94,26 +96,18 @@
 
         <Space android:layout_width="match_parent" android:layout_height="12dp"/>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:hintEnabled="false">
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="30303030"/>
-        </com.google.android.material.textfield.TextInputLayout>
 
-        <Space android:layout_width="match_parent" android:layout_height="12dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hintEnabled="false">
+
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCuilSignUp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="johndoe@gmail.com"/>
+                android:hint="20-30303030-1"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space android:layout_width="match_parent" android:layout_height="16dp"/>

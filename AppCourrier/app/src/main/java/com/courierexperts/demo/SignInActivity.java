@@ -20,6 +20,9 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class SignInActivity extends AppCompatActivity {
     private FirebaseAuth auth;
@@ -45,6 +48,12 @@ public class SignInActivity extends AppCompatActivity {
             } else {
                 btnGoogle.setVisibility(View.GONE);
             }
+        }
+
+        // Recuperar contraseña (Olvidé mi contraseña)
+        View tvForgot = findViewById(R.id.tvForgot);
+        if (tvForgot != null) {
+            tvForgot.setOnClickListener(v -> showResetPasswordDialog());
         }
 
         // Config clásico de Google Sign-In (API deprecada, suprimimos warning por ahora)
@@ -116,11 +125,57 @@ public class SignInActivity extends AppCompatActivity {
         googleLauncher.launch(signInIntent);
     }
 
+    private void showResetPasswordDialog() {
+        TextInputLayout til = new TextInputLayout(this);
+        til.setHint("Email");
+        TextInputEditText et = new TextInputEditText(this);
+        et.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        // Prefill con el email si ya está cargado en el form
+        TextInputEditText etEmailSignin = findViewById(R.id.etEmailSignin);
+        if (etEmailSignin != null && etEmailSignin.getText() != null) {
+            et.setText(etEmailSignin.getText().toString());
+        }
+        til.addView(et);
+
+        final com.google.android.material.dialog.MaterialAlertDialogBuilder b = new MaterialAlertDialogBuilder(this)
+                .setTitle("Recuperar contraseña")
+                .setMessage("Ingresá tu email para enviarte el enlace de recuperación")
+                .setView(til)
+                .setNegativeButton("Cancelar", null)
+                .setPositiveButton("Enviar", null);
+
+        final androidx.appcompat.app.AlertDialog d = b.create();
+        d.setOnShowListener(dialog -> {
+            android.widget.Button positive = d.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE);
+            positive.setOnClickListener(v -> {
+                String email = et.getText() != null ? et.getText().toString().trim() : "";
+                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    til.setError("Email inválido");
+                    return;
+                }
+                til.setError(null);
+                positive.setEnabled(false);
+                FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                        .addOnCompleteListener(task -> {
+                            positive.setEnabled(true);
+                            if (task.isSuccessful()) {
+                                toast("Si su cuenta existe, le enviaremos un email para reestablecer su contraseña");
+                                d.dismiss();
+                            } else {
+                                toast("No pudimos enviar el email, intentá de nuevo");
+                            }
+                        });
+            });
+        });
+        d.show();
+    }
+
     private void onAuthed(FirebaseUser user) {
         if (user == null) { toast("Error de autenticación"); return; }
-        // Opcional: inicializar perfil local
-        new com.courierexperts.demo.data.repository.UserProfileRepository(this).updateEmail(user.getEmail()!=null?user.getEmail():"");
-        if (user.getDisplayName()!=null) new com.courierexperts.demo.data.repository.UserProfileRepository(this).updateName(user.getDisplayName());
+        // Inicializar/actualizar perfil local y sincronizar remoto
+        com.courierexperts.demo.data.repository.UserProfileRepository repo = new com.courierexperts.demo.data.repository.UserProfileRepository(this); repo.updateEmail(user.getEmail()!=null?user.getEmail():"");
+        if (user.getDisplayName()!=null) repo.updateName(user.getDisplayName());
+        repo.syncFromFirestore();
         startActivity(new Intent(SignInActivity.this, HomeActivity.class)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK));
         finish();

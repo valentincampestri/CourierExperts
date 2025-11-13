@@ -5,11 +5,17 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "user_profile")
 public class UserProfileEntity {
-    @PrimaryKey public long id; // usar 1L como fila única
+    @PrimaryKey(autoGenerate = true) public long id;
+    public String uid;
     public String name;         // nombre del usuario
+    public String lastName;     // apellido del usuario
     public String email;        // email del usuario
     public String address;      // dirección del usuario
+    public String province;     // provincia del usuario
+    public String country;      // país del usuario
     public String phone;        // teléfono del usuario
+    public String dni;          // dni del usuario
+    public String cuil;         // cuil del usuario
     public Long depositId;      // id de depósito seleccionado (FK lógica)
     public Boolean notificationsEnabled; // preferencia notificaciones
     public String updatedAt;    // ISO8601 para sync futura

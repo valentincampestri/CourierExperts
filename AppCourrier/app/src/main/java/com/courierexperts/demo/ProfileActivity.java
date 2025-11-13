@@ -132,20 +132,6 @@ public class ProfileActivity extends AppCompatActivity {
             try { db.packageDao().clear(); } catch (Exception ignored) {}
             try { db.shipmentDao().clear(); } catch (Exception ignored) {}
             try { db.depositDao().clear(); } catch (Exception ignored) {}
-            com.courierexperts.demo.data.local.entity.UserProfileEntity e = new com.courierexperts.demo.data.local.entity.UserProfileEntity();
-            e.id = 1L;
-            e.name = "";
-            e.email = "";
-            e.address = "";
-            e.phone = "";
-            e.depositId = null;
-            e.notificationsEnabled = Boolean.FALSE;
-            e.updatedAt = null;
-            e.lastSyncedAt = null;
-            e.remoteVersion = null;
-            e.dirty = Boolean.FALSE;
-            db.userProfileDao().upsert(e);
-
             // Limpiar SharedPreferences específicos
             try {
                 android.content.SharedPreferences sp = getApplicationContext().getSharedPreferences("profile_prefs", MODE_PRIVATE);

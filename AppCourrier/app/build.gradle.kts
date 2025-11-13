@@ -77,6 +77,8 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.android.gms:play-services-auth:21.2.0")
+    // Firestore for profile sync
+    implementation("com.google.firebase:firebase-firestore")
 
     // Credential Manager + Google Identity Services (nuevo flujo de Google Sign-In)
     implementation("androidx.credentials:credentials:1.3.0")

@@ -10,13 +10,12 @@ import com.courierexperts.demo.data.local.entity.UserProfileEntity;
 
 @Dao
 public interface UserProfileDao {
-    @Query("SELECT * FROM user_profile WHERE id = 1")
-    LiveData<UserProfileEntity> observeProfile();
+    @Query("SELECT * FROM user_profile WHERE uid = :uid LIMIT 1")
+    LiveData<UserProfileEntity> observeProfile(String uid);
 
-    @Query("SELECT * FROM user_profile WHERE id = 1")
-    UserProfileEntity getProfileSync();
+    @Query("SELECT * FROM user_profile WHERE uid = :uid LIMIT 1")
+    UserProfileEntity getProfileSync(String uid);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void upsert(UserProfileEntity e);
 }
-
