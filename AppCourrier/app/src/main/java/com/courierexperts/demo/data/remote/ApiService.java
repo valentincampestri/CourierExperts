@@ -8,6 +8,8 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Body;
 
 public interface ApiService {
 
@@ -19,4 +21,10 @@ public interface ApiService {
 
     @GET("/shipments")
     Call<List<Shipment>> getShipments();
+
+    @POST("/purchases")
+    Call<Purchase> createPurchase(@Body Purchase purchase);
+
+    @POST("/shipments")
+    Call<Shipment> createShipment(@Body com.courierexperts.demo.domain.model.CreateShipmentRequest body);
 }

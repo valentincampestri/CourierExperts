@@ -53,7 +53,7 @@ public class MockInterceptor implements Interceptor {
                     "\"lastUpdate\":\"2025-11-08T09:15:00Z\"," +
                     "\"thumbnailUrl\":\"https://picsum.photos/seed/pack2/96/96\"" +
                     "}]";
-        } else if ("/shipments".equals(path)) {
+        } else if ("/shipments".equals(path) && "GET".equalsIgnoreCase(req.method())) {
             body = "[{" +
                     "\"id\":5," +
                     "\"title\":\"Envío 5\"," +
@@ -69,6 +69,28 @@ public class MockInterceptor implements Interceptor {
                     "\"lastUpdate\":\"2025-11-06T11:20:00Z\"," +
                     "\"thumbnailUrl\":\"https://picsum.photos/seed/ship2/96/96\"" +
                     "}]";
+        } else if ("/purchases".equals(path) && "POST".equalsIgnoreCase(req.method())) {
+            // Responder con un objeto creado. Para simplificar, no parseamos el body completo.
+            // Generamos un ID simulado y devolvemos status/payload básicos.
+            long newId = System.currentTimeMillis() % 100000; // id simulado
+            body = "{" +
+                    "\"id\":" + newId + "," +
+                    "\"storeName\":\"Nuevo\"," +
+                    "\"orderId\":\"N/A\"," +
+                    "\"status\":\"pending\"," +
+                    "\"createdAt\":\"2025-11-11T00:00:00Z\"," +
+                    "\"thumbnailUrl\":\"\"" +
+                    "}";
+        } else if ("/shipments".equals(path) && "POST".equalsIgnoreCase(req.method())) {
+            long newId = System.currentTimeMillis() % 100000; // id simulado
+            body = "{" +
+                    "\"id\":" + newId + "," +
+                    "\"title\":\"Nuevo Envio\"," +
+                    "\"trackingNumber\":\"TRK-" + newId + "\"," +
+                    "\"status\":\"creado\"," +
+                    "\"lastUpdate\":\"2025-11-12T00:00:00Z\"," +
+                    "\"thumbnailUrl\":\"https://picsum.photos/seed/newship/96/96\"" +
+                    "}";
         }
 
         return new Response.Builder()

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.courierexperts.demo.data.local.entity.PurchaseEntity;
+import com.courierexperts.demo.domain.StatusMapper;
 import com.courierexperts.demo.databinding.ItemPurchaseBinding;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.VH> {
         PurchaseEntity it = items.get(position);
         h.b.tvStore.setText(it.storeName);
         h.b.tvOrder.setText(it.orderId);
-        h.b.tvStatus.setText(it.status);
+        h.b.tvStatus.setText(StatusMapper.labelPurchase(it.status));
         Glide.with(h.b.getRoot()).load(it.thumbnailUrl).into(h.b.ivThumb);
 
         h.b.getRoot().setOnClickListener(v -> { if (listener != null) listener.onClick(it); });

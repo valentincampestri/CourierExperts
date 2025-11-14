@@ -3,12 +3,15 @@ package com.courierexperts.demo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.courierexperts.demo.databinding.ActivityEnviosBinding;
+import com.courierexperts.demo.ui.shipments.ShipmentAdapter;
+import com.courierexperts.demo.ui.shipments.ShipmentsViewModel;
 // imports de tu adapter/viewmodel si los usás
 // import com.courierexperts.demo.ui.shipments.ShipmentAdapter;
 // import com.courierexperts.demo.ui.shipments.ShipmentsViewModel;
@@ -16,6 +19,8 @@ import com.courierexperts.demo.databinding.ActivityEnviosBinding;
 public class ShipmentsActivity extends AppCompatActivity {
 
     private ActivityEnviosBinding b;
+    private ShipmentsViewModel vm;
+    private ShipmentAdapter adapter;
 //    private ShipmentsViewModel vm;
 //    private ShipmentAdapter adapter;
 
@@ -25,10 +30,46 @@ public class ShipmentsActivity extends AppCompatActivity {
         b = ActivityEnviosBinding.inflate(getLayoutInflater());
         setContentView(b.getRoot());
 
+        // --- RecyclerView wiring ---
+        adapter = new ShipmentAdapter();
+        b.rvEnvios.setLayoutManager(new LinearLayoutManager(this));
+        b.rvEnvios.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(item -> {
+            Intent i = new Intent(ShipmentsActivity.this, ShipmentDetailActivity.class);
+            if (item.fsId != null && !item.fsId.isEmpty()) {
+                i.putExtra("shipmentFsId", item.fsId);
+            }
+            i.putExtra("shipmentLocalId", item.id);
+            startActivity(i);
+        });
+
+        vm = new ViewModelProvider(this).get(ShipmentsViewModel.class);
+        vm.getShipments().observe(this, list -> {
+            adapter.submit(list);
+            boolean empty = (list == null || list.isEmpty());
+            b.tvEmptyEnvios.setVisibility(empty ? View.VISIBLE : View.GONE);
+            b.rvEnvios.setVisibility(empty ? View.GONE : View.VISIBLE);
+            // detener spinner si venimos de pull-to-refresh
+            if (b.srlEnvios.isRefreshing()) b.srlEnvios.setRefreshing(false);
+        });
+
+        // Pull-to-refresh
+        b.srlEnvios.setOnRefreshListener(() -> vm.refresh());
+
         // --- RecyclerView (si ya lo tenés armado podés dejar lo tuyo) ---
 //        adapter = new ShipmentAdapter();
 //        b.rvEnvios.setLayoutManager(new LinearLayoutManager(this));
 //        b.rvEnvios.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(item -> {
+            Intent i = new Intent(ShipmentsActivity.this, ShipmentDetailActivity.class);
+            if (item.fsId != null && !item.fsId.isEmpty()) {
+                i.putExtra("shipmentFsId", item.fsId);
+            }
+            i.putExtra("shipmentLocalId", item.id);
+            startActivity(i);
+        });
 //
 //        vm = new ViewModelProvider(this).get(ShipmentsViewModel.class);
 //        vm.getShipments().observe(this, list -> {
@@ -39,10 +80,6 @@ public class ShipmentsActivity extends AppCompatActivity {
 //        });
 
         // (2) CLICK DEL FAB — va en esta Activity
-        b.fabAdd.setOnClickListener(v ->
-                        startActivity(new Intent(this, NewPurchaseActivity.class))
-                // cuando tengas el flujo de "Nuevo Envío", cambiá a NewShipmentActivity.class
-        );
 
         // (3) LISTENER DE LA BOTTOM BAR (sin ítem central)
         setupBottomBar();
@@ -56,6 +93,9 @@ public class ShipmentsActivity extends AppCompatActivity {
                 if (id == R.id.nav_home) {
                     startActivity(new Intent(ShipmentsActivity.this, HomeActivity.class));
                     return true;
+                } else if (id == R.id.nav_add) {
+                    startActivity(new Intent(ShipmentsActivity.this, NewPurchaseActivity.class));
+                    return true;
                 } else if (id == R.id.nav_profile) {
                     startActivity(new Intent(ShipmentsActivity.this, ProfileActivity.class));
                     return true;
@@ -65,3 +105,5 @@ public class ShipmentsActivity extends AppCompatActivity {
         });
     }
 }
+
+

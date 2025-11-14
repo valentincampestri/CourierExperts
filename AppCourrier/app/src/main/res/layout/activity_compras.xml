@@ -70,7 +70,7 @@
         android:id="@+id/tvEmpty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Todavía no informaste compras"
+        android:text="Todav&#237;a no informaste compras"
         android:textSize="16sp"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/header"
@@ -82,11 +82,41 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:layout_height="64dp"
+        android:background="@drawable/bg_bottom_bar"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
         app:menu="@menu/bottom_nav_menu"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:itemIconSize="40dp"
+        app:itemIconTint="@null"
+        app:itemRippleColor="@color/purple_200"
+        app:labelVisibilityMode="unlabeled"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:elevation="8dp" />
+
+    <!-- FAB central para nueva compra -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAdd"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Nueva compra"
+        app:srcCompat="@drawable/ic_add_24"
+        app:tint="@android:color/white"
+        app:backgroundTint="@color/purple_700"
+        app:fabCustomSize="72dp"
+        android:layout_marginBottom="-28dp"
+        app:elevation="12dp"
+        app:maxImageSize="28dp"
+        app:useCompatPadding="false"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Courier.FAB"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+

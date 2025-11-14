@@ -19,6 +19,18 @@ public interface ShipmentDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void upsertAll(List<ShipmentEntity> items);
 
+    @Query("SELECT * FROM shipments WHERE fsId = :fsId LIMIT 1")
+    LiveData<ShipmentEntity> observeByFsId(String fsId);
+
+    @Query("SELECT * FROM shipments WHERE id = :id LIMIT 1")
+    LiveData<ShipmentEntity> observeById(long id);
+
+    @Query("SELECT fsId FROM shipments WHERE id = :id LIMIT 1")
+    String getFsIdByLocalId(long id);
+
+    @Query("SELECT id FROM shipments WHERE fsId = :fsId LIMIT 1")
+    Long findLocalIdByFsId(String fsId);
+
     @Query("DELETE FROM shipments")
     void clear();
 }

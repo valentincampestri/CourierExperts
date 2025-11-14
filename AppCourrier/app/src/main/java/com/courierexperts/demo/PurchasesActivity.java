@@ -61,11 +61,19 @@ public class PurchasesActivity extends AppCompatActivity {
         setupBottomBar();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (vm != null) {
+            vm.syncPendingIfNetworkAvailable();
+        }
+    }
+
     private void setupBottomBar() {
         BottomNavigationView bottom = b.bottomNav;
         if (bottom == null) return;
 
-        bottom.setSelectedItemId(R.id.nav_home);
+        // No marcar ningún item en esta pantalla
         bottom.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -73,6 +81,9 @@ public class PurchasesActivity extends AppCompatActivity {
 
                 if (id == R.id.nav_home) {
                     startActivity(new Intent(PurchasesActivity.this, HomeActivity.class));
+                    return true;
+                } else if (id == R.id.nav_add) {
+                    startActivity(new Intent(PurchasesActivity.this, NewPurchaseActivity.class));
                     return true;
                 } else if (id == R.id.nav_profile) {
                     startActivity(new Intent(PurchasesActivity.this, ProfileActivity.class));

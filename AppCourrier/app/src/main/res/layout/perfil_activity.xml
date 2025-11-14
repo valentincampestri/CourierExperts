@@ -58,6 +58,9 @@
         android:orientation="horizontal"
         android:padding="@dimen/ce_spacing_md"
         android:background="@drawable/bg_rounded_blue"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
         app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -87,7 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Calle Falsa 123, Springfield"
-                android:textColor="#555555"
+                android:textColor="#000000"
                 android:textSize="14sp"
                  />
         </LinearLayout>
@@ -100,6 +103,9 @@
         android:orientation="horizontal"
         android:padding="@dimen/ce_spacing_md"
         android:background="@drawable/bg_rounded_blue"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/direccion"
@@ -120,7 +126,7 @@
                 android:id="@+id/tvTelefonoLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Telefono"
+                android:text="Teléfono"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -128,13 +134,13 @@
                 android:id="@+id/tvTelefono"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="+1 234 567 890"
+                android:text=""
                 android:textColor="#555555"
                 android:textSize="14sp"
                 />
         </LinearLayout>
     </LinearLayout>
-   <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.card.MaterialCardView
        android:id="@+id/cardCuenta"
        android:layout_width="0dp"
        android:layout_height="wrap_content"
@@ -174,10 +180,52 @@
            android:layout_gravity="center_vertical|end"
            android:layout_marginEnd="16dp"/>
     </com.google.android.material.card.MaterialCardView>
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardLogout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ce_spacing_md"
+        app:layout_constraintTop_toBottomOf="@id/cardNotificaciones"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/Widget.CE.Card"
+        android:foreground="?attr/selectableItemBackground"
+        android:backgroundTint="#E0E0E0"
+        android:layout_marginHorizontal="@dimen/ce_spacing_md">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/ce_spacing_md"
+            android:gravity="center_vertical">
+
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_logout_24"
+                android:tint="#555555"
+                android:contentDescription="Icono salir" />
+
+            <TextView
+                android:id="@+id/tvLogout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cerrar sesión"
+                android:textColor="#555555"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginStart="16dp"/>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
     <com.google.android.material.card.MaterialCardView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:id="@+id/cardNotificaciones"
         app:layout_constraintTop_toBottomOf="@id/cardCuenta"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -218,12 +266,21 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="64dp"
+        android:background="@drawable/bg_bottom_bar"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        app:menu="@menu/bottom_nav_menu"
+        app:itemIconSize="40dp"
+        app:itemIconTint="@null"
+        app:itemRippleColor="@color/purple_200"
+        app:labelVisibilityMode="unlabeled"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:menu="@menu/bottom_nav_menu"
-        android:background="@color/white" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:elevation="8dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+

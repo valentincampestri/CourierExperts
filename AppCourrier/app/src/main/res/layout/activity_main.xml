@@ -31,7 +31,7 @@
             android:id="@+id/tvSaludo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hola, Maria"
+            android:text="@string/greeting_name"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -45,37 +45,37 @@
             android:id="@+id/tvMensaje"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Tenes paquetes para enviar!"
+            android:text="@string/greeting_message"
             android:textColor="@android:color/white"
-            android:textSize="14sp"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@id/tvSaludo"
             app:layout_constraintTop_toBottomOf="@id/tvSaludo"
             app:layout_constraintBottom_toBottomOf="@id/imgAvatar"
             app:layout_constraintEnd_toStartOf="@id/imgAvatar"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Amazon banner -->
-    <ImageView
-        android:id="@+id/bannerAmazon"
+    <!-- Carousel de banners -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvBanner"
         android:layout_width="0dp"
         android:layout_height="200dp"
-        android:src="@drawable/ic_amazon"
-        android:scaleType="fitCenter"
-        android:contentDescription="Amazon banner"
+        android:clipToPadding="false"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:layout_marginTop="@dimen/ce_spacing_md"
         app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="@dimen/ce_spacing_md"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Menú principal -->
+    <!-- Men  principal -->
     <LinearLayout
         android:id="@+id/menuPrincipal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginTop="@dimen/ce_spacing_md"
-        app:layout_constraintTop_toBottomOf="@id/bannerAmazon"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/rvBanner"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -104,10 +104,10 @@
                     android:layout_height="60dp"
                     android:background="@drawable/bg_circle_purple">
 
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/ic_compras" />
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="72dp"
+                        android:src="@drawable/ic_compras" />
                 </FrameLayout>
 
 
@@ -153,13 +153,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Paquetes"
+                    android:text="@string/label_packages"
                     android:textStyle="bold"
                     android:textSize="14sp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Envíos -->
+        <!-- Env os -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/btnEnvios"
             android:layout_width="0dp"
@@ -203,18 +203,19 @@
         android:id="@+id/tvActividad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tu actividad reciente"
+        android:text="@string/recent_activity"
         android:textStyle="bold"
-        android:textSize="16sp"
+        android:textSize="24sp"
         app:layout_constraintTop_toBottomOf="@id/menuPrincipal"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="16dp" />
+        android:layout_margin="24dp" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardPaquete"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="20dp"
         android:clickable="true"
         android:focusable="true"
         app:cardCornerRadius="12dp"
@@ -224,6 +225,7 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
+            android:id="@+id/ultimoenvio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -246,16 +248,18 @@
                 android:layout_marginStart="8dp">
 
                 <TextView
+                    android:id="@+id/Tvenvultimo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Paquete 5"
+                    android:text="@string/shipment_title_placeholder"
                     android:textStyle="bold"
                     android:textSize="14sp" />
 
                 <TextView
+                    android:id="@+id/Tvenvultimoestado"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Enviado"
+                    android:text="@string/shipment_status_sent"
                     android:textSize="12sp"
                     android:textColor="@android:color/darker_gray" />
             </LinearLayout>
@@ -264,7 +268,7 @@
                 android:id="@+id/tvVerDetallesHome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ver detalles"
+                android:text="@string/action_view_details"
                 android:textColor="@color/purple_700"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -273,11 +277,30 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="64dp"
+        android:background="@drawable/bg_bottom_bar"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        app:menu="@menu/bottom_nav_menu"
+        app:itemIconSize="40dp"
+        app:itemIconTint="@null"
+        app:itemRippleColor="@color/purple_200"
+        app:labelVisibilityMode="unlabeled"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:menu="@menu/bottom_nav_menu"
-        android:background="@color/white" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:elevation="8dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+
+
+
+

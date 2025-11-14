@@ -40,7 +40,7 @@
             android:id="@+id/tvMensaje"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Paquetes que ya llegaron a nuestro depósito y que están disponibles para entrega"
+            android:text="Paquetes que ya llegaron a nuestro dep&#243;sito y que est&#225;n disponibles para entrega"
             android:textColor="@android:color/white"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@id/tvPaquetes"
@@ -80,7 +80,7 @@
         android:id="@+id/btnSolicitar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Solicitar Envío"
+        android:text="Solicitar Env&#237;o"
         app:backgroundTint="@color/purple_700"
         android:textColor="@android:color/white"
         android:textSize="16sp"
@@ -93,10 +93,20 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
+        android:background="@drawable/bg_bottom_bar"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
         app:menu="@menu/bottom_nav_menu"
-        android:background="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:itemIconSize="40dp"
+        app:itemIconTint="@null"
+        app:itemRippleColor="@color/purple_200"
+        app:labelVisibilityMode="unlabeled"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:elevation="8dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+

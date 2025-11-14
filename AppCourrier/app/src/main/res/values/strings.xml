@@ -1,5 +1,50 @@
 <resources>
     <string name="app_name">currier</string>
+
+    <!-- Envios -->
+    <string name="envios_icon_desc">Icono envios</string>
+    <string name="envios_title">Tus envios</string>
+    <string name="envios_subtitle">Revisa el estado de tus envios</string>
+    <string name="envios_empty">Todavia no hay envios en curso</string>
+
+    <!-- Home -->
+    <string name="greeting_name">Hola, Maria</string>
+    <string name="greeting_message">Que bueno volver a verte!</string>
+    <string name="label_packages">Paquetes</string>
+    <string name="label_shipments">Envios</string>
+    <string name="recent_activity">Tu actividad reciente</string>
+    <string name="shipment_title_placeholder">Envio 5</string>
+    <string name="shipment_status_sent">Enviado</string>
+    <string name="action_view_details">Ver detalles</string>
+
+    <!-- Nueva compra -->
+    <string name="new_purchase_title">Nueva compra</string>
+    <string name="new_purchase_subtitle">Informanos sobre tu compra</string>
+    <string name="hint_store">Tienda</string>
+    <string name="hint_description">Descripcion</string>
+    <string name="hint_carrier">Empresa de Envio</string>
+    <string name="hint_price">Precio</string>
+    <string name="hint_tracking">Nro Tracking</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_save">Guardar</string>
+
+    <!-- Perfil -->
+    <string name="profile_title">Tus datos</string>
+    <string name="hint_name">Nombre</string>
+    <string name="placeholder_name">Maria Perez</string>
+    <string name="hint_mail">Mail</string>
+    <string name="placeholder_mail">maria@gmail.com</string>
+    <string name="hint_phone">Nro de telefono</string>
+    <string name="hint_address">Direccion</string>
+    <string name="placeholder_address">Av. Corrientes 1000</string>
+    <string name="label_deposit">Deposito elegido</string>
+
+    <!-- Shipments detail/header/welcome -->
+    <string name="shipments_header_title">Tus envios</string>
+    <string name="shipment_sub_placeholder">Envio 5\n#12345</string>
+    <string name="welcome_title">El camino mas directo para\ntus envios de USA a\nArgentina</string>
+
+    <!-- Existing -->
     <string name="title_activity_nueva_compra">nueva_compra</string>
     <string name="title_activity_compras">ComprasActivity</string>
 
@@ -10,4 +55,5 @@
         <item>Madrid</item>
     </string-array>
 
+    <string name="default_web_client_id">REEMPLAZAR_CON_CLIENT_ID</string>
 </resources>

@@ -1,6 +1,21 @@
 # Android Studio / IntelliJ
+*.iml
 .idea/
 .gradle/
 build/
-*.iml
 local.properties
+
+# Archivos de caché
+captures/
+.externalNativeBuild/
+
+# Archivos de Google Services
+google-services.json
+
+# Global Android/Gradle ignores (recursivos)
+**/build/
+**/.gradle/
+**/.cxx/
+**/.externalNativeBuild/
+*.apk
+*.aab

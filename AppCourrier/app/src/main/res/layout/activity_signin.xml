@@ -39,7 +39,7 @@
             android:id="@+id/tvSub"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="¡Qué bueno volver a verte!"
+            android:text="&#161;Qu&#233; bueno volver a verte!"
             android:textColor="@android:color/white"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@id/tvTitle"
@@ -69,6 +69,7 @@
             android:layout_height="wrap_content"
             app:hintEnabled="false">
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEmailSignin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
@@ -80,7 +81,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Contraseña"
+            android:text="Contrase&#241;a"
             android:textColor="@android:color/black"
             android:textSize="14sp"/>
 
@@ -89,6 +90,7 @@
             android:layout_height="wrap_content"
             app:hintEnabled="false">
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPasswordSignin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
@@ -101,7 +103,7 @@
             android:id="@+id/tvForgot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Olvidé mi contraseña"
+            android:text="Olvid&#233; mi contrase&#241;a"
             android:textColor="@color/purple_700"
             android:textStyle="bold"/>
 
@@ -111,7 +113,7 @@
             android:id="@+id/btnBack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Atrás"
+            android:text="Atr&#225;s"
             style="@style/Widget.CE.Button.Outlined"/>
 
         <Space android:layout_width="match_parent" android:layout_height="8dp"/>
@@ -122,6 +124,15 @@
             android:layout_height="wrap_content"
             android:text="Ingresar"
             style="@style/Widget.CE.Button.Primary"/>
+
+        <Space android:layout_width="match_parent" android:layout_height="8dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGoogle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Continuar con Google"
+            style="@style/Widget.CE.Button.Outlined"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

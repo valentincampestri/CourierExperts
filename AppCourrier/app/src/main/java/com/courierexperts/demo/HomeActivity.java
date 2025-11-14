@@ -10,6 +10,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import com.courierexperts.demo.ui.home.BannerAdapter;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -19,6 +23,43 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setupBottomBar(R.id.nav_home);
+
+        setupBannerCarousel();
+
+        // Bind saludo Hola, {Nombre}
+        final android.widget.TextView tvSaludo = findViewById(R.id.tvSaludo);
+        if (tvSaludo != null) {
+            com.courierexperts.demo.data.repository.UserProfileRepository repo = new com.courierexperts.demo.data.repository.UserProfileRepository(this);
+            repo.observeProfile().observe(this, profile -> {
+                String name = (profile != null && profile.name != null) ? profile.name.trim() : "";
+                tvSaludo.setText(name.isEmpty() ? "Hola" : ("Hola, " + name));
+                // Si falta depósito, sugerir completar perfil (una sola vez por uid)
+                if (profile != null && profile.depositId == null) {
+                    String uid = null;
+                    try { uid = com.google.firebase.auth.FirebaseAuth.getInstance().getUid(); } catch (Exception ignored) {}
+                    String key = "prompt_deposit_done_" + (uid != null ? uid : "");
+                    android.content.SharedPreferences sp = getSharedPreferences("profile_prefs", MODE_PRIVATE);
+                    if (!sp.getBoolean(key, false)) {
+                        android.widget.Toast.makeText(this, "Completá tu depósito en Perfil", android.widget.Toast.LENGTH_SHORT).show();
+                        sp.edit().putBoolean(key, true).apply();
+                        startActivity(new Intent(HomeActivity.this, EditProfileActivity.class));
+                    }
+                }
+            });
+            // Debug: long press to seed Firestore with demo data
+            boolean isDebug = (getApplicationInfo().flags & android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+            if (isDebug) {
+                tvSaludo.setOnLongClickListener(v -> {
+                    new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                            .setTitle("Seed Firestore (debug)")
+                            .setMessage("Crear 10 compras, 10 paquetes y 10 envíos para el usuario actual?")
+                            .setNegativeButton("Cancelar", null)
+                            .setPositiveButton("Sembrar", (d, which) -> com.courierexperts.demo.util.SeedDebug.seedNow(this))
+                            .show();
+                    return true;
+                });
+            }
+        }
 
         View btnCompras = findViewById(R.id.btnCompras);
         View btnPaquetes = findViewById(R.id.btnPaquetes);
@@ -37,22 +78,51 @@ public class HomeActivity extends AppCompatActivity {
                     startActivity(new Intent(HomeActivity.this, ShipmentsActivity.class)));
         }
 
-        View tvVerDetallesHome = findViewById(R.id.tvVerDetallesHome);
-        if (tvVerDetallesHome != null) {
-            tvVerDetallesHome.setOnClickListener(v -> {
-                Intent i = new Intent(HomeActivity.this, ShipmentDetailActivity.class);
-                i.putExtra("shipmentId", 5);
-                startActivity(i);
+        final android.widget.TextView tvUltimoTitulo = findViewById(R.id.Tvenvultimo);
+        final android.widget.TextView tvUltimoEstado = findViewById(R.id.Tvenvultimoestado);
+        final View tvVerDetallesHome = findViewById(R.id.tvVerDetallesHome);
+        // Observa shipments y muestra el último (por lastUpdate desc, fallback id)
+        try {
+            com.courierexperts.demo.data.local.db.AppDatabase db = com.courierexperts.demo.data.local.db.AppDatabase.get(getApplicationContext());
+            db.shipmentDao().observeAll().observe(this, list -> {
+                if (list == null || list.isEmpty()) {
+                    if (tvUltimoTitulo != null) tvUltimoTitulo.setText("aun no has solicitado envios");
+                    if (tvUltimoEstado != null) tvUltimoEstado.setText("");
+                    if (tvVerDetallesHome != null) tvVerDetallesHome.setVisibility(View.GONE);
+                    return;
+                }
+                // pick latest by lastUpdate then id
+                com.courierexperts.demo.data.local.entity.ShipmentEntity last = null;
+                for (com.courierexperts.demo.data.local.entity.ShipmentEntity se : list) {
+                    if (last == null) { last = se; continue; }
+                    if (se.lastUpdate > last.lastUpdate) last = se;
+                    else if (se.lastUpdate == last.lastUpdate && se.id > last.id) last = se;
+                }
+                if (last != null) {
+                    if (tvUltimoTitulo != null) tvUltimoTitulo.setText(last.title != null ? last.title : "Envio");
+                    if (tvUltimoEstado != null) tvUltimoEstado.setText(com.courierexperts.demo.domain.StatusMapper.labelShipment(last.status));
+                    if (tvVerDetallesHome != null) {
+                        tvVerDetallesHome.setVisibility(View.VISIBLE);
+                        final String fs = last.fsId;
+                        final long lid = last.id;
+                        tvVerDetallesHome.setOnClickListener(v -> {
+                            Intent i = new Intent(HomeActivity.this, ShipmentDetailActivity.class);
+                            if (fs != null && !fs.isEmpty()) i.putExtra("shipmentFsId", fs);
+                            i.putExtra("shipmentLocalId", lid);
+                            startActivity(i);
+                        });
+                    }
+                }
             });
-        }
+        } catch (Exception ignored) {}
 
         // Si tu layout de Home tiene FAB (como Envíos), podés manejarlo acá:
-        View fab = findViewById(R.id.fabAdd);
-        if (fab != null) {
-            fab.setOnClickListener(v ->
-                    startActivity(new Intent(HomeActivity.this, NewPurchaseActivity.class)));
+        //View fab = findViewById(R.id.fabAdd);
+        //if (fab != null) {
+          //  fab.setOnClickListener(v ->
+             //       startActivity(new Intent(HomeActivity.this, NewPurchaseActivity.class)));
             // Cuando tengamos "Nuevo Envío", cambia a NewShipmentActivity.class si querés.
-        }
+       // }
     }
 
     private void setupBottomBar(int selectedItemId) {
@@ -69,6 +139,9 @@ public class HomeActivity extends AppCompatActivity {
                 if (id == R.id.nav_home) {
                     // ya estás en Home
                     return true;
+                } else if (id == R.id.nav_add) {
+                    startActivity(new Intent(HomeActivity.this, NewPurchaseActivity.class));
+                    return true;
                 } else if (id == R.id.nav_profile) {
                     startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
                     return true;
@@ -76,5 +149,58 @@ public class HomeActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    private final android.os.Handler bannerHandler = new android.os.Handler(android.os.Looper.getMainLooper());
+    private boolean bannerPaused = false;
+    private int bannerPosition = 0;
+
+    private void setupBannerCarousel() {
+        RecyclerView rv = findViewById(R.id.rvBanner);
+        if (rv == null) return;
+
+        LinearLayoutManager lm = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+        rv.setLayoutManager(lm);
+        new PagerSnapHelper().attachToRecyclerView(rv);
+
+        java.util.List<Integer> imgs = java.util.Arrays.asList(
+                R.drawable.ic_amazon,
+                R.drawable.ic_samsung,
+                R.drawable.ic_infinity,
+                R.drawable.ic_galaxy
+        );
+        BannerAdapter adapter = new BannerAdapter(imgs);
+        rv.setAdapter(adapter);
+
+        rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                bannerPaused = (newState == RecyclerView.SCROLL_STATE_DRAGGING);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    bannerPosition = lm.findFirstVisibleItemPosition();
+                }
+            }
+        });
+        rv.setOnTouchListener((v, e) -> {
+            switch (e.getAction()) {
+                case android.view.MotionEvent.ACTION_DOWN:
+                case android.view.MotionEvent.ACTION_MOVE:
+                    bannerPaused = true; break;
+                case android.view.MotionEvent.ACTION_UP:
+                case android.view.MotionEvent.ACTION_CANCEL:
+                    bannerPaused = false; break;
+            }
+            return false;
+        });
+
+        bannerHandler.postDelayed(new Runnable() {
+            @Override public void run() {
+                if (!bannerPaused && adapter.getItemCount() > 0) {
+                    bannerPosition++;
+                    rv.smoothScrollToPosition(bannerPosition);
+                }
+                bannerHandler.postDelayed(this, 4000);
+            }
+        }, 4000);
     }
 }

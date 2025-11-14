@@ -24,7 +24,7 @@
                 android:id="@+id/tvDatos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tus datos"
+                android:text="@string/profile_title"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -62,13 +62,13 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nombre">
+                android:hint="@string/hint_name">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etNombrePerfil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Maria Perez"/>
+                    android:text="@string/placeholder_name"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Mail -->
@@ -76,7 +76,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Mail"
+                android:hint="@string/hint_mail"
                 android:layout_marginTop="@dimen/ce_spacing_sm">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -84,15 +84,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
-                    android:text="maria@gmail.com"/>
+                    android:text="@string/placeholder_mail"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Teléfono -->
+            <!-- Telfono -->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nro de teléfono"
+                android:hint="Nro de telfono"
                 android:layout_marginTop="@dimen/ce_spacing_sm">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -100,15 +100,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="phone"
-                    android:text="+54 5369-8751"/>
+                    android:digits="+0123456789"
+                    android:maxLength="20"
+                    android:text=""/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Dirección -->
+            <!-- Direccin -->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Dirección"
+                android:hint="Direccin"
                 android:layout_marginTop="@dimen/ce_spacing_sm">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -116,15 +118,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
-                    android:text="Av. Corrientes 1000"/>
+                    android:maxLength="80"
+                    android:text="@string/placeholder_address"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Depósito -->
+            <!-- Depsito -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/ce_spacing_sm"
-                android:text="Depósito elegido"
+                android:text="Depsito elegido"
                 android:textStyle="bold"
                 android:textSize="14sp"/>
 
@@ -149,7 +152,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Cancelar"/>
+                    android:text="@string/action_cancel"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnGuardardatosPerfil"
@@ -158,21 +161,37 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="@dimen/ce_spacing_sm"
-                    android:text="Guardar"
+                    android:text="@string/action_save"
                     />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="64dp"
+        android:background="@drawable/bg_bottom_bar"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        app:menu="@menu/bottom_nav_menu"
+        app:itemIconSize="40dp"
+        app:itemIconTint="@null"
+        app:itemRippleColor="@color/purple_200"
+        app:labelVisibilityMode="unlabeled"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:menu="@menu/bottom_nav_menu"
-        android:background="@color/white" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:elevation="8dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+
+
+
+

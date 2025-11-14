@@ -19,7 +19,7 @@ public class PackagesViewModel extends AndroidViewModel {
     public PackagesViewModel(@NonNull Application app) {
         super(app);
         repo = new PackageRepository(app);
-        packages = repo.observePackages();
+        packages = repo.observeAllOrdered();
     }
 
     public LiveData<List<PackageEntity>> getPackages() { return packages; }

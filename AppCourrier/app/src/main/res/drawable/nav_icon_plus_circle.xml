@@ -1,0 +1,16 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="36dp"
+    android:height="36dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="@null">
+    <!-- C&#237;rculo con recorte en forma de "+" usando evenOdd -->
+    <path
+        android:fillType="evenOdd"
+        android:fillColor="@color/purple_700"
+        android:pathData="
+            M12,2
+            A10,10 0 1,0 12,22
+            A10,10 0 1,0 12,2 Z
+            M11,7 H13 V11 H17 V13 H13 V17 H11 V13 H7 V11 H11 Z"/>
+</vector>

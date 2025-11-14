@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- HEADER -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
         android:layout_width="0dp"
@@ -21,7 +20,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:src="@drawable/ic_envios"
-            android:contentDescription="Icono envíos"
+            android:contentDescription="@string/envios_icon_desc"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
@@ -30,7 +29,7 @@
             android:id="@+id/tvEnvios"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Tus envíos"
+            android:text="@string/envios_title"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -42,7 +41,7 @@
             android:id="@+id/tvMensaje"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Revisá el estado de tus envíos"
+            android:text="@string/envios_subtitle"
             android:textColor="@android:color/white"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@id/tvEnvios"
@@ -51,36 +50,40 @@
             app:layout_constraintBottom_toBottomOf="@id/imgEnvios"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- LISTA -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvEnvios"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srlEnvios"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:paddingStart="@dimen/ce_spacing_md"
-        android:paddingEnd="@dimen/ce_spacing_md"
-        android:paddingBottom="96dp"
-    android:clipToPadding="false"
-    app:layout_constraintTop_toBottomOf="@id/header"
-    app:layout_constraintBottom_toTopOf="@id/bottomNav"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <!-- EMPTY STATE -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvEnvios"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="@dimen/ce_spacing_md"
+            android:paddingEnd="@dimen/ce_spacing_md"
+            android:paddingBottom="96dp"
+            android:clipToPadding="false"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     <TextView
         android:id="@+id/tvEmptyEnvios"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Todavía no hay envíos en curso"
+        android:text="@string/envios_empty"
         android:textSize="16sp"
         android:gravity="center"
         android:paddingBottom="64dp"
-    android:visibility="gone"
-    app:layout_constraintTop_toBottomOf="@id/header"
-    app:layout_constraintBottom_toTopOf="@id/bottomNav"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent" />
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- BOTTOM NAV con esquinas redondeadas -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
@@ -89,8 +92,8 @@
         android:paddingStart="24dp"
         android:paddingEnd="24dp"
         app:menu="@menu/bottom_nav_menu"
-        app:itemIconSize="28dp"
-        app:itemIconTint="@color/black"
+        app:itemIconSize="40dp"
+        app:itemIconTint="@null"
         app:itemRippleColor="@color/purple_200"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintStart_toStartOf="parent"
@@ -98,23 +101,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:elevation="8dp" />
 
-    <!-- FAB circular que sobresale -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAdd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="Nuevo envío"
-        app:srcCompat="@drawable/ic_add_24"
-        app:tint="@android:color/white"
-        app:backgroundTint="@color/purple_700"
-        app:fabCustomSize="72dp"
-        android:layout_marginBottom="-28dp"
-    app:elevation="12dp"
-    app:maxImageSize="28dp"
-    app:useCompatPadding="false"
-    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Courier.FAB"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintBottom_toTopOf="@id/bottomNav" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+

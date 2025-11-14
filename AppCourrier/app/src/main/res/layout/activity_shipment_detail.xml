@@ -20,7 +20,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:src="@drawable/ic_envios"
-            android:contentDescription="Icono envíos"
+            android:contentDescription="Icono env&#237;os"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
@@ -29,7 +29,7 @@
             android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Tus envíos"
+            android:text="Tus env&#237;os"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -41,7 +41,7 @@
             android:id="@+id/tvSub"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Envío 5\n#12345"
+            android:text="Env&#237;o 5&#10;#12345"
             android:textColor="@android:color/white"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@id/tvTitle"
@@ -74,7 +74,7 @@
                 android:visibility="gone"
                 android:textSize="16sp"/>
 
-            <!-- Cards list for Envío 5 -->
+            <!-- Cards list for Env&#237;o 5 -->
             <LinearLayout
                 android:id="@+id/containerList"
                 android:layout_width="match_parent"
@@ -118,7 +118,7 @@
                             android:paddingHorizontal="12dp"
                             android:paddingVertical="6dp"
                             android:background="@drawable/bg_estado_transito"
-                            android:text="En tránsito"
+                            android:text="En tr&#225;nsito"
                             android:textColor="@android:color/black"
                             android:textStyle="bold"
                             android:textSize="12sp" />
@@ -163,7 +163,7 @@
                             android:paddingHorizontal="12dp"
                             android:paddingVertical="6dp"
                             android:background="@drawable/bg_estado_transito"
-                            android:text="En tránsito"
+                            android:text="En tr&#225;nsito"
                             android:textColor="@android:color/black"
                             android:textStyle="bold"
                             android:textSize="12sp" />
@@ -206,7 +206,7 @@
                             android:paddingHorizontal="12dp"
                             android:paddingVertical="6dp"
                             android:background="@drawable/bg_estado_transito"
-                            android:text="En tránsito"
+                            android:text="En tr&#225;nsito"
                             android:textColor="@android:color/black"
                             android:textStyle="bold"
                             android:textSize="12sp" />
@@ -215,15 +215,24 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="64dp"
+        android:background="@drawable/bg_bottom_bar"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        app:menu="@menu/bottom_nav_menu"
+        app:itemIconSize="40dp"
+        app:itemIconTint="@null"
+        app:itemRippleColor="@color/purple_200"
+        app:labelVisibilityMode="unlabeled"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:menu="@menu/bottom_nav_menu"
-        android:background="@color/white"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:elevation="8dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+

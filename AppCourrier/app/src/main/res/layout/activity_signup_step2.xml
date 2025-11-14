@@ -46,6 +46,7 @@
             app:layout_constraintTop_toBottomOf="@id/tvTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
@@ -57,11 +58,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Direccion"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hintEnabled="false">
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDireccionSignup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Av. Corrientes 1000"/>
@@ -69,47 +77,82 @@
 
         <Space android:layout_width="match_parent" android:layout_height="12dp"/>
 
-        <com.google.android.material.textfield.TextInputLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintEnabled="false">
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Buenos Aires"/>
-        </com.google.android.material.textfield.TextInputLayout>
+            android:text="Provincia"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"/>
+        <Spinner
+            android:id="@+id/spProvinciaSignup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/provincias_ar"/>
 
         <Space android:layout_width="match_parent" android:layout_height="12dp"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Telefono"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hintEnabled="false">
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etTelefonoSignup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Argentina"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Space android:layout_width="match_parent" android:layout_height="12dp"/>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:hintEnabled="false">
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="20-30303030-1"/>
+                android:hint="+5491122334455"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space android:layout_width="match_parent" android:layout_height="16dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="false">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEmailSignup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:hint="correo@ejemplo.com"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Space android:layout_width="match_parent" android:layout_height="12dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Contrasena"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="false">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPasswordSignup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="(4-20)"
+                android:inputType="textPassword"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnBack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Atrás"/>
+            android:text="Atras"/>
 
         <Space android:layout_width="match_parent" android:layout_height="8dp"/>
 

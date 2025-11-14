@@ -9,10 +9,23 @@ import com.courierexperts.demo.data.local.db.AppDatabase;
 import com.courierexperts.demo.data.local.entity.PurchaseEntity;
 import com.courierexperts.demo.data.remote.RetrofitClient;
 import com.courierexperts.demo.domain.model.Purchase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.MetadataChanges;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.courierexperts.demo.util.AppExecutors;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import retrofit2.Response;
 
@@ -20,6 +33,7 @@ public class PurchaseRepository {
 
     private final PurchaseDao dao;
     private final Context app;
+    private ListenerRegistration purchasesListener;
 
     public PurchaseRepository(Context ctx) {
         this.app = ctx.getApplicationContext();
@@ -28,33 +42,144 @@ public class PurchaseRepository {
 
     /** Observa la lista desde Room y, en paralelo, hace refresh desde red (mock por ahora). */
     public LiveData<List<PurchaseEntity>> observePurchases() {
-        refreshFromNetwork();
+        ensureListener();
         return dao.observeAll();
+    }
+
+    public androidx.lifecycle.LiveData<com.courierexperts.demo.data.local.entity.PurchaseEntity> observePurchaseById(long id) {
+        ensureListener();
+        return dao.observeById(id);
     }
 
     /** Descarga (mock/real), mapea y actualiza Room. */
     public void refreshFromNetwork() {
-        AppExecutors.io().execute(() -> {
-            try {
-                Response<List<Purchase>> resp = RetrofitClient.api(app).getPurchases().execute();
-                if (resp.isSuccessful() && resp.body() != null) {
-                    List<PurchaseEntity> list = new ArrayList<>();
-                    for (Purchase p : resp.body()) {
-                        PurchaseEntity e = new PurchaseEntity();
-                        e.id = p.id;
-                        e.storeName = p.storeName;
-                        e.orderId = p.orderId;
-                        e.status = p.status;
-                        e.createdAt = p.createdAt;
-                        e.thumbnailUrl = p.thumbnailUrl;
-                        list.add(e);
-                    }
-                    dao.clear();
-                    dao.upsertAll(list);
-                }
-            } catch (Exception e) {
-                // Podés loguear si querés: Log.e("Repository", "refresh error", e);
+        ensureListener();
+    }
+
+    /** Crea localmente y trata de sincronizar con backend (mock). */
+    public void createLocalAndSync(String storeName, String orderId, String createdAtIso) {
+        // Crear documento en Firestore; si falla, guardar local como pending
+        final String uid = safeUid();
+        if (uid == null) {
+            // sin usuario, guardar local
+            AppExecutors.io().execute(() -> {
+                PurchaseEntity e = new PurchaseEntity();
+                e.id = 0;
+                e.fsId = null;
+                e.storeName = storeName;
+                e.orderId = orderId;
+                e.status = "PENDING";
+                e.createdAt = System.currentTimeMillis();
+                e.thumbnailUrl = "";
+                e.pendingSync = true;
+                dao.insert(e);
+            });
+            return;
+        }
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        com.google.firebase.firestore.DocumentReference doc = db.collection("users").document(uid)
+                .collection("purchases").document();
+
+        java.util.HashMap<String, Object> data = new java.util.HashMap<>();
+        data.put("id", doc.getId());
+        data.put("storeName", storeName);
+        data.put("orderId", orderId);
+        data.put("status", "PENDING");
+        data.put("createdAt", FieldValue.serverTimestamp());
+        data.put("thumbnailUrl", "");
+
+        doc.set(data)
+                .addOnSuccessListener(v -> doc.get().addOnSuccessListener(snapshot -> upsertFromSnapshot(snapshot)))
+                .addOnFailureListener(err -> AppExecutors.io().execute(() -> {
+                    // Offline: queda local con pendingSync
+                    PurchaseEntity e = new PurchaseEntity();
+                    e.id = 0;
+                    e.fsId = doc.getId();
+                    e.storeName = storeName;
+                    e.orderId = orderId;
+                    e.status = "PENDING";
+                    e.createdAt = System.currentTimeMillis();
+                    e.thumbnailUrl = "";
+                    e.pendingSync = true;
+                    dao.insert(e);
+                }));
+    }
+
+    public void syncPendingIfNetworkAvailable() {
+        // Firestore listeners manejarán la sincronización; no-op aquí
+    }
+
+    private static long parseIsoToEpoch(String iso) {
+        if (iso == null || iso.isEmpty()) return System.currentTimeMillis();
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+            return sdf.parse(iso).getTime();
+        } catch (ParseException e) {
+            return System.currentTimeMillis();
+        }
+    }
+
+    private static String toIso(long epochMillis) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return sdf.format(new java.util.Date(epochMillis));
+    }
+
+    private void ensureListener() {
+        if (purchasesListener != null) return;
+        final String uid = safeUid();
+        if (uid == null) return;
+        Query q = FirebaseFirestore.getInstance()
+                .collection("users").document(uid)
+                .collection("purchases")
+                .orderBy("createdAt", Query.Direction.DESCENDING);
+
+        purchasesListener = q.addSnapshotListener(MetadataChanges.EXCLUDE, (snapshots, e) -> {
+            if (e != null || snapshots == null) return;
+            List<PurchaseEntity> list = new ArrayList<>();
+            for (DocumentSnapshot d : snapshots.getDocuments()) {
+                PurchaseEntity pe = mapDoc(d);
+                if (pe != null) list.add(pe);
             }
+            AppExecutors.io().execute(() -> dao.upsertAll(list));
         });
     }
+
+    private PurchaseEntity mapDoc(DocumentSnapshot d) {
+        if (d == null || !d.exists()) return null;
+        PurchaseEntity e = new PurchaseEntity();
+        e.fsId = d.getId();
+        Long existingId = null;
+        try { existingId = dao.findLocalIdByFsId(e.fsId); } catch (Exception ignored) {}
+        e.id = existingId != null ? existingId : (long)(e.fsId.hashCode() & 0x7fffffff);
+        e.storeName = d.getString("storeName");
+        e.orderId = d.getString("orderId");
+        String status = d.getString("status");
+        e.status = status != null ? status : "PENDING";
+        com.google.firebase.Timestamp ts = d.getTimestamp("createdAt");
+        e.createdAt = ts != null ? ts.toDate().getTime() : System.currentTimeMillis();
+        String thumb = d.getString("thumbnailUrl");
+        e.thumbnailUrl = thumb != null ? thumb : "";
+        e.pendingSync = false;
+        return e;
+    }
+
+    private void upsertFromSnapshot(DocumentSnapshot snapshot) {
+        PurchaseEntity e = mapDoc(snapshot);
+        if (e == null) return;
+        AppExecutors.io().execute(() -> {
+            List<PurchaseEntity> one = new ArrayList<>();
+            one.add(e);
+            dao.upsertAll(one);
+        });
+    }
+
+    private static String safeUid() {
+        try { return FirebaseAuth.getInstance().getUid(); } catch (Exception ex) { return null; }
+    }
+
 }
+
+
