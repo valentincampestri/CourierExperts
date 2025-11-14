@@ -4,19 +4,17 @@ import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
+import com.courierexperts.demo.data.local.dao.PackageDao;
 import com.courierexperts.demo.data.local.dao.PurchaseDao;
 import com.courierexperts.demo.data.local.db.AppDatabase;
+import com.courierexperts.demo.data.local.entity.PackageEntity;
 import com.courierexperts.demo.data.local.entity.PurchaseEntity;
-import com.courierexperts.demo.data.remote.RetrofitClient;
-import com.courierexperts.demo.domain.model.Purchase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.courierexperts.demo.util.AppExecutors;
 
@@ -27,17 +25,18 @@ import java.text.ParseException;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import retrofit2.Response;
-
 public class PurchaseRepository {
 
     private final PurchaseDao dao;
+    private final PackageDao packageDao;
     private final Context app;
     private ListenerRegistration purchasesListener;
 
     public PurchaseRepository(Context ctx) {
         this.app = ctx.getApplicationContext();
-        this.dao = AppDatabase.get(this.app).purchaseDao();
+        AppDatabase db = AppDatabase.get(this.app);
+        this.dao = db.purchaseDao();
+        this.packageDao = db.packageDao();
     }
 
     /** Observa la lista desde Room y, en paralelo, hace refresh desde red (mock por ahora). */
@@ -153,10 +152,15 @@ public class PurchaseRepository {
         e.fsId = d.getId();
         Long existingId = null;
         try { existingId = dao.findLocalIdByFsId(e.fsId); } catch (Exception ignored) {}
-        e.id = existingId != null ? existingId : (long)(e.fsId.hashCode() & 0x7fffffff);
+        e.id = existingId != null ? existingId : stableLongFromString(e.fsId);
         e.storeName = d.getString("storeName");
         e.orderId = d.getString("orderId");
         String status = d.getString("status");
+        boolean delivered = status != null && "DELIVERED".equalsIgnoreCase(status);
+        if (delivered) {
+            status = "RECEIVED";
+            handleDeliveredPurchase(d);
+        }
         e.status = status != null ? status : "PENDING";
         com.google.firebase.Timestamp ts = d.getTimestamp("createdAt");
         e.createdAt = ts != null ? ts.toDate().getTime() : System.currentTimeMillis();
@@ -178,6 +182,62 @@ public class PurchaseRepository {
 
     private static String safeUid() {
         try { return FirebaseAuth.getInstance().getUid(); } catch (Exception ex) { return null; }
+    }
+
+    private void handleDeliveredPurchase(DocumentSnapshot snapshot) {
+        final String purchaseFsId = snapshot.getId();
+        if (purchaseFsId == null || purchaseFsId.isEmpty()) return;
+        AppExecutors.io().execute(() -> {
+            try {
+                Long existingPackageId = packageDao.findLocalIdByPurchaseFsId(purchaseFsId);
+                if (existingPackageId != null) return;
+
+                PackageEntity pkg = new PackageEntity();
+                pkg.purchaseFsId = purchaseFsId;
+                pkg.fsId = null;
+                pkg.id = stableLongFromString("purchase-" + purchaseFsId);
+                pkg.label = derivePackageLabel(snapshot);
+                pkg.description = derivePackageDescription(snapshot);
+                Double price = null;
+                try { price = snapshot.getDouble("price"); } catch (Exception ignored) {}
+                pkg.price = price != null ? price : 0d;
+                pkg.status = "PENDING";
+                pkg.lastUpdate = System.currentTimeMillis();
+                String thumb = snapshot.getString("thumbnailUrl");
+                pkg.thumbnailUrl = thumb != null ? thumb : "";
+                pkg.shipmentId = null;
+
+                List<PackageEntity> tmp = new ArrayList<>();
+                tmp.add(pkg);
+                packageDao.upsertAll(tmp);
+            } catch (Exception ignored) {
+            }
+        });
+    }
+
+    private static long stableLongFromString(String s) {
+        if (s == null) return System.currentTimeMillis();
+        long h = 1125899906842597L;
+        for (int i = 0; i < s.length(); i++) {
+            h = 31 * h + s.charAt(i);
+        }
+        return h & Long.MAX_VALUE;
+    }
+
+    private static String derivePackageLabel(DocumentSnapshot snapshot) {
+        String store = snapshot.getString("storeName");
+        if (store != null && !store.isEmpty()) return store;
+        String order = snapshot.getString("orderId");
+        if (order != null && !order.isEmpty()) return "Compra " + order;
+        return "Compra " + snapshot.getId();
+    }
+
+    private static String derivePackageDescription(DocumentSnapshot snapshot) {
+        String description = snapshot.getString("description");
+        if (description != null && !description.isEmpty()) return description;
+        String order = snapshot.getString("orderId");
+        if (order != null && !order.isEmpty()) return "Orden " + order;
+        return "Generado desde compra";
     }
 
 }

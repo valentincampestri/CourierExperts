@@ -74,11 +74,18 @@ public class PackageRepository {
         if (d == null || !d.exists()) return null;
         PackageEntity e = new PackageEntity();
         e.fsId = d.getId();
+        e.purchaseFsId = d.getString("purchaseFsId");
         Long existingId = null;
         try { existingId = dao.findLocalIdByFsId(e.fsId); } catch (Exception ignored) {}
+        if (existingId == null && e.purchaseFsId != null && !e.purchaseFsId.isEmpty()) {
+            try { existingId = dao.findLocalIdByPurchaseFsId(e.purchaseFsId); } catch (Exception ignored) {}
+        }
         e.id = existingId != null ? existingId : stableLongFromString(e.fsId);
         e.label = d.getString("label");
         e.description = d.getString("description");
+        Double price = null;
+        try { price = d.getDouble("price"); } catch (Exception ignored) {}
+        e.price = price != null ? price : 0d;
         String status = d.getString("status");
         e.status = status != null ? status : "PENDING";
         com.google.firebase.Timestamp ts = d.getTimestamp("lastUpdate");

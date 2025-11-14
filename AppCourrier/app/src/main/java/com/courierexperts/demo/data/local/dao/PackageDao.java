@@ -28,6 +28,12 @@ public interface PackageDao {
     @Query("SELECT id FROM packages WHERE fsId = :fsId LIMIT 1")
     Long findLocalIdByFsId(String fsId);
 
+    @Query("SELECT id FROM packages WHERE purchaseFsId = :purchaseFsId LIMIT 1")
+    Long findLocalIdByPurchaseFsId(String purchaseFsId);
+
+    @Query("SELECT * FROM packages WHERE purchaseFsId = :purchaseFsId LIMIT 1")
+    PackageEntity findByPurchaseFsId(String purchaseFsId);
+
     @Query("SELECT fsId FROM packages WHERE id = :id LIMIT 1")
     String getFsIdByLocalId(long id);
 
