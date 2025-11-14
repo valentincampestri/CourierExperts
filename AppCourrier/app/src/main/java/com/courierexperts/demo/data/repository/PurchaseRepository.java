@@ -10,6 +10,7 @@ import com.courierexperts.demo.data.local.db.AppDatabase;
 import com.courierexperts.demo.data.local.entity.PackageEntity;
 import com.courierexperts.demo.data.local.entity.PurchaseEntity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -19,6 +20,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.courierexperts.demo.util.AppExecutors;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
@@ -189,28 +191,66 @@ public class PurchaseRepository {
         if (purchaseFsId == null || purchaseFsId.isEmpty()) return;
         AppExecutors.io().execute(() -> {
             try {
-                Long existingPackageId = packageDao.findLocalIdByPurchaseFsId(purchaseFsId);
-                if (existingPackageId != null) return;
-
-                PackageEntity pkg = new PackageEntity();
-                pkg.purchaseFsId = purchaseFsId;
-                pkg.fsId = null;
-                pkg.id = stableLongFromString("purchase-" + purchaseFsId);
-                pkg.label = derivePackageLabel(snapshot);
-                pkg.description = derivePackageDescription(snapshot);
-                Double price = null;
-                try { price = snapshot.getDouble("price"); } catch (Exception ignored) {}
-                pkg.price = price != null ? price : 0d;
-                pkg.status = "PENDING";
-                pkg.lastUpdate = System.currentTimeMillis();
-                String thumb = snapshot.getString("thumbnailUrl");
-                pkg.thumbnailUrl = thumb != null ? thumb : "";
-                pkg.shipmentId = null;
-
-                List<PackageEntity> tmp = new ArrayList<>();
-                tmp.add(pkg);
-                packageDao.upsertAll(tmp);
+                PackageEntity pkg = packageDao.findByPurchaseFsId(purchaseFsId);
+                if (pkg == null) {
+                    pkg = buildPackageFromPurchase(snapshot);
+                    packageDao.upsertAll(Collections.singletonList(pkg));
+                }
+                ensureRemotePackage(snapshot, pkg);
             } catch (Exception ignored) {
+            }
+        });
+    }
+
+    private PackageEntity buildPackageFromPurchase(DocumentSnapshot snapshot) {
+        PackageEntity pkg = new PackageEntity();
+        String purchaseFsId = snapshot.getId();
+        pkg.purchaseFsId = purchaseFsId;
+        pkg.fsId = purchaseFsId;
+        pkg.id = stableLongFromString(purchaseFsId);
+        pkg.label = derivePackageLabel(snapshot);
+        pkg.description = derivePackageDescription(snapshot);
+        Double price = null;
+        try { price = snapshot.getDouble("price"); } catch (Exception ignored) {}
+        pkg.price = price != null ? price : 0d;
+        pkg.status = "PENDING";
+        pkg.lastUpdate = System.currentTimeMillis();
+        String thumb = snapshot.getString("thumbnailUrl");
+        pkg.thumbnailUrl = thumb != null ? thumb : "";
+        pkg.shipmentId = null;
+        return pkg;
+    }
+
+    private void ensureRemotePackage(DocumentSnapshot purchaseSnapshot, PackageEntity pkg) {
+        String uid = safeUid();
+        if (uid == null || pkg == null) return;
+        String docId = (pkg.fsId != null && !pkg.fsId.isEmpty()) ? pkg.fsId : purchaseSnapshot.getId();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference ref = db.collection("users").document(uid)
+                .collection("packages").document(docId);
+
+        ref.get().addOnSuccessListener(existing -> {
+            if (existing != null && existing.exists()) {
+                if (pkg.fsId == null || pkg.fsId.isEmpty()) {
+                    pkg.fsId = existing.getId();
+                    AppExecutors.io().execute(() -> packageDao.upsertAll(Collections.singletonList(pkg)));
+                }
+            } else {
+                java.util.HashMap<String, Object> data = new java.util.HashMap<>();
+                data.put("id", docId);
+                data.put("purchaseFsId", purchaseSnapshot.getId());
+                data.put("label", pkg.label);
+                data.put("description", pkg.description);
+                data.put("price", pkg.price);
+                data.put("status", "PENDING");
+                data.put("thumbnailUrl", pkg.thumbnailUrl);
+                data.put("shipmentId", pkg.shipmentId);
+                data.put("lastUpdate", FieldValue.serverTimestamp());
+
+                ref.set(data).addOnSuccessListener(v -> {
+                    pkg.fsId = docId;
+                    AppExecutors.io().execute(() -> packageDao.upsertAll(Collections.singletonList(pkg)));
+                });
             }
         });
     }
