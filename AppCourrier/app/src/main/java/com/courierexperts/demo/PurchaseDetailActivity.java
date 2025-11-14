@@ -39,6 +39,7 @@ public class PurchaseDetailActivity extends AppCompatActivity {
                 String status = com.courierexperts.demo.domain.StatusMapper.labelPurchase(p.status);
                 String detail = "Tienda: " + safe(p.storeName) + "\n" +
                         "Orden: " + safe(p.orderId) + "\n" +
+                        "DescripciA3n: " + safe(p.description) + "\n" +
                         "Estado: " + status + "\n" +
                         "Fecha: " + date;
                 tvDetail.setText(detail);

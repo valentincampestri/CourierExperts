@@ -44,6 +44,7 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.VH> {
         PurchaseEntity it = items.get(position);
         h.b.tvStore.setText(it.storeName);
         h.b.tvOrder.setText(it.orderId);
+        h.b.tvDescription.setText(it.description != null ? it.description : "");
         h.b.tvStatus.setText(StatusMapper.labelPurchase(it.status));
         Glide.with(h.b.getRoot()).load(it.thumbnailUrl).into(h.b.ivThumb);
 

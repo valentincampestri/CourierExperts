@@ -58,7 +58,7 @@ public class PurchaseRepository {
     }
 
     /** Crea localmente y trata de sincronizar con backend (mock). */
-    public void createLocalAndSync(String storeName, String orderId, String createdAtIso) {
+    public void createLocalAndSync(String storeName, String orderId, String description, String createdAtIso) {
         // Crear documento en Firestore; si falla, guardar local como pending
         final String uid = safeUid();
         if (uid == null) {
@@ -70,6 +70,7 @@ public class PurchaseRepository {
                 e.storeName = storeName;
                 e.orderId = orderId;
                 e.status = "PENDING";
+                e.description = description;
                 e.createdAt = System.currentTimeMillis();
                 e.thumbnailUrl = "";
                 e.pendingSync = true;
@@ -87,6 +88,7 @@ public class PurchaseRepository {
         data.put("storeName", storeName);
         data.put("orderId", orderId);
         data.put("status", "PENDING");
+        data.put("description", description);
         data.put("createdAt", FieldValue.serverTimestamp());
         data.put("thumbnailUrl", "");
 
@@ -100,6 +102,7 @@ public class PurchaseRepository {
                     e.storeName = storeName;
                     e.orderId = orderId;
                     e.status = "PENDING";
+                    e.description = description;
                     e.createdAt = System.currentTimeMillis();
                     e.thumbnailUrl = "";
                     e.pendingSync = true;
@@ -157,6 +160,7 @@ public class PurchaseRepository {
         e.id = existingId != null ? existingId : stableLongFromString(e.fsId);
         e.storeName = d.getString("storeName");
         e.orderId = d.getString("orderId");
+        e.description = d.getString("description");
         String status = d.getString("status");
         boolean delivered = status != null && "DELIVERED".equalsIgnoreCase(status);
         if (delivered) {

@@ -26,6 +26,7 @@ public class NewPurchaseActivity extends AppCompatActivity {
         View btnCancelar = findViewById(R.id.btnCancelarnuevaCompra);
         View btnGuardar  = findViewById(R.id.btnGuardarNuevaCompra);
         TextInputEditText etStore = findViewById(R.id.etStoreName);
+        TextInputEditText etDescription = findViewById(R.id.etDescription);
         TextInputEditText etOrder = findViewById(R.id.etOrderId);
 
         if (btnCancelar != null) {
@@ -34,6 +35,7 @@ public class NewPurchaseActivity extends AppCompatActivity {
         if (btnGuardar != null) {
             btnGuardar.setOnClickListener(v -> {
                 String store = etStore != null && etStore.getText() != null ? etStore.getText().toString().trim() : "";
+                String description = etDescription != null && etDescription.getText() != null ? etDescription.getText().toString().trim() : "";
                 String order = etOrder != null && etOrder.getText() != null ? etOrder.getText().toString().trim() : "";
                 if (store.isEmpty() || order.isEmpty()) {
                     Toast.makeText(this, "Completa Tienda y Nro Tracking", Toast.LENGTH_SHORT).show();
@@ -42,7 +44,7 @@ public class NewPurchaseActivity extends AppCompatActivity {
 
                 String nowIso = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'") {{ setTimeZone(java.util.TimeZone.getTimeZone("UTC")); }}.format(new java.util.Date());
                 boolean online = com.courierexperts.demo.util.NetworkUtils.isOnline(this);
-                new PurchaseRepository(this).createLocalAndSync(store, order, nowIso);
+                new PurchaseRepository(this).createLocalAndSync(store, order, description, nowIso);
 
                 Toast.makeText(this, online ? "Compra guardada" : "Guardado local, se sincronizará luego", Toast.LENGTH_SHORT).show();
                 // Volver a lista de compras
