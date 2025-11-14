@@ -75,12 +75,12 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         // Si tu layout de Home tiene FAB (como Envíos), podés manejarlo acá:
-        View fab = findViewById(R.id.fabAdd);
-        if (fab != null) {
-            fab.setOnClickListener(v ->
-                    startActivity(new Intent(HomeActivity.this, NewPurchaseActivity.class)));
+        //View fab = findViewById(R.id.fabAdd);
+        //if (fab != null) {
+          //  fab.setOnClickListener(v ->
+             //       startActivity(new Intent(HomeActivity.this, NewPurchaseActivity.class)));
             // Cuando tengamos "Nuevo Envío", cambia a NewShipmentActivity.class si querés.
-        }
+       // }
     }
 
     private void setupBottomBar(int selectedItemId) {
@@ -123,8 +123,9 @@ public class HomeActivity extends AppCompatActivity {
 
         java.util.List<Integer> imgs = java.util.Arrays.asList(
                 R.drawable.ic_amazon,
-                R.drawable.ic_envios,
-                R.drawable.ic_compras
+                R.drawable.ic_samsung,
+                R.drawable.ic_infinity,
+                R.drawable.ic_galaxy
         );
         BannerAdapter adapter = new BannerAdapter(imgs);
         rv.setAdapter(adapter);

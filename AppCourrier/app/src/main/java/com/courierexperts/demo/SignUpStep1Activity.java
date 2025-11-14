@@ -26,8 +26,8 @@ public class SignUpStep1Activity extends AppCompatActivity {
             String dni      = etDni      != null && etDni.getText()!=null      ? etDni.getText().toString().trim()      : "";
             String cuil     = etCuil     != null && etCuil.getText()!=null     ? etCuil.getText().toString().trim()     : "";
 
-            if (nombre.length() < 2 || nombre.length() > 50) { toast("Nombre 2 a 50"); return; }
-            if (apellido.length() < 2 || apellido.length() > 50) { toast("Apellido 2 a 50"); return; }
+            if (nombre.length() < 2 || nombre.length() > 50) { toast("Ingrese su nombre por favor de 2 a 50 caracteres"); return; }
+            if (apellido.length() < 2 || apellido.length() > 50) { toast("Ingrese su apellido por favor de 2 a 50 caracteres"); return; }
             if (!dni.matches("\\d{7,10}")) { toast("DNI 7 a 10 dígitos"); return; }
             if (!cuil.matches("\\d{2}-\\d{8}-\\d")) { toast("CUIL formato NN-NNNNNNNN-N"); return; }
 
