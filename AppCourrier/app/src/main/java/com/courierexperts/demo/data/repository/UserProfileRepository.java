@@ -11,6 +11,7 @@ import com.courierexperts.demo.util.AppExecutors;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -198,24 +199,28 @@ public class UserProfileRepository {
     private void pushToFirestoreAsync(UserProfileEntity e) {
         final String uid = currentUid();
         if (uid == null) return;
+        java.util.HashMap<String, Object> data = new java.util.HashMap<>();
+        // Sólo mandamos campos no nulos/ no vacíos para evitar sobreescrituras con valores vacíos
+        if (notEmpty(e.name)) data.put("name", e.name);
+        if (notEmpty(e.lastName)) data.put("lastName", e.lastName);
+        if (notEmpty(e.email)) data.put("email", e.email);
+        if (notEmpty(e.address)) data.put("address", e.address);
+        if (notEmpty(e.province)) data.put("province", e.province);
+        if (notEmpty(e.country)) data.put("country", e.country);
+        if (notEmpty(e.phone)) data.put("phone", e.phone);
+        if (notEmpty(e.dni)) data.put("dni", e.dni);
+        if (notEmpty(e.cuil)) data.put("cuil", e.cuil);
+        if (e.depositId != null) data.put("depositId", e.depositId);
+        if (e.notificationsEnabled != null) data.put("notificationsEnabled", e.notificationsEnabled);
+        if (notEmpty(e.updatedAt)) data.put("updatedAt", e.updatedAt);
+
         FirebaseFirestore.getInstance().collection("users").document(uid)
-                .set(new java.util.HashMap<String, Object>() {{
-                    put("name", e.name);
-                    put("lastName", e.lastName);
-                    put("email", e.email);
-                    put("address", e.address);
-                    put("province", e.province);
-                    put("country", e.country);
-                    put("phone", e.phone);
-                    put("dni", e.dni);
-                    put("cuil", e.cuil);
-                    put("depositId", e.depositId);
-                    put("notificationsEnabled", e.notificationsEnabled != null && e.notificationsEnabled);
-                    put("updatedAt", e.updatedAt);
-                }})
+                .set(data, SetOptions.merge())
                 .addOnSuccessListener(v -> AppExecutors.io().execute(() -> { e.dirty = Boolean.FALSE; dao.upsert(e);} ))
                 .addOnFailureListener(err -> { try { com.courierexperts.demo.work.ProfileSyncWorker.enqueue(app); } catch (Exception ignored) {} });
     }
+
+    private static boolean notEmpty(String s) { return s != null && !s.trim().isEmpty(); }
 
     public void enqueueSyncNow() {
         try { com.courierexperts.demo.work.ProfileSyncWorker.enqueue(app); } catch (Exception ignored) {}

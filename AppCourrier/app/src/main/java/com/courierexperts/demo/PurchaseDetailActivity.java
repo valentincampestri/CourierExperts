@@ -11,17 +11,49 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.lifecycle.ViewModelProvider;
+
+import com.courierexperts.demo.data.local.entity.PurchaseEntity;
+import com.courierexperts.demo.data.repository.PurchaseRepository;
+
 public class PurchaseDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detalle_compra);
+        setContentView(R.layout.activity_purchase_detail);
 
         View btnBack = findViewById(R.id.btnBack);
         if (btnBack != null) btnBack.setOnClickListener(v -> finish());
 
+        long id = getIntent().getLongExtra("purchaseId", 0L);
+        final android.widget.TextView tvSub = findViewById(R.id.tvSub);
+        final android.widget.TextView tvDetail = findViewById(R.id.tvDetail);
+
+        if (id > 0 && tvDetail != null) {
+            PurchaseRepository repo = new PurchaseRepository(this);
+            repo.observePurchaseById(id).observe(this, p -> {
+                if (p == null) return;
+                if (tvSub != null) tvSub.setText(p.storeName != null ? p.storeName : "");
+                String date = formatDate(p.createdAt);
+                String status = com.courierexperts.demo.domain.StatusMapper.labelPurchase(p.status);
+                String detail = "Tienda: " + safe(p.storeName) + "\n" +
+                        "Orden: " + safe(p.orderId) + "\n" +
+                        "Estado: " + status + "\n" +
+                        "Fecha: " + date;
+                tvDetail.setText(detail);
+            });
+        } else {
+            if (tvDetail != null) tvDetail.setText("Compra no encontrada");
+        }
+
         setupBottomBar();
+    }
+
+    private static String safe(String s) { return s != null ? s : ""; }
+    private static String formatDate(long epoch) {
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm", java.util.Locale.getDefault());
+        return sdf.format(new java.util.Date(epoch));
     }
 
     private void setupBottomBar() {

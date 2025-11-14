@@ -46,6 +46,19 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 }
             });
+            // Debug: long press to seed Firestore with demo data
+            boolean isDebug = (getApplicationInfo().flags & android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+            if (isDebug) {
+                tvSaludo.setOnLongClickListener(v -> {
+                    new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                            .setTitle("Seed Firestore (debug)")
+                            .setMessage("Crear 10 compras, 10 paquetes y 10 envíos para el usuario actual?")
+                            .setNegativeButton("Cancelar", null)
+                            .setPositiveButton("Sembrar", (d, which) -> com.courierexperts.demo.util.SeedDebug.seedNow(this))
+                            .show();
+                    return true;
+                });
+            }
         }
 
         View btnCompras = findViewById(R.id.btnCompras);
@@ -65,14 +78,43 @@ public class HomeActivity extends AppCompatActivity {
                     startActivity(new Intent(HomeActivity.this, ShipmentsActivity.class)));
         }
 
-        View tvVerDetallesHome = findViewById(R.id.tvVerDetallesHome);
-        if (tvVerDetallesHome != null) {
-            tvVerDetallesHome.setOnClickListener(v -> {
-                Intent i = new Intent(HomeActivity.this, ShipmentDetailActivity.class);
-                i.putExtra("shipmentId", 5);
-                startActivity(i);
+        final android.widget.TextView tvUltimoTitulo = findViewById(R.id.Tvenvultimo);
+        final android.widget.TextView tvUltimoEstado = findViewById(R.id.Tvenvultimoestado);
+        final View tvVerDetallesHome = findViewById(R.id.tvVerDetallesHome);
+        // Observa shipments y muestra el último (por lastUpdate desc, fallback id)
+        try {
+            com.courierexperts.demo.data.local.db.AppDatabase db = com.courierexperts.demo.data.local.db.AppDatabase.get(getApplicationContext());
+            db.shipmentDao().observeAll().observe(this, list -> {
+                if (list == null || list.isEmpty()) {
+                    if (tvUltimoTitulo != null) tvUltimoTitulo.setText("aun no has solicitado envios");
+                    if (tvUltimoEstado != null) tvUltimoEstado.setText("");
+                    if (tvVerDetallesHome != null) tvVerDetallesHome.setVisibility(View.GONE);
+                    return;
+                }
+                // pick latest by lastUpdate then id
+                com.courierexperts.demo.data.local.entity.ShipmentEntity last = null;
+                for (com.courierexperts.demo.data.local.entity.ShipmentEntity se : list) {
+                    if (last == null) { last = se; continue; }
+                    if (se.lastUpdate > last.lastUpdate) last = se;
+                    else if (se.lastUpdate == last.lastUpdate && se.id > last.id) last = se;
+                }
+                if (last != null) {
+                    if (tvUltimoTitulo != null) tvUltimoTitulo.setText(last.title != null ? last.title : "Envio");
+                    if (tvUltimoEstado != null) tvUltimoEstado.setText(com.courierexperts.demo.domain.StatusMapper.labelShipment(last.status));
+                    if (tvVerDetallesHome != null) {
+                        tvVerDetallesHome.setVisibility(View.VISIBLE);
+                        final String fs = last.fsId;
+                        final long lid = last.id;
+                        tvVerDetallesHome.setOnClickListener(v -> {
+                            Intent i = new Intent(HomeActivity.this, ShipmentDetailActivity.class);
+                            if (fs != null && !fs.isEmpty()) i.putExtra("shipmentFsId", fs);
+                            i.putExtra("shipmentLocalId", lid);
+                            startActivity(i);
+                        });
+                    }
+                }
             });
-        }
+        } catch (Exception ignored) {}
 
         // Si tu layout de Home tiene FAB (como Envíos), podés manejarlo acá:
         //View fab = findViewById(R.id.fabAdd);

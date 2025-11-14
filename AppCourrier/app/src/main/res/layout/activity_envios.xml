@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -105,24 +105,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:elevation="8dp" />
 
-    <!-- FAB circular que sobresale -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAdd"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="Nuevo envío"
-        app:srcCompat="@drawable/ic_add_24"
-        app:tint="@android:color/white"
-        app:backgroundTint="@color/purple_700"
-        app:fabCustomSize="72dp"
-        android:layout_marginBottom="-28dp"
-    app:elevation="12dp"
-    app:maxImageSize="28dp"
-    app:useCompatPadding="false"
-    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Courier.FAB"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintBottom_toTopOf="@id/bottomNav" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+

@@ -35,6 +35,15 @@ public class ShipmentsActivity extends AppCompatActivity {
         b.rvEnvios.setLayoutManager(new LinearLayoutManager(this));
         b.rvEnvios.setAdapter(adapter);
 
+        adapter.setOnItemClickListener(item -> {
+            Intent i = new Intent(ShipmentsActivity.this, ShipmentDetailActivity.class);
+            if (item.fsId != null && !item.fsId.isEmpty()) {
+                i.putExtra("shipmentFsId", item.fsId);
+            }
+            i.putExtra("shipmentLocalId", item.id);
+            startActivity(i);
+        });
+
         vm = new ViewModelProvider(this).get(ShipmentsViewModel.class);
         vm.getShipments().observe(this, list -> {
             adapter.submit(list);
@@ -52,6 +61,15 @@ public class ShipmentsActivity extends AppCompatActivity {
 //        adapter = new ShipmentAdapter();
 //        b.rvEnvios.setLayoutManager(new LinearLayoutManager(this));
 //        b.rvEnvios.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(item -> {
+            Intent i = new Intent(ShipmentsActivity.this, ShipmentDetailActivity.class);
+            if (item.fsId != null && !item.fsId.isEmpty()) {
+                i.putExtra("shipmentFsId", item.fsId);
+            }
+            i.putExtra("shipmentLocalId", item.id);
+            startActivity(i);
+        });
 //
 //        vm = new ViewModelProvider(this).get(ShipmentsViewModel.class);
 //        vm.getShipments().observe(this, list -> {
@@ -91,3 +109,4 @@ public class ShipmentsActivity extends AppCompatActivity {
         });
     }
 }
+

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.courierexperts.demo.data.local.entity.ShipmentEntity;
+import com.courierexperts.demo.domain.StatusMapper;
 import com.courierexperts.demo.databinding.ItemShipmentBinding;
 
 import java.util.ArrayList;
@@ -48,8 +49,12 @@ public class ShipmentAdapter extends RecyclerView.Adapter<ShipmentAdapter.VH> {
         ShipmentEntity it = items.get(position);
 
         h.b.tvTitle.setText(it.title);
-        h.b.tvSubtitle.setText("#" + it.trackingNumber);
-        h.b.tvStatus.setText(prettyStatus(it.status));
+        String subtitle = "#" + (it.trackingNumber != null ? it.trackingNumber : "");
+        if (it.fsId != null && it.fsId.startsWith("local-")) {
+            subtitle += "  • sin conexión";
+        }
+        h.b.tvSubtitle.setText(subtitle);
+        h.b.tvStatus.setText(StatusMapper.labelShipment(it.status));
 
         Glide.with(h.b.getRoot())
                 .load(it.thumbnailUrl)
@@ -62,15 +67,4 @@ public class ShipmentAdapter extends RecyclerView.Adapter<ShipmentAdapter.VH> {
 
     @Override
     public int getItemCount() { return items.size(); }
-
-    private String prettyStatus(String status) {
-        if (status == null) return "";
-        switch (status) {
-            case "en_transito": return "En tránsito";
-            case "entregado":   return "Entregado";
-            case "preparando":  return "Preparando";
-            default:            return status;
-        }
-    }
-
 }

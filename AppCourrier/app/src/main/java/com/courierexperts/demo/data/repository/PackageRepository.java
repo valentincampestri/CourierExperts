@@ -7,19 +7,21 @@ import androidx.lifecycle.LiveData;
 import com.courierexperts.demo.data.local.dao.PackageDao;
 import com.courierexperts.demo.data.local.db.AppDatabase;
 import com.courierexperts.demo.data.local.entity.PackageEntity;
-import com.courierexperts.demo.data.remote.RetrofitClient;
-import com.courierexperts.demo.domain.model.UserPackage;
 import com.courierexperts.demo.util.AppExecutors;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Response;
 
 public class PackageRepository {
 
     private final PackageDao dao;
     private final Context app;
+    private ListenerRegistration packagesListener;
 
     public PackageRepository(Context ctx) {
         this.app = ctx.getApplicationContext();
@@ -27,30 +29,77 @@ public class PackageRepository {
     }
 
     public LiveData<List<PackageEntity>> observePackages() {
-        refreshFromNetwork();
+        ensureListener();
         return dao.observeAll();
     }
 
+    public LiveData<List<PackageEntity>> observeAllOrdered() {
+        ensureListener();
+        return dao.observeAllOrdered();
+    }
+
+    public LiveData<List<PackageEntity>> observeEligiblePackages() {
+        ensureListener();
+        return dao.observeEligible();
+    }
+
     public void refreshFromNetwork() {
-        AppExecutors.io().execute(() -> {
-            try {
-                Response<List<UserPackage>> resp = RetrofitClient.api(app).getPackages().execute();
-                if (resp.isSuccessful() && resp.body() != null) {
-                    List<PackageEntity> list = new ArrayList<>();
-                    for (UserPackage p : resp.body()) {
-                        PackageEntity e = new PackageEntity();
-                        e.id = p.id;
-                        e.label = p.label;
-                        e.description = p.description;
-                        e.status = p.status;
-                        e.lastUpdate = p.lastUpdate;
-                        e.thumbnailUrl = p.thumbnailUrl;
-                        list.add(e);
-                    }
-                    dao.clear();
-                    dao.upsertAll(list);
-                }
-            } catch (Exception ignored) { }
+        ensureListener();
+    }
+
+    private void ensureListener() {
+        if (packagesListener != null) return;
+        String uid = safeUid();
+        if (uid == null) return;
+        Query q = FirebaseFirestore.getInstance()
+                .collection("users").document(uid)
+                .collection("packages")
+                .orderBy("lastUpdate", Query.Direction.DESCENDING);
+
+        packagesListener = q.addSnapshotListener((snapshots, e) -> {
+            if (e != null || snapshots == null) return;
+            List<PackageEntity> list = new ArrayList<>();
+            for (DocumentSnapshot d : snapshots.getDocuments()) {
+                PackageEntity pe = mapDoc(d);
+                if (pe != null) list.add(pe);
+            }
+            AppExecutors.io().execute(() -> {
+                // opcional: dao.clear(); // preferimos Upsert para mantener selección
+                dao.upsertAll(list);
+            });
         });
+    }
+
+    private PackageEntity mapDoc(DocumentSnapshot d) {
+        if (d == null || !d.exists()) return null;
+        PackageEntity e = new PackageEntity();
+        e.fsId = d.getId();
+        Long existingId = null;
+        try { existingId = dao.findLocalIdByFsId(e.fsId); } catch (Exception ignored) {}
+        e.id = existingId != null ? existingId : stableLongFromString(e.fsId);
+        e.label = d.getString("label");
+        e.description = d.getString("description");
+        String status = d.getString("status");
+        e.status = status != null ? status : "PENDING";
+        com.google.firebase.Timestamp ts = d.getTimestamp("lastUpdate");
+        e.lastUpdate = ts != null ? ts.toDate().getTime() : System.currentTimeMillis();
+        String thumb = d.getString("thumbnailUrl");
+        e.thumbnailUrl = thumb != null ? thumb : "";
+        String sh = d.getString("shipmentId");
+        e.shipmentId = sh != null ? sh : null;
+        return e;
+    }
+
+    private static long stableLongFromString(String s) {
+        // Simple hash-based stable id (non-crypto), ensures positive long
+        long h = 1125899906842597L; // prime
+        for (int i = 0; i < s.length(); i++) {
+            h = 31*h + s.charAt(i);
+        }
+        return h & Long.MAX_VALUE;
+    }
+
+    private static String safeUid() {
+        try { return FirebaseAuth.getInstance().getUid(); } catch (Exception ex) { return null; }
     }
 }

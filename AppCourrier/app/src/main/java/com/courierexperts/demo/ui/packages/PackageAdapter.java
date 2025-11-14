@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.courierexperts.demo.data.local.entity.PackageEntity;
+import com.courierexperts.demo.domain.StatusMapper;
 import com.courierexperts.demo.databinding.ItemPackageBinding;
 
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.VH> {
 
     private final List<PackageEntity> items = new ArrayList<>();
     private final Set<Long> selectedIds = new HashSet<>();
+    private boolean selectionEnabled = true;
+    public void setSelectionEnabled(boolean enabled) { this.selectionEnabled = enabled; notifyDataSetChanged(); }
     public void submit(List<PackageEntity> data) {
         items.clear();
         if (data != null) items.addAll(data);
@@ -53,18 +56,38 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.VH> {
     public void onBindViewHolder(@NonNull VH h, int position) {
         PackageEntity it = items.get(position);
         h.b.tvLabel.setText(it.label);
-        h.b.tvStatus.setText(it.status);
+        h.b.tvStatus.setText(StatusMapper.labelPackage(it.status));
         h.b.tvDesc.setText(it.description);
         Glide.with(h.b.getRoot()).load(it.thumbnailUrl).into(h.b.ivThumb);
 
-        // checkbox state
-        boolean checked = selectedIds.contains(it.id);
-        h.b.cbSelect.setOnCheckedChangeListener(null);
-        h.b.cbSelect.setChecked(checked);
-        h.b.cbSelect.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) selectedIds.add(it.id); else selectedIds.remove(it.id);
-            if (selectionListener != null) selectionListener.onSelectionChanged(selectedIds.size());
-        });
+        // checkbox state (hide if selection disabled)
+        if (!selectionEnabled) {
+            h.b.cbSelect.setVisibility(android.view.View.GONE);
+        } else {
+            h.b.cbSelect.setVisibility(android.view.View.VISIBLE);
+            boolean selectable = "IN_WAREHOUSE".equals(it.status);
+            h.b.cbSelect.setEnabled(selectable);
+            if (!selectable) {
+                h.b.cbSelect.setOnClickListener(v -> android.widget.Toast.makeText(
+                        h.b.getRoot().getContext(),
+                        "Solo seleccionables en depósito",
+                        android.widget.Toast.LENGTH_SHORT
+                ).show());
+            } else {
+                h.b.cbSelect.setOnClickListener(null);
+            }
+            boolean checked = selectedIds.contains(it.id);
+            h.b.cbSelect.setOnCheckedChangeListener(null);
+            h.b.cbSelect.setChecked(checked);
+            h.b.cbSelect.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (!selectable) {
+                    buttonView.setChecked(false);
+                    return;
+                }
+                if (isChecked) selectedIds.add(it.id); else selectedIds.remove(it.id);
+                if (selectionListener != null) selectionListener.onSelectionChanged(selectedIds.size());
+            });
+        }
 
         // click en fila mantiene navegación existente
         h.b.getRoot().setOnClickListener(v -> { if (listener != null) listener.onClick(it); });

@@ -173,9 +173,15 @@ public class SignInActivity extends AppCompatActivity {
     private void onAuthed(FirebaseUser user) {
         if (user == null) { toast("Error de autenticación"); return; }
         // Inicializar/actualizar perfil local y sincronizar remoto
-        com.courierexperts.demo.data.repository.UserProfileRepository repo = new com.courierexperts.demo.data.repository.UserProfileRepository(this); repo.updateEmail(user.getEmail()!=null?user.getEmail():"");
-        if (user.getDisplayName()!=null) repo.updateName(user.getDisplayName());
+        com.courierexperts.demo.data.repository.UserProfileRepository repo = new com.courierexperts.demo.data.repository.UserProfileRepository(this);
+        // Primero traemos Firestore -> Room para evitar sobreescrituras con vacíos
         repo.syncFromFirestore();
+        // Luego aplicamos updates puntuales que harán merge en Firestore
+        String email = user.getEmail()!=null?user.getEmail():"";
+        if (!email.isEmpty()) repo.updateEmail(email);
+        if (user.getDisplayName()!=null && !user.getDisplayName().trim().isEmpty()) {
+            repo.updateName(user.getDisplayName().trim());
+        }
         repo.enqueueSyncNow();
         startActivity(new Intent(SignInActivity.this, HomeActivity.class)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK));

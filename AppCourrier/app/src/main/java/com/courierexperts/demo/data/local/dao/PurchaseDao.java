@@ -22,6 +22,12 @@ public interface PurchaseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(PurchaseEntity item);
 
+    @Query("SELECT id FROM purchases WHERE fsId = :fsId LIMIT 1")
+    Long findLocalIdByFsId(String fsId);
+
+    @Query("SELECT * FROM purchases WHERE id = :id LIMIT 1")
+    LiveData<PurchaseEntity> observeById(long id);
+
     @Query("SELECT * FROM purchases WHERE pendingSync = 1")
     List<PurchaseEntity> listPending();
 

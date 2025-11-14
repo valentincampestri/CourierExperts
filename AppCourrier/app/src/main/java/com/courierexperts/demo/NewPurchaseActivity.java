@@ -57,8 +57,8 @@ public class NewPurchaseActivity extends AppCompatActivity {
         BottomNavigationView bottom = findViewById(R.id.bottomNav);
         if (bottom == null) return;
 
-        // No seleccionamos nada en esta pantalla (no hay item central)
-        // bottom.setSelectedItemId(...);  // <- intencionalmente NO se usa
+        // Seleccionar el item central (add)
+        bottom.setSelectedItemId(R.id.nav_add);
 
         bottom.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override

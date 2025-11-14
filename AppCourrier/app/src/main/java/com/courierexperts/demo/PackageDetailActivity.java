@@ -8,6 +8,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.courierexperts.demo.databinding.ActivityPackageDetailBinding;
+import com.courierexperts.demo.data.local.db.AppDatabase;
+import com.courierexperts.demo.data.local.entity.PackageEntity;
+import com.courierexperts.demo.domain.StatusMapper;
 
 public class PackageDetailActivity extends AppCompatActivity {
 
@@ -29,8 +32,16 @@ public class PackageDetailActivity extends AppCompatActivity {
             return;
         }
 
-        // Por ahora mostramos el ID recibido. Después lo enlazamos a Room.
-        b.tvTitle.setText("Paquete #" + packageId);
+        AppDatabase.get(getApplicationContext()).packageDao().observeById(packageId)
+                .observe(this, (PackageEntity it) -> {
+                    if (it == null) return;
+                    b.tvTitle.setText(it.label != null ? it.label : ("Paquete #" + packageId));
+                    b.tvStatus.setText("Estado: " + StatusMapper.labelPackage(it.status));
+                    b.tvDesc.setText("Descripción: " + (it.description != null ? it.description : ""));
+                    Glide.with(this)
+                            .load(it.thumbnailUrl != null && !it.thumbnailUrl.isEmpty() ? it.thumbnailUrl : ("https://picsum.photos/seed/pack" + packageId + "/300/200"))
+                            .into(b.ivThumb);
+                });
         b.tvStatus.setText("Estado: (pendiente de data)");
         b.tvDesc.setText("Descripción: (pendiente de data)");
 
@@ -39,3 +50,4 @@ public class PackageDetailActivity extends AppCompatActivity {
                 .into(b.ivThumb);
     }
 }
+

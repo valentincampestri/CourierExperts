@@ -73,7 +73,7 @@ public class PurchasesActivity extends AppCompatActivity {
         BottomNavigationView bottom = b.bottomNav;
         if (bottom == null) return;
 
-        bottom.setSelectedItemId(R.id.nav_home);
+        // No marcar ningún item en esta pantalla
         bottom.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

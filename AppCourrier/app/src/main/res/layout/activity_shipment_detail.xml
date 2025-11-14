@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -41,7 +41,7 @@
             android:id="@+id/tvSub"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Envío 5\n#12345"
+            android:text="Envío 5&#10;#12345"
             android:textColor="@android:color/white"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@id/tvTitle"
@@ -215,17 +215,24 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="64dp"
+        android:background="@drawable/bg_bottom_bar"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
         app:menu="@menu/bottom_nav_menu"
         app:itemIconSize="40dp"
         app:itemIconTint="@null"
-        android:background="@color/white"/>
+        app:itemRippleColor="@color/purple_200"
+        app:labelVisibilityMode="unlabeled"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:elevation="8dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
