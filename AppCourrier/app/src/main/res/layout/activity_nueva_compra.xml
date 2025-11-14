@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -28,7 +28,7 @@
             android:id="@+id/tvNuevacompra"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Nueva compra"
+            android:text="@string/new_purchase_title"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -40,7 +40,7 @@
             android:id="@+id/tvMensaje"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Informanos sobre tu compra"
+            android:text="@string/new_purchase_subtitle"
             android:textColor="@android:color/white"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@id/tvNuevacompra"
@@ -69,7 +69,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Tienda">
+                android:hint="@string/hint_store">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etStoreName"
@@ -81,7 +81,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Descripción"
+                android:hint="@string/hint_description"
                 android:layout_marginTop="@dimen/ce_spacing_md">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -93,7 +93,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Empresa de Envío"
+                android:hint="@string/hint_carrier"
                 android:layout_marginTop="@dimen/ce_spacing_md">
 
                 <AutoCompleteTextView
@@ -105,7 +105,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Precio"
+                android:hint="@string/hint_price"
                 android:layout_marginTop="@dimen/ce_spacing_md">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -118,7 +118,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nro Tracking"
+                android:hint="@string/hint_tracking"
                 android:layout_marginTop="@dimen/ce_spacing_md">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -139,7 +139,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Cancelar"
+                    android:text="@string/action_cancel"
                     style="@style/Widget.CE.Button.Outlined"/>
 
                 <com.google.android.material.button.MaterialButton
@@ -148,7 +148,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="@dimen/ce_spacing_sm"
-                    android:text="Guardar"
+                    android:text="@string/action_save"
                     style="@style/Widget.CE.Button.Primary"/>
             </LinearLayout>
         </LinearLayout>
@@ -172,5 +172,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:elevation="8dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+
 
 

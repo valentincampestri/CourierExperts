@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -24,7 +24,7 @@
                 android:id="@+id/tvDatos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tus datos"
+                android:text="@string/profile_title"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -62,13 +62,13 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nombre">
+                android:hint="@string/hint_name">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etNombrePerfil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Maria Perez"/>
+                    android:text="@string/placeholder_name"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Mail -->
@@ -76,7 +76,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Mail"
+                android:hint="@string/hint_mail"
                 android:layout_marginTop="@dimen/ce_spacing_sm">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -84,15 +84,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
-                    android:text="maria@gmail.com"/>
+                    android:text="@string/placeholder_mail"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Teléfono -->
+            <!-- Telfono -->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nro de teléfono"
+                android:hint="Nro de telfono"
                 android:layout_marginTop="@dimen/ce_spacing_sm">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -105,12 +105,12 @@
                     android:text=""/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Dirección -->
+            <!-- Direccin -->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Dirección"
+                android:hint="Direccin"
                 android:layout_marginTop="@dimen/ce_spacing_sm">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -119,15 +119,15 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:maxLength="80"
-                    android:text="Av. Corrientes 1000"/>
+                    android:text="@string/placeholder_address"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Depósito -->
+            <!-- Depsito -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/ce_spacing_sm"
-                android:text="Depósito elegido"
+                android:text="Depsito elegido"
                 android:textStyle="bold"
                 android:textSize="14sp"/>
 
@@ -152,7 +152,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Cancelar"/>
+                    android:text="@string/action_cancel"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnGuardardatosPerfil"
@@ -161,7 +161,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="@dimen/ce_spacing_sm"
-                    android:text="Guardar"
+                    android:text="@string/action_save"
                     />
             </LinearLayout>
         </LinearLayout>
@@ -184,5 +184,14 @@
         app:elevation="8dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+
+
 
 

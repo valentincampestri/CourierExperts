@@ -116,7 +116,7 @@
             android:id="@+id/btnBack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Atrás"/>
+            android:text="Atr&#225;s"/>
 
         <Space android:layout_width="match_parent" android:layout_height="8dp"/>
 

@@ -62,13 +62,7 @@ public class ShipmentDetailActivity extends AppCompatActivity {
 
         setupBottomBar();
 
-        View fab = b.fabAdd;
-        if (fab != null) {
-            fab.setOnClickListener(v ->
-                    startActivity(new Intent(ShipmentDetailActivity.this, NewPurchaseActivity.class))
-            );
-        }
-    }
+            }
 
     private void wireHeadAndList(AppDatabase db, String fsId, TextView tvTitle, TextView tvStatus,
                                  ActivityEnviosBinding b, PackageAdapter adapter) {
@@ -117,5 +111,6 @@ public class ShipmentDetailActivity extends AppCompatActivity {
         });
     }
 }
+
 
 

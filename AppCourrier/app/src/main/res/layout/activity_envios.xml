@@ -1,11 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- HEADER -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
         android:layout_width="0dp"
@@ -21,7 +20,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:src="@drawable/ic_envios"
-            android:contentDescription="Icono envíos"
+            android:contentDescription="@string/envios_icon_desc"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
@@ -30,7 +29,7 @@
             android:id="@+id/tvEnvios"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Tus envíos"
+            android:text="@string/envios_title"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -42,7 +41,7 @@
             android:id="@+id/tvMensaje"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Revisá el estado de tus envíos"
+            android:text="@string/envios_subtitle"
             android:textColor="@android:color/white"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@id/tvEnvios"
@@ -51,7 +50,6 @@
             app:layout_constraintBottom_toBottomOf="@id/imgEnvios"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- LISTA con Pull-to-Refresh -->
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/srlEnvios"
         android:layout_width="0dp"
@@ -72,22 +70,20 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <!-- EMPTY STATE -->
     <TextView
         android:id="@+id/tvEmptyEnvios"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Todavía no hay envíos en curso"
+        android:text="@string/envios_empty"
         android:textSize="16sp"
         android:gravity="center"
         android:paddingBottom="64dp"
-    android:visibility="gone"
-    app:layout_constraintTop_toBottomOf="@id/header"
-    app:layout_constraintBottom_toTopOf="@id/bottomNav"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent" />
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- BOTTOM NAV con esquinas redondeadas -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
@@ -106,5 +102,7 @@
         app:elevation="8dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 

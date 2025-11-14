@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -31,7 +31,7 @@
             android:id="@+id/tvSaludo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hola, Maria"
+            android:text="@string/greeting_name"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -45,7 +45,7 @@
             android:id="@+id/tvMensaje"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Que bueno volver a verte!"
+            android:text="@string/greeting_message"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@id/tvSaludo"
@@ -67,7 +67,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Menú principal -->
+    <!-- Men  principal -->
     <LinearLayout
         android:id="@+id/menuPrincipal"
         android:layout_width="0dp"
@@ -153,13 +153,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Paquetes"
+                    android:text="@string/label_packages"
                     android:textStyle="bold"
                     android:textSize="14sp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Envíos -->
+        <!-- Env os -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/btnEnvios"
             android:layout_width="0dp"
@@ -203,7 +203,7 @@
         android:id="@+id/tvActividad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tu actividad reciente"
+        android:text="@string/recent_activity"
         android:textStyle="bold"
         android:textSize="24sp"
         app:layout_constraintTop_toBottomOf="@id/menuPrincipal"
@@ -251,7 +251,7 @@
                     android:id="@+id/Tvenvultimo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Envio 5"
+                    android:text="@string/shipment_title_placeholder"
                     android:textStyle="bold"
                     android:textSize="14sp" />
 
@@ -259,7 +259,7 @@
                     android:id="@+id/Tvenvultimoestado"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Enviado"
+                    android:text="@string/shipment_status_sent"
                     android:textSize="12sp"
                     android:textColor="@android:color/darker_gray" />
             </LinearLayout>
@@ -268,7 +268,7 @@
                 android:id="@+id/tvVerDetallesHome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ver detalles"
+                android:text="@string/action_view_details"
                 android:textColor="@color/purple_700"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -293,6 +293,14 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+
 
 
 

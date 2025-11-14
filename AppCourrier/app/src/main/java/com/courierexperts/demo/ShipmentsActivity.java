@@ -80,10 +80,6 @@ public class ShipmentsActivity extends AppCompatActivity {
 //        });
 
         // (2) CLICK DEL FAB — va en esta Activity
-        b.fabAdd.setOnClickListener(v ->
-                        startActivity(new Intent(this, NewPurchaseActivity.class))
-                // cuando tengas el flujo de "Nuevo Envío", cambiá a NewShipmentActivity.class
-        );
 
         // (3) LISTENER DE LA BOTTOM BAR (sin ítem central)
         setupBottomBar();
@@ -109,4 +105,5 @@ public class ShipmentsActivity extends AppCompatActivity {
         });
     }
 }
+
 
