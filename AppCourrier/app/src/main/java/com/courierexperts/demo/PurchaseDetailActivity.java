@@ -4,17 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.courierexperts.demo.data.repository.PurchaseRepository;
+import com.courierexperts.demo.domain.StatusMapper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.lifecycle.ViewModelProvider;
-
-import com.courierexperts.demo.data.local.entity.PurchaseEntity;
-import com.courierexperts.demo.data.repository.PurchaseRepository;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class PurchaseDetailActivity extends AppCompatActivity {
 
@@ -23,37 +26,93 @@ public class PurchaseDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_purchase_detail);
 
+        // Views de la UI
         View btnBack = findViewById(R.id.btnBack);
-        if (btnBack != null) btnBack.setOnClickListener(v -> finish());
+        final TextView tvSub = findViewById(R.id.tvSub);
+        final TextView tvEstado = findViewById(R.id.tvEstado);
+        final ImageView imgCompraDetalle = findViewById(R.id.imgCompraDetalle);
+
+        final TextView tvStoreValue = findViewById(R.id.tvStoreValue);
+        final TextView tvOrderValue = findViewById(R.id.tvOrderValue);
+        final TextView tvDateValue = findViewById(R.id.tvDateValue);
+
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> finish());
+        }
 
         long id = getIntent().getLongExtra("purchaseId", 0L);
-        final android.widget.TextView tvSub = findViewById(R.id.tvSub);
-        final android.widget.TextView tvDetail = findViewById(R.id.tvDetail);
 
-        if (id > 0 && tvDetail != null) {
+        if (id > 0) {
             PurchaseRepository repo = new PurchaseRepository(this);
             repo.observePurchaseById(id).observe(this, p -> {
                 if (p == null) return;
-                if (tvSub != null) tvSub.setText(p.storeName != null ? p.storeName : "");
+
+                // HEADER: subtítulo con nombre de la tienda
+                if (tvSub != null) {
+                    tvSub.setText(safe(p.storeName));
+                }
+
+                // Datos formateados
                 String date = formatDate(p.createdAt);
-                String status = com.courierexperts.demo.domain.StatusMapper.labelPurchase(p.status);
-                String detail = "Tienda: " + safe(p.storeName) + "\n" +
-                        "Orden: " + safe(p.orderId) + "\n" +
-                        "Estado: " + status + "\n" +
-                        "Fecha: " + date;
-                tvDetail.setText(detail);
+                String statusLabel = StatusMapper.labelPurchase(p.status);
+
+                // Seteamos SOLO los valores (los labels están en el XML en negrita)
+                if (tvStoreValue != null) tvStoreValue.setText(safe(p.storeName));
+                if (tvOrderValue != null) tvOrderValue.setText(safe(p.orderId));
+                if (tvDateValue != null) tvDateValue.setText(date);
+
+                // Imagen real del producto
+                if (imgCompraDetalle != null) {
+                    Glide.with(this)
+                            .load(p.thumbnailUrl)
+                            .into(imgCompraDetalle);
+                }
+
+                // Chip de estado con color según estado
+                applyStatusChip(tvEstado, statusLabel);
             });
         } else {
-            if (tvDetail != null) tvDetail.setText("Compra no encontrada");
+            // Si vino sin id, mostramos mensaje básico
+            if (tvStoreValue != null) tvStoreValue.setText("Compra no encontrada");
+            if (tvOrderValue != null) tvOrderValue.setText("");
+            if (tvDateValue != null) tvDateValue.setText("");
         }
 
         setupBottomBar();
     }
 
-    private static String safe(String s) { return s != null ? s : ""; }
+    // Helpers
+
+    private static String safe(String s) {
+        return s != null ? s : "";
+    }
+
     private static String formatDate(long epoch) {
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm", java.util.Locale.getDefault());
+        SimpleDateFormat sdf =
+                new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
         return sdf.format(new java.util.Date(epoch));
+    }
+
+    private void applyStatusChip(TextView view, String statusLabel) {
+        if (view == null) return;
+
+        view.setText(statusLabel);
+
+        String s = statusLabel.toLowerCase(Locale.getDefault());
+        int bgRes;
+
+        if (s.contains("pendiente")) {
+            bgRes = R.drawable.bg_status_chip_pending;
+        } else if (s.contains("entreg")
+                || s.contains("despach")
+                || s.contains("recibid")) {
+            bgRes = R.drawable.bg_status_chip_delivered;
+        } else {
+            // Cancelada u otros: por ahora lo tratamos como pendiente
+            bgRes = R.drawable.bg_status_chip_pending;
+        }
+
+        view.setBackgroundResource(bgRes);
     }
 
     private void setupBottomBar() {
