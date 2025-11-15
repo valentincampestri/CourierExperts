@@ -3,6 +3,7 @@ package com.courierexperts.demo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.courierexperts.demo.databinding.ActivityPaquetesBinding;
 import com.courierexperts.demo.ui.packages.PackageAdapter;
+import com.courierexperts.demo.ui.packages.PackagesUiState;
 import com.courierexperts.demo.ui.packages.PackagesViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -31,7 +33,6 @@ public class PackagesActivity extends AppCompatActivity {
         adapter = new PackageAdapter();
         b.rvPaquetes.setLayoutManager(new LinearLayoutManager(this));
         b.rvPaquetes.setAdapter(adapter);
-        // Estado inicial: deshabilitado hasta que haya selección
         b.btnSolicitar.setEnabled(false);
         adapter.setOnSelectionChangeListener(count -> b.btnSolicitar.setEnabled(count > 0));
 
@@ -41,24 +42,51 @@ public class PackagesActivity extends AppCompatActivity {
         );
 
         vm = new ViewModelProvider(this).get(PackagesViewModel.class);
-        vm.getPackages().observe(this, list -> {
-            adapter.submit(list);
-            boolean empty = (list == null || list.isEmpty());
-            b.tvEmptyPaquetes.setVisibility(empty ? android.view.View.VISIBLE : android.view.View.GONE);
-            b.rvPaquetes.setVisibility(empty ? android.view.View.GONE : android.view.View.VISIBLE);
-        });
+        observeUiState();
+        b.srlPaquetes.setOnRefreshListener(() -> vm.refresh());
+        vm.refresh();
 
-        // CTA: ir a Envíos
         b.btnSolicitar.setOnClickListener(v -> onSolicitarEnvio());
 
         setupBottomBar();
+    }
+
+    private void observeUiState() {
+        vm.getUiState().observe(this, state -> {
+            b.progressBar.setVisibility(android.view.View.GONE);
+            b.tvStateMessage.setVisibility(android.view.View.GONE);
+            if (!(state instanceof PackagesUiState.Loading)) {
+                b.srlPaquetes.setRefreshing(false);
+            }
+
+            if (state instanceof PackagesUiState.Loading) {
+                if (!b.srlPaquetes.isRefreshing()) {
+                    b.progressBar.setVisibility(android.view.View.VISIBLE);
+                }
+                b.rvPaquetes.setVisibility(android.view.View.GONE);
+                b.btnSolicitar.setEnabled(false);
+            } else if (state instanceof PackagesUiState.Success) {
+                b.rvPaquetes.setVisibility(android.view.View.VISIBLE);
+                adapter.submit(((PackagesUiState.Success) state).getPackages());
+            } else if (state instanceof PackagesUiState.Empty) {
+                b.tvStateMessage.setVisibility(android.view.View.VISIBLE);
+                b.tvStateMessage.setText(R.string.packages_empty_message);
+                b.rvPaquetes.setVisibility(android.view.View.GONE);
+                b.btnSolicitar.setEnabled(false);
+            } else if (state instanceof PackagesUiState.Error) {
+                b.tvStateMessage.setVisibility(android.view.View.VISIBLE);
+                b.tvStateMessage.setText(R.string.state_error_retry);
+                b.rvPaquetes.setVisibility(android.view.View.GONE);
+                b.btnSolicitar.setEnabled(false);
+                Toast.makeText(this, R.string.state_error_retry, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void setupBottomBar() {
         BottomNavigationView bottom = b.bottomNav;
         if (bottom == null) return;
 
-        // No marcar ningún item en esta pantalla
         bottom.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -81,11 +109,11 @@ public class PackagesActivity extends AppCompatActivity {
     private void onSolicitarEnvio() {
         java.util.List<Long> ids = adapter.getSelectedIds();
         if (ids == null || ids.isEmpty()) {
-            android.widget.Toast.makeText(this, "Seleccioná al menos un paquete", android.widget.Toast.LENGTH_SHORT).show();
+            android.widget.Toast.makeText(this, "Selecciona al menos un paquete", android.widget.Toast.LENGTH_SHORT).show();
             return;
         }
 
-        android.widget.Toast.makeText(this, "Creando envío con " + ids.size() + " paquete(s)…", android.widget.Toast.LENGTH_SHORT).show();
+        android.widget.Toast.makeText(this, "Creando envio con " + ids.size() + " paquete(s)...", android.widget.Toast.LENGTH_SHORT).show();
 
         com.courierexperts.demo.data.repository.ShipmentRepository repo = new com.courierexperts.demo.data.repository.ShipmentRepository(this);
         repo.createShipment(ids, new com.courierexperts.demo.data.repository.ShipmentRepository.Callback() {
@@ -94,12 +122,11 @@ public class PackagesActivity extends AppCompatActivity {
                         .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
             }
             @Override public void onHttpError(int code) {
-                android.widget.Toast.makeText(PackagesActivity.this, "En este momento no hay servicio, intentar más tarde", android.widget.Toast.LENGTH_LONG).show();
+                Toast.makeText(PackagesActivity.this, R.string.state_error_retry, Toast.LENGTH_LONG).show();
             }
             @Override public void onOffline() {
-                android.widget.Toast.makeText(PackagesActivity.this, "Sin internet. Intenta nuevamente cuando tengas conexión", android.widget.Toast.LENGTH_LONG).show();
+                Toast.makeText(PackagesActivity.this, R.string.state_error_retry, Toast.LENGTH_LONG).show();
             }
         });
     }
 }
-

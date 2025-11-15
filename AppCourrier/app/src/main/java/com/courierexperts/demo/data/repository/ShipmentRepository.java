@@ -3,6 +3,7 @@ package com.courierexperts.demo.data.repository;
 import android.content.Context;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.courierexperts.demo.data.local.dao.ShipmentDao;
 import com.courierexperts.demo.data.local.db.AppDatabase;
@@ -25,6 +26,7 @@ public class ShipmentRepository {
     private final ShipmentDao dao;
     private final Context app;
     private ListenerRegistration shipmentsListener;
+    private final MutableLiveData<String> remoteErrors = new MutableLiveData<>();
 
     public ShipmentRepository(Context ctx) {
         this.app = ctx.getApplicationContext();
@@ -42,6 +44,10 @@ public class ShipmentRepository {
         return dao.observeAll();
     }
 
+    public LiveData<String> getErrors() {
+        return remoteErrors;
+    }
+
     public void refreshFromNetwork() {
         ensureListener();
     }
@@ -56,7 +62,14 @@ public class ShipmentRepository {
                 .orderBy("lastUpdate", Query.Direction.DESCENDING);
 
         shipmentsListener = q.addSnapshotListener((snapshots, e) -> {
-            if (e != null || snapshots == null) return;
+            if (e != null) {
+                remoteErrors.postValue(e.getMessage());
+                return;
+            }
+            if (snapshots == null) {
+                remoteErrors.postValue("Respuesta vacia de Firestore");
+                return;
+            }
             List<ShipmentEntity> list = new ArrayList<>();
             for (DocumentSnapshot d : snapshots.getDocuments()) {
                 ShipmentEntity se = mapDoc(d);

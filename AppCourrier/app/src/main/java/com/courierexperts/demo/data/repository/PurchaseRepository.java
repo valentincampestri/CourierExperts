@@ -3,6 +3,7 @@ package com.courierexperts.demo.data.repository;
 import android.content.Context;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.courierexperts.demo.data.local.dao.PackageDao;
 import com.courierexperts.demo.data.local.dao.PurchaseDao;
@@ -33,6 +34,7 @@ public class PurchaseRepository {
     private final PackageDao packageDao;
     private final Context app;
     private ListenerRegistration purchasesListener;
+    private final MutableLiveData<String> remoteErrors = new MutableLiveData<>();
 
     public PurchaseRepository(Context ctx) {
         this.app = ctx.getApplicationContext();
@@ -45,6 +47,10 @@ public class PurchaseRepository {
     public LiveData<List<PurchaseEntity>> observePurchases() {
         ensureListener();
         return dao.observeAll();
+    }
+
+    public LiveData<String> getErrors() {
+        return remoteErrors;
     }
 
     public androidx.lifecycle.LiveData<com.courierexperts.demo.data.local.entity.PurchaseEntity> observePurchaseById(long id) {
@@ -141,7 +147,14 @@ public class PurchaseRepository {
                 .orderBy("createdAt", Query.Direction.DESCENDING);
 
         purchasesListener = q.addSnapshotListener(MetadataChanges.EXCLUDE, (snapshots, e) -> {
-            if (e != null || snapshots == null) return;
+            if (e != null) {
+                remoteErrors.postValue("Firestore: " + e.getMessage());
+                return;
+            }
+            if (snapshots == null) {
+                remoteErrors.postValue("Respuesta vacia de Firestore.");
+                return;
+            }
             List<PurchaseEntity> list = new ArrayList<>();
             for (DocumentSnapshot d : snapshots.getDocuments()) {
                 PurchaseEntity pe = mapDoc(d);

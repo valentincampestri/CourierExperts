@@ -1,53 +1,73 @@
 package com.courierexperts.demo;
 
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.courierexperts.demo.databinding.ActivityPackageDetailBinding;
-import com.courierexperts.demo.data.local.db.AppDatabase;
-import com.courierexperts.demo.data.local.entity.PackageEntity;
 import com.courierexperts.demo.domain.StatusMapper;
+import com.courierexperts.demo.ui.packages.PackageDetailUiState;
+import com.courierexperts.demo.ui.packages.PackageDetailViewModel;
 
 public class PackageDetailActivity extends AppCompatActivity {
 
-    private ActivityPackageDetailBinding b;
+    private ActivityPackageDetailBinding binding;
+    private PackageDetailViewModel viewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        b = ActivityPackageDetailBinding.inflate(getLayoutInflater());
-        setContentView(b.getRoot());
+        binding = ActivityPackageDetailBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        // Toolbar simple con back
-        b.toolbar.setNavigationOnClickListener(v -> finish());
+        viewModel = new ViewModelProvider(this).get(PackageDetailViewModel.class);
+
+        binding.toolbar.setNavigationOnClickListener(v -> finish());
 
         long packageId = getIntent().getLongExtra("packageId", -1);
-        if (packageId == -1) {
-            Toast.makeText(this, "Paquete no encontrado", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
+        observeState();
+        viewModel.load(packageId);
+    }
 
-        AppDatabase.get(getApplicationContext()).packageDao().observeById(packageId)
-                .observe(this, (PackageEntity it) -> {
-                    if (it == null) return;
-                    b.tvTitle.setText(it.label != null ? it.label : ("Paquete #" + packageId));
-                    b.tvStatus.setText("Estado: " + StatusMapper.labelPackage(it.status));
-                    b.tvDesc.setText("Descripción: " + (it.description != null ? it.description : ""));
-                    Glide.with(this)
-                            .load(it.thumbnailUrl != null && !it.thumbnailUrl.isEmpty() ? it.thumbnailUrl : ("https://picsum.photos/seed/pack" + packageId + "/300/200"))
-                            .into(b.ivThumb);
-                });
-        b.tvStatus.setText("Estado: (pendiente de data)");
-        b.tvDesc.setText("Descripción: (pendiente de data)");
+    private void observeState() {
+        viewModel.getUiState().observe(this, state -> {
+            binding.progressBar.setVisibility(android.view.View.GONE);
+            binding.tvStateMessage.setVisibility(android.view.View.GONE);
+            binding.ivThumb.setVisibility(android.view.View.GONE);
+            binding.tvTitle.setVisibility(android.view.View.GONE);
+            binding.tvStatus.setVisibility(android.view.View.GONE);
+            binding.tvDesc.setVisibility(android.view.View.GONE);
 
-        // Imagen placeholder
-        Glide.with(this).load("https://picsum.photos/seed/pack" + packageId + "/300/200")
-                .into(b.ivThumb);
+            if (state instanceof PackageDetailUiState.Loading) {
+                binding.progressBar.setVisibility(android.view.View.VISIBLE);
+            } else if (state instanceof PackageDetailUiState.Success) {
+                render(((PackageDetailUiState.Success) state).getEntity());
+            } else if (state instanceof PackageDetailUiState.NotFound) {
+                binding.tvStateMessage.setVisibility(android.view.View.VISIBLE);
+                binding.tvStateMessage.setText(R.string.package_detail_not_found);
+            } else if (state instanceof PackageDetailUiState.Error) {
+                binding.tvStateMessage.setVisibility(android.view.View.VISIBLE);
+                binding.tvStateMessage.setText(R.string.state_error_retry);
+            }
+        });
+    }
+
+    private void render(com.courierexperts.demo.data.local.entity.PackageEntity entity) {
+        if (entity == null) return;
+        binding.ivThumb.setVisibility(android.view.View.VISIBLE);
+        binding.tvTitle.setVisibility(android.view.View.VISIBLE);
+        binding.tvStatus.setVisibility(android.view.View.VISIBLE);
+        binding.tvDesc.setVisibility(android.view.View.VISIBLE);
+
+        binding.tvTitle.setText(entity.label != null ? entity.label : ("Paquete #" + entity.id));
+        binding.tvStatus.setText("Estado: " + StatusMapper.labelPackage(entity.status));
+        binding.tvDesc.setText("Descripción: " + (entity.description != null ? entity.description : ""));
+        String imageUrl = entity.thumbnailUrl != null && !entity.thumbnailUrl.isEmpty()
+                ? entity.thumbnailUrl
+                : "https://picsum.photos/seed/pack" + entity.id + "/300/200";
+        Glide.with(this).load(imageUrl).into(binding.ivThumb);
     }
 }
-

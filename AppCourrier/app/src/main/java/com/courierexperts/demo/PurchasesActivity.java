@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.courierexperts.demo.databinding.ActivityComprasBinding;
 import com.courierexperts.demo.ui.purchases.PurchaseAdapter;
+import com.courierexperts.demo.ui.purchases.PurchasesUiState;
 import com.courierexperts.demo.ui.purchases.PurchasesViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -43,12 +45,9 @@ public class PurchasesActivity extends AppCompatActivity {
 
         // ViewModel + LiveData
         vm = new ViewModelProvider(this).get(PurchasesViewModel.class);
-        vm.getPurchases().observe(this, list -> {
-            adapter.submit(list);
-            boolean empty = (list == null || list.isEmpty());
-            b.tvEmpty.setVisibility(empty ? View.VISIBLE : View.GONE);
-            b.rvCompras.setVisibility(empty ? View.GONE : View.VISIBLE);
-        });
+        b.srlCompras.setOnRefreshListener(() -> vm.refresh());
+        observeUiState();
+        vm.refresh();
 
         // Si este layout tuviera FAB central (opcional)
         View fab = findViewById(R.id.fabAdd);
@@ -57,8 +56,36 @@ public class PurchasesActivity extends AppCompatActivity {
                     startActivity(new Intent(PurchasesActivity.this, NewPurchaseActivity.class))
             );
         }
-
         setupBottomBar();
+    }
+
+    private void observeUiState() {
+        vm.getUiState().observe(this, state -> {
+            b.progressBar.setVisibility(View.GONE);
+            b.tvStateMessage.setVisibility(View.GONE);
+            if (!(state instanceof PurchasesUiState.Loading)) {
+                b.srlCompras.setRefreshing(false);
+            }
+
+            if (state instanceof PurchasesUiState.Loading) {
+                if (!b.srlCompras.isRefreshing()) {
+                    b.progressBar.setVisibility(View.VISIBLE);
+                }
+                b.rvCompras.setVisibility(View.GONE);
+            } else if (state instanceof PurchasesUiState.Success) {
+                b.rvCompras.setVisibility(View.VISIBLE);
+                adapter.submit(((PurchasesUiState.Success) state).getPurchases());
+            } else if (state instanceof PurchasesUiState.Empty) {
+                b.tvStateMessage.setVisibility(View.VISIBLE);
+                b.tvStateMessage.setText(R.string.purchases_empty_message);
+                b.rvCompras.setVisibility(View.GONE);
+            } else if (state instanceof PurchasesUiState.Error) {
+                b.tvStateMessage.setVisibility(View.VISIBLE);
+                b.tvStateMessage.setText(R.string.state_error_retry);
+                b.rvCompras.setVisibility(View.GONE);
+                Toast.makeText(this, R.string.state_error_retry, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override

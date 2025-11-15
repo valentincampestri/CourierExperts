@@ -37,5 +37,13 @@
     <string name="hint_phone">Nro de telefono</string>
     <string name="hint_address">Direccion</string>
     <string name="placeholder_address">Av. Corrientes 1000</string>
+    <string name="purchases_empty_message">Todavía no informaste compras</string>
+    <string name="packages_empty_message">No hay paquetes disponibles por ahora</string>
+    <string name="state_error_retry">No hay servicio actualmente, intente nuevamente más tarde.</string>
+    <string name="purchase_detail_not_found">Compra no encontrada</string>
+    <string name="shipment_detail_not_found">Envío no encontrado</string>
+    <string name="package_detail_not_found">Paquete no encontrado</string>
+    <string name="profile_placeholder_address">Sin dirección</string>
+    <string name="profile_placeholder_phone">Sin teléfono</string>
     <!-- Existing -->
 </resources>

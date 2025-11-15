@@ -53,24 +53,43 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- LISTA -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvCompras"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srlCompras"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:paddingStart="@dimen/ce_spacing_md"
-        android:paddingEnd="@dimen/ce_spacing_md"
-        android:clipToPadding="false"
         app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintBottom_toTopOf="@id/bottomNav"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCompras"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="@dimen/ce_spacing_md"
+            android:paddingEnd="@dimen/ce_spacing_md"
+            android:clipToPadding="false"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <!-- EMPTY STATE -->
-    <TextView
-        android:id="@+id/tvEmpty"
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Todav&#237;a no informaste compras"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Estado de mensajes (vacío / error) -->
+    <TextView
+        android:id="@+id/tvStateMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/purchases_empty_message"
         android:textSize="16sp"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/header"

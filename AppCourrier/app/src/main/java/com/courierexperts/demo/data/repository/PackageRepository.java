@@ -3,6 +3,7 @@ package com.courierexperts.demo.data.repository;
 import android.content.Context;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.courierexperts.demo.data.local.dao.PackageDao;
 import com.courierexperts.demo.data.local.db.AppDatabase;
@@ -22,6 +23,7 @@ public class PackageRepository {
     private final PackageDao dao;
     private final Context app;
     private ListenerRegistration packagesListener;
+    private final MutableLiveData<String> remoteErrors = new MutableLiveData<>();
 
     public PackageRepository(Context ctx) {
         this.app = ctx.getApplicationContext();
@@ -38,6 +40,10 @@ public class PackageRepository {
         return dao.observeAllOrdered();
     }
 
+    public LiveData<String> getErrors() {
+        return remoteErrors;
+    }
+
     public void refreshFromNetwork() {
         ensureListener();
     }
@@ -52,7 +58,14 @@ public class PackageRepository {
                 .orderBy("lastUpdate", Query.Direction.DESCENDING);
 
         packagesListener = q.addSnapshotListener((snapshots, e) -> {
-            if (e != null || snapshots == null) return;
+            if (e != null) {
+                remoteErrors.postValue(e.getMessage());
+                return;
+            }
+            if (snapshots == null) {
+                remoteErrors.postValue("Respuesta vacia de Firestore.");
+                return;
+            }
             List<PackageEntity> list = new ArrayList<>();
             for (DocumentSnapshot d : snapshots.getDocuments()) {
                 PackageEntity pe = mapDoc(d);
