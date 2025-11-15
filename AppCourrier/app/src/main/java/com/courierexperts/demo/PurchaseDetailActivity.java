@@ -36,6 +36,11 @@ public class PurchaseDetailActivity extends AppCompatActivity {
         final TextView tvOrderValue = findViewById(R.id.tvOrderValue);
         final TextView tvDateValue = findViewById(R.id.tvDateValue);
 
+        final TextView tvname = findViewById(R.id.tvNameValue);
+        final TextView tvDescription = findViewById(R.id.tvDescription);
+        final TextView tvPrice = findViewById(R.id.tvPriceValue);
+
+
         if (btnBack != null) {
             btnBack.setOnClickListener(v -> finish());
         }
@@ -60,6 +65,9 @@ public class PurchaseDetailActivity extends AppCompatActivity {
                 if (tvStoreValue != null) tvStoreValue.setText(safe(p.storeName));
                 if (tvOrderValue != null) tvOrderValue.setText(safe(p.orderId));
                 if (tvDateValue != null) tvDateValue.setText(date);
+                if (tvname != null) tvname.setText(safe(p.name));
+                if (tvDescription != null) tvDescription.setText(safe(p.description));
+                if (tvPrice != null) tvPrice.setText(String.format(Locale.getDefault(), "$ %.2f", p.price));
 
                 // Imagen real del producto
                 if (imgCompraDetalle != null) {
@@ -76,6 +84,9 @@ public class PurchaseDetailActivity extends AppCompatActivity {
             if (tvStoreValue != null) tvStoreValue.setText("Compra no encontrada");
             if (tvOrderValue != null) tvOrderValue.setText("");
             if (tvDateValue != null) tvDateValue.setText("");
+            if (tvname != null) tvname.setText("");
+            if (tvDescription != null) tvDescription.setText("");
+            if (tvPrice != null) tvPrice.setText("");
         }
 
         setupBottomBar();

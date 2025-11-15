@@ -51,8 +51,8 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.VH> {
         PurchaseEntity it = items.get(position);
 
         // Texto
-        h.b.tvStore.setText(it.storeName);
-        h.b.tvOrder.setText(it.orderId);
+        h.b.tvName.setText(it.name);
+        h.b.tvDescription.setText(it.description);
 
         // Obtenemos el label a mostrar y el enum de estado
         StatusMapper.PurchaseStatus statusEnum = StatusMapper.purchaseFrom(it.status);
