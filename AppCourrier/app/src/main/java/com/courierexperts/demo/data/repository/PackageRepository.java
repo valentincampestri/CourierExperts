@@ -38,11 +38,6 @@ public class PackageRepository {
         return dao.observeAllOrdered();
     }
 
-    public LiveData<List<PackageEntity>> observeEligiblePackages() {
-        ensureListener();
-        return dao.observeEligible();
-    }
-
     public void refreshFromNetwork() {
         ensureListener();
     }

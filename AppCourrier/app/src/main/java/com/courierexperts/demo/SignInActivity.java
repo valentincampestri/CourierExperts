@@ -7,28 +7,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class SignInActivity extends AppCompatActivity {
     private FirebaseAuth auth;
-    @SuppressWarnings("deprecation")
-    private GoogleSignInClient google;
-    private ActivityResultLauncher<Intent> googleLauncher;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,19 +23,10 @@ public class SignInActivity extends AppCompatActivity {
 
         View btnBack = findViewById(R.id.btnBack);
         View btnLogin = findViewById(R.id.btnLogin);
-        View btnGoogle = findViewById(R.id.btnGoogle);
         btnBack.setOnClickListener(v -> finish());
         auth = FirebaseAuth.getInstance();
 
         btnLogin.setOnClickListener(v -> doEmailLogin());
-        boolean enableGoogle = getResources().getBoolean(R.bool.config_enable_google_login);
-        if (btnGoogle != null) {
-            if (enableGoogle) {
-                btnGoogle.setOnClickListener(v -> doGoogle());
-            } else {
-                btnGoogle.setVisibility(View.GONE);
-            }
-        }
 
         // Recuperar contraseña (Olvidé mi contraseña)
         View tvForgot = findViewById(R.id.tvForgot);
@@ -56,33 +34,6 @@ public class SignInActivity extends AppCompatActivity {
             tvForgot.setOnClickListener(v -> showResetPasswordDialog());
         }
 
-        // Config clásico de Google Sign-In (API deprecada, suprimimos warning por ahora)
-        @SuppressWarnings("deprecation")
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        @SuppressWarnings("deprecation")
-        GoogleSignInClient client = GoogleSignIn.getClient(this, gso);
-        this.google = client;
-
-        // Launcher para Google Sign-In usando Activity Result API
-        googleLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(), result -> {
-                    Intent data = result.getData();
-                    @SuppressWarnings("deprecation")
-                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-                    try {
-                        GoogleSignInAccount account = task.getResult(ApiException.class);
-                        if (account != null) {
-                            AuthCredential cred = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-                            auth.signInWithCredential(cred).addOnCompleteListener(this, t -> {
-                                if (t.isSuccessful()) onAuthed(auth.getCurrentUser()); else toast("Error con Google");
-                            });
-                        }
-                    } catch (ApiException e) { toast("Cancelado"); }
-                }
-        );
     }
 
     private void doEmailLogin() {
@@ -99,14 +50,6 @@ public class SignInActivity extends AppCompatActivity {
             return;
         }
 
-        // Bypass de login para pruebas locales (sin depender de Google/Firebase)
-        if ("mail@gmail.com".equalsIgnoreCase(email) && "123456".equals(pass)) {
-            new com.courierexperts.demo.data.repository.UserProfileRepository(this).updateEmail(email);
-            startActivity(new Intent(SignInActivity.this, HomeActivity.class)
-                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK));
-            finish();
-            return;
-        }
         findViewById(R.id.btnLogin).setEnabled(false);
         auth.signInWithEmailAndPassword(email, pass)
                 .addOnCompleteListener(this, task -> {
@@ -117,12 +60,6 @@ public class SignInActivity extends AppCompatActivity {
                         toast("No se pudo iniciar sesión");
                     }
                 });
-    }
-
-    private void doGoogle() {
-        @SuppressWarnings("deprecation")
-        Intent signInIntent = google.getSignInIntent();
-        googleLauncher.launch(signInIntent);
     }
 
     private void showResetPasswordDialog() {

@@ -125,14 +125,6 @@
             android:text="Ingresar"
             style="@style/Widget.CE.Button.Primary"/>
 
-        <Space android:layout_width="match_parent" android:layout_height="8dp"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnGoogle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Continuar con Google"
-            style="@style/Widget.CE.Button.Outlined"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

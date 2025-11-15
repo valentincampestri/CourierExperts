@@ -25,9 +25,6 @@ public interface ShipmentDao {
     @Query("SELECT * FROM shipments WHERE id = :id LIMIT 1")
     LiveData<ShipmentEntity> observeById(long id);
 
-    @Query("SELECT fsId FROM shipments WHERE id = :id LIMIT 1")
-    String getFsIdByLocalId(long id);
-
     @Query("SELECT id FROM shipments WHERE fsId = :fsId LIMIT 1")
     Long findLocalIdByFsId(String fsId);
 

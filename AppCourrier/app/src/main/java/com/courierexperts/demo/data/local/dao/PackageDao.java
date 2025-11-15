@@ -19,9 +19,6 @@ public interface PackageDao {
     @Query("SELECT * FROM packages ORDER BY CASE WHEN status = 'IN_WAREHOUSE' THEN 0 ELSE 1 END, lastUpdate DESC, id DESC")
     LiveData<List<PackageEntity>> observeAllOrdered();
 
-    @Query("SELECT * FROM packages WHERE shipmentId IS NULL AND status = 'IN_WAREHOUSE' ORDER BY lastUpdate DESC")
-    LiveData<List<PackageEntity>> observeEligible();
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void upsertAll(List<PackageEntity> items);
 

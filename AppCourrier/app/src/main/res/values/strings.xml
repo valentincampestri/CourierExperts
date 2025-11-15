@@ -37,23 +37,5 @@
     <string name="hint_phone">Nro de telefono</string>
     <string name="hint_address">Direccion</string>
     <string name="placeholder_address">Av. Corrientes 1000</string>
-    <string name="label_deposit">Deposito elegido</string>
-
-    <!-- Shipments detail/header/welcome -->
-    <string name="shipments_header_title">Tus envios</string>
-    <string name="shipment_sub_placeholder">Envio 5\n#12345</string>
-    <string name="welcome_title">El camino mas directo para\ntus envios de USA a\nArgentina</string>
-
     <!-- Existing -->
-    <string name="title_activity_nueva_compra">nueva_compra</string>
-    <string name="title_activity_compras">ComprasActivity</string>
-
-    <string-array name="depositos_array">
-        <item>Miami Florida</item>
-        <item>New York</item>
-        <item>Los Angeles</item>
-        <item>Madrid</item>
-    </string-array>
-
-    <string name="default_web_client_id">REEMPLAZAR_CON_CLIENT_ID</string>
 </resources>
