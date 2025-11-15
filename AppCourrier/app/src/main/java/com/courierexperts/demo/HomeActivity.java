@@ -4,140 +4,179 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.courierexperts.demo.databinding.ActivityMainBinding;
 import com.courierexperts.demo.ui.home.BannerAdapter;
+import com.courierexperts.demo.ui.home.HomeEvent;
+import com.courierexperts.demo.ui.home.HomeUiState;
+import com.courierexperts.demo.ui.home.HomeViewModel;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
+
+    private ActivityMainBinding b;
+    private HomeViewModel vm;
+
+    private final android.os.Handler bannerHandler =
+            new android.os.Handler(android.os.Looper.getMainLooper());
+    private boolean bannerPaused = false;
+    private int bannerPosition = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        b = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(b.getRoot());
 
-        setupBottomBar(R.id.nav_home);
+        vm = new ViewModelProvider(this).get(HomeViewModel.class);
 
+        setupBottomBar();
         setupBannerCarousel();
-
-        // Bind saludo Hola, {Nombre}
-        final android.widget.TextView tvSaludo = findViewById(R.id.tvSaludo);
-        if (tvSaludo != null) {
-            com.courierexperts.demo.data.repository.UserProfileRepository repo = new com.courierexperts.demo.data.repository.UserProfileRepository(this);
-            repo.observeProfile().observe(this, profile -> {
-                String name = (profile != null && profile.name != null) ? profile.name.trim() : "";
-                tvSaludo.setText(name.isEmpty() ? "Hola" : ("Hola, " + name));
-                // Si falta depósito, sugerir completar perfil (una sola vez por uid)
-                if (profile != null && profile.depositId == null) {
-                    String uid = null;
-                    try { uid = com.google.firebase.auth.FirebaseAuth.getInstance().getUid(); } catch (Exception ignored) {}
-                    String key = "prompt_deposit_done_" + (uid != null ? uid : "");
-                    android.content.SharedPreferences sp = getSharedPreferences("profile_prefs", MODE_PRIVATE);
-                    if (!sp.getBoolean(key, false)) {
-                        android.widget.Toast.makeText(this, "Completá tu depósito en Perfil", android.widget.Toast.LENGTH_SHORT).show();
-                        sp.edit().putBoolean(key, true).apply();
-                        startActivity(new Intent(HomeActivity.this, EditProfileActivity.class));
-                    }
-                }
-            });
-            // Debug: long press to seed Firestore with demo data
-            boolean isDebug = (getApplicationInfo().flags & android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0;
-            if (isDebug) {
-                tvSaludo.setOnLongClickListener(v -> {
-                    new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
-                            .setTitle("Seed Firestore (debug)")
-                            .setMessage("Crear 10 compras, 10 paquetes y 10 envíos para el usuario actual?")
-                            .setNegativeButton("Cancelar", null)
-                            .setPositiveButton("Sembrar", (d, which) -> com.courierexperts.demo.util.SeedDebug.seedNow(this))
-                            .show();
-                    return true;
-                });
-            }
-        }
-
-        View btnCompras = findViewById(R.id.btnCompras);
-        View btnPaquetes = findViewById(R.id.btnPaquetes);
-        View btnEnvios = findViewById(R.id.btnEnvios);
-
-        if (btnCompras != null) {
-            btnCompras.setOnClickListener(v ->
-                    startActivity(new Intent(HomeActivity.this, PurchasesActivity.class)));
-        }
-        if (btnPaquetes != null) {
-            btnPaquetes.setOnClickListener(v ->
-                    startActivity(new Intent(HomeActivity.this, PackagesActivity.class)));
-        }
-        if (btnEnvios != null) {
-            btnEnvios.setOnClickListener(v ->
-                    startActivity(new Intent(HomeActivity.this, ShipmentsActivity.class)));
-        }
-
-        final android.widget.TextView tvUltimoTitulo = findViewById(R.id.Tvenvultimo);
-        final android.widget.TextView tvUltimoEstado = findViewById(R.id.Tvenvultimoestado);
-        final View tvVerDetallesHome = findViewById(R.id.tvVerDetallesHome);
-        // Observa shipments y muestra el último (por lastUpdate desc, fallback id)
-        try {
-            com.courierexperts.demo.data.local.db.AppDatabase db = com.courierexperts.demo.data.local.db.AppDatabase.get(getApplicationContext());
-            db.shipmentDao().observeAll().observe(this, list -> {
-                if (list == null || list.isEmpty()) {
-                    if (tvUltimoTitulo != null) tvUltimoTitulo.setText("aun no has solicitado envios");
-                    if (tvUltimoEstado != null) tvUltimoEstado.setText("");
-                    if (tvVerDetallesHome != null) tvVerDetallesHome.setVisibility(View.GONE);
-                    return;
-                }
-                // pick latest by lastUpdate then id
-                com.courierexperts.demo.data.local.entity.ShipmentEntity last = null;
-                for (com.courierexperts.demo.data.local.entity.ShipmentEntity se : list) {
-                    if (last == null) { last = se; continue; }
-                    if (se.lastUpdate > last.lastUpdate) last = se;
-                    else if (se.lastUpdate == last.lastUpdate && se.id > last.id) last = se;
-                }
-                if (last != null) {
-                    if (tvUltimoTitulo != null) tvUltimoTitulo.setText(last.title != null ? last.title : "Envio");
-                    if (tvUltimoEstado != null) tvUltimoEstado.setText(com.courierexperts.demo.domain.StatusMapper.labelShipment(last.status));
-                    if (tvVerDetallesHome != null) {
-                        tvVerDetallesHome.setVisibility(View.VISIBLE);
-                        final String fs = last.fsId;
-                        final long lid = last.id;
-                        tvVerDetallesHome.setOnClickListener(v -> {
-                            Intent i = new Intent(HomeActivity.this, ShipmentDetailActivity.class);
-                            if (fs != null && !fs.isEmpty()) i.putExtra("shipmentFsId", fs);
-                            i.putExtra("shipmentLocalId", lid);
-                            startActivity(i);
-                        });
-                    }
-                }
-            });
-        } catch (Exception ignored) {}
-
-        // Si tu layout de Home tiene FAB (como Envíos), podés manejarlo acá:
-        //View fab = findViewById(R.id.fabAdd);
-        //if (fab != null) {
-          //  fab.setOnClickListener(v ->
-             //       startActivity(new Intent(HomeActivity.this, NewPurchaseActivity.class)));
-            // Cuando tengamos "Nuevo Envío", cambia a NewShipmentActivity.class si querés.
-       // }
+        setupButtons();
+        observeViewModel();
+        setupSeedDebug();
     }
 
-    private void setupBottomBar(int selectedItemId) {
-        BottomNavigationView bottom = findViewById(R.id.bottomNav);
+    private void observeViewModel() {
+        vm.getUiState().observe(this, state -> {
+            if (state instanceof HomeUiState.Loading) {
+                renderLoadingState();
+            } else if (state instanceof HomeUiState.Content) {
+                renderContentState((HomeUiState.Content) state);
+            } else if (state instanceof HomeUiState.Error) {
+                renderErrorState((HomeUiState.Error) state);
+            }
+        });
+
+        vm.getEvents().observe(this, event -> {
+            if (event == null) return;
+            HomeEvent payload = event.getContentIfNotHandled();
+            if (payload == null) return;
+            if (payload.getType() == HomeEvent.Type.PROMPT_DEPOSIT) {
+                handleDepositReminder();
+            } else if (payload.getType() == HomeEvent.Type.SHOW_ERROR) {
+                Toast.makeText(this, R.string.state_error_retry, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void renderLoadingState() {
+        if (b.tvSaludo != null) {
+            b.tvSaludo.setText(getString(R.string.home_greeting_generic));
+        }
+        renderLastShipment(null);
+    }
+
+    private void renderContentState(HomeUiState.Content content) {
+        if (b.tvSaludo != null) {
+            b.tvSaludo.setText(content.getGreeting());
+        }
+        renderLastShipment(content.getLastShipment());
+    }
+
+    private void renderErrorState(HomeUiState.Error error) {
+        Toast.makeText(this, error.getMessage(), Toast.LENGTH_LONG).show();
+        renderLastShipment(null);
+    }
+
+    private void renderLastShipment(@Nullable HomeUiState.LastShipmentCard card) {
+        if (card == null) {
+            if (b.Tvenvultimo != null) {
+                b.Tvenvultimo.setText(R.string.home_last_shipment_empty);
+            }
+            if (b.Tvenvultimoestado != null) {
+                b.Tvenvultimoestado.setText("");
+            }
+            if (b.tvVerDetallesHome != null) {
+                b.tvVerDetallesHome.setVisibility(View.GONE);
+                b.tvVerDetallesHome.setOnClickListener(null);
+            }
+            return;
+        }
+
+        if (b.Tvenvultimo != null) {
+            b.Tvenvultimo.setText(card.getTitle());
+        }
+        if (b.Tvenvultimoestado != null) {
+            b.Tvenvultimoestado.setText(card.getStatusLabel());
+        }
+        if (b.tvVerDetallesHome != null) {
+            b.tvVerDetallesHome.setVisibility(View.VISIBLE);
+            b.tvVerDetallesHome.setOnClickListener(v -> {
+                Intent i = new Intent(HomeActivity.this, ShipmentDetailActivity.class);
+                if (card.getFirestoreId() != null && !card.getFirestoreId().isEmpty()) {
+                    i.putExtra("shipmentFsId", card.getFirestoreId());
+                }
+                i.putExtra("shipmentLocalId", card.getLocalId());
+                startActivity(i);
+            });
+        }
+    }
+
+    private void handleDepositReminder() {
+        Toast.makeText(this, R.string.home_deposit_reminder, Toast.LENGTH_LONG).show();
+        startActivity(new Intent(this, EditProfileActivity.class));
+    }
+
+    private void setupButtons() {
+        if (b.btnCompras != null) {
+            b.btnCompras.setOnClickListener(v ->
+                    startActivity(new Intent(this, PurchasesActivity.class)));
+        }
+        if (b.btnPaquetes != null) {
+            b.btnPaquetes.setOnClickListener(v ->
+                    startActivity(new Intent(this, PackagesActivity.class)));
+        }
+        if (b.btnEnvios != null) {
+            b.btnEnvios.setOnClickListener(v ->
+                    startActivity(new Intent(this, ShipmentsActivity.class)));
+        }
+    }
+
+    private void setupSeedDebug() {
+        if (b.tvSaludo == null) {
+            return;
+        }
+        boolean isDebug = (getApplicationInfo().flags
+                & android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+        if (!isDebug) {
+            return;
+        }
+        b.tvSaludo.setOnLongClickListener(v -> {
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle("Seed Firestore (debug)")
+                    .setMessage("Crear 10 compras, 10 paquetes y 10 envios para el usuario actual?")
+                    .setNegativeButton("Cancelar", null)
+                    .setPositiveButton("Sembrar",
+                            (d, which) -> com.courierexperts.demo.util.SeedDebug.seedNow(this))
+                    .show();
+            return true;
+        });
+    }
+
+    private void setupBottomBar() {
+        BottomNavigationView bottom = b.bottomNav;
         if (bottom == null) return;
 
-        bottom.setSelectedItemId(selectedItemId);
+        bottom.setSelectedItemId(R.id.nav_home);
         bottom.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-                if (id == bottom.getSelectedItemId()) return true;
-
                 if (id == R.id.nav_home) {
-                    // ya estás en Home
                     return true;
                 } else if (id == R.id.nav_add) {
                     startActivity(new Intent(HomeActivity.this, NewPurchaseActivity.class));
@@ -151,19 +190,15 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    private final android.os.Handler bannerHandler = new android.os.Handler(android.os.Looper.getMainLooper());
-    private boolean bannerPaused = false;
-    private int bannerPosition = 0;
-
     private void setupBannerCarousel() {
-        RecyclerView rv = findViewById(R.id.rvBanner);
+        RecyclerView rv = b.rvBanner;
         if (rv == null) return;
 
         LinearLayoutManager lm = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         rv.setLayoutManager(lm);
         new PagerSnapHelper().attachToRecyclerView(rv);
 
-        java.util.List<Integer> imgs = java.util.Arrays.asList(
+        List<Integer> imgs = Arrays.asList(
                 R.drawable.ic_amazon,
                 R.drawable.ic_samsung,
                 R.drawable.ic_infinity,
@@ -173,7 +208,8 @@ public class HomeActivity extends AppCompatActivity {
         rv.setAdapter(adapter);
 
         rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 bannerPaused = (newState == RecyclerView.SCROLL_STATE_DRAGGING);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
@@ -181,20 +217,23 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
-        rv.setOnTouchListener((v, e) -> {
-            switch (e.getAction()) {
+        rv.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
                 case android.view.MotionEvent.ACTION_DOWN:
                 case android.view.MotionEvent.ACTION_MOVE:
-                    bannerPaused = true; break;
+                    bannerPaused = true;
+                    break;
                 case android.view.MotionEvent.ACTION_UP:
                 case android.view.MotionEvent.ACTION_CANCEL:
-                    bannerPaused = false; break;
+                    bannerPaused = false;
+                    break;
             }
             return false;
         });
 
         bannerHandler.postDelayed(new Runnable() {
-            @Override public void run() {
+            @Override
+            public void run() {
                 if (!bannerPaused && adapter.getItemCount() > 0) {
                     bannerPosition++;
                     rv.smoothScrollToPosition(bannerPosition);

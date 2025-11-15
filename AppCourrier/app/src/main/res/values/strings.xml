@@ -16,6 +16,10 @@
     <string name="shipment_title_placeholder">Envio 5</string>
     <string name="shipment_status_sent">Enviado</string>
     <string name="action_view_details">Ver detalles</string>
+    <string name="home_greeting_generic">Hola</string>
+    <string name="home_greeting_with_name">Hola, %1$s</string>
+    <string name="home_deposit_reminder">Completa tu deposito en Perfil</string>
+    <string name="home_last_shipment_empty">Aun no has solicitado envios</string>
 
     <!-- Nueva compra -->
     <string name="new_purchase_title">Nueva compra</string>
