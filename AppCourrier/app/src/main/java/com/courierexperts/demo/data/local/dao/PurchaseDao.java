@@ -28,6 +28,9 @@ public interface PurchaseDao {
     @Query("SELECT * FROM purchases WHERE id = :id LIMIT 1")
     LiveData<PurchaseEntity> observeById(long id);
 
+    @Query("SELECT * FROM purchases WHERE pendingSync = 1 ORDER BY createdAt DESC")
+    List<PurchaseEntity> findPendingSync();
+
     @Query("DELETE FROM purchases")
     void clear();
 }

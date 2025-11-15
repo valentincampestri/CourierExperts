@@ -10,15 +10,17 @@ import com.courierexperts.demo.data.local.dao.PurchaseDao;
 import com.courierexperts.demo.data.local.db.AppDatabase;
 import com.courierexperts.demo.data.local.entity.PackageEntity;
 import com.courierexperts.demo.data.local.entity.PurchaseEntity;
+import com.courierexperts.demo.util.AppExecutors;
+import com.courierexperts.demo.util.NetworkUtils;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.FieldValue;
-import com.courierexperts.demo.util.AppExecutors;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -117,8 +119,24 @@ public class PurchaseRepository {
     }
 
     public void syncPendingIfNetworkAvailable() {
-        // Firestore listeners manejarán la sincronización; no-op aquí
+        if (!NetworkUtils.isOnline(app)) return;
+        AppExecutors.io().execute(() -> {
+            String uid = safeUid();
+            if (uid == null) return;
+            List<PurchaseEntity> pending = dao.findPendingSync();
+            if (pending == null || pending.isEmpty()) return;
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            for (PurchaseEntity entity : pending) {
+                DocumentReference doc = preparePendingDocument(db, uid, entity);
+                if (doc == null) continue;
+                java.util.Map<String, Object> data = buildPendingPayload(entity);
+                doc.set(data)
+                        .addOnSuccessListener(v -> doc.get().addOnSuccessListener(snapshot -> upsertFromSnapshot(snapshot)))
+                        .addOnFailureListener(err -> remoteErrors.postValue("Sync pendientes: " + err.getMessage()));
+            }
+        });
     }
+
 
     private static long parseIsoToEpoch(String iso) {
         if (iso == null || iso.isEmpty()) return System.currentTimeMillis();
@@ -270,6 +288,39 @@ public class PurchaseRepository {
                 });
             }
         });
+    }
+
+    private DocumentReference preparePendingDocument(FirebaseFirestore db, String uid, PurchaseEntity entity) {
+        String fsId = entity.fsId;
+        DocumentReference doc;
+        if (fsId != null && !fsId.trim().isEmpty()) {
+            doc = db.collection("users").document(uid)
+                    .collection("purchases").document(fsId);
+        } else {
+            doc = db.collection("users").document(uid)
+                    .collection("purchases").document();
+            entity.fsId = doc.getId();
+            try {
+                dao.upsertAll(Collections.singletonList(entity));
+            } catch (Exception ignored) {
+            }
+        }
+        return doc;
+    }
+
+    private java.util.Map<String, Object> buildPendingPayload(PurchaseEntity entity) {
+        java.util.HashMap<String, Object> data = new java.util.HashMap<>();
+        data.put("storeName", entity.storeName != null ? entity.storeName : "");
+        data.put("orderId", entity.orderId != null ? entity.orderId : "");
+        data.put("description", entity.description != null ? entity.description : "");
+        data.put("status", entity.status != null ? entity.status : "PENDING");
+        data.put("thumbnailUrl", entity.thumbnailUrl != null ? entity.thumbnailUrl : "");
+        if (entity.createdAt > 0) {
+            data.put("createdAt", new Timestamp(new java.util.Date(entity.createdAt)));
+        } else {
+            data.put("createdAt", FieldValue.serverTimestamp());
+        }
+        return data;
     }
 
     private static long stableLongFromString(String s) {
