@@ -2,42 +2,63 @@ package com.courierexperts.demo;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.courierexperts.demo.databinding.ActivitySignupStep1Binding;
+import com.courierexperts.demo.ui.signup.SignUpStep1Event;
+import com.courierexperts.demo.ui.signup.SignUpStep1ViewModel;
 
 public class SignUpStep1Activity extends AppCompatActivity {
+
+    private ActivitySignupStep1Binding b;
+    private SignUpStep1ViewModel vm;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup_step1);
+        b = ActivitySignupStep1Binding.inflate(getLayoutInflater());
+        setContentView(b.getRoot());
 
-        View btnBack = findViewById(R.id.btnBack);
-        View btnNext = findViewById(R.id.btnNext);
-        btnBack.setOnClickListener(v -> finish());
-        btnNext.setOnClickListener(v -> {
-            com.google.android.material.textfield.TextInputEditText etNombre = findViewById(R.id.etNombreSignup);
-            com.google.android.material.textfield.TextInputEditText etApellido = findViewById(R.id.etApellidoSignup);
-            com.google.android.material.textfield.TextInputEditText etDni = findViewById(R.id.etDniSignUp);
-            com.google.android.material.textfield.TextInputEditText etCuil = findViewById(R.id.etCuilSignUp);
+        vm = new ViewModelProvider(this).get(SignUpStep1ViewModel.class);
+        observeViewModel();
 
-            String nombre   = etNombre   != null && etNombre.getText()!=null   ? etNombre.getText().toString().trim()   : "";
-            String apellido = etApellido != null && etApellido.getText()!=null ? etApellido.getText().toString().trim() : "";
-            String dni      = etDni      != null && etDni.getText()!=null      ? etDni.getText().toString().trim()      : "";
-            String cuil     = etCuil     != null && etCuil.getText()!=null     ? etCuil.getText().toString().trim()     : "";
+        b.btnBack.setOnClickListener(v -> finish());
+        b.btnNext.setOnClickListener(v -> doNext());
+    }
 
-            if (nombre.length() < 2 || nombre.length() > 50) { toast("Ingrese su nombre por favor de 2 a 50 caracteres"); return; }
-            if (apellido.length() < 2 || apellido.length() > 50) { toast("Ingrese su apellido por favor de 2 a 50 caracteres"); return; }
-            if (!dni.matches("\\d{7,10}")) { toast("DNI 7 a 10 dígitos"); return; }
-            if (!cuil.matches("\\d{2}-\\d{8}-\\d")) { toast("CUIL formato NN-NNNNNNNN-N"); return; }
-
-            Intent i = new Intent(SignUpStep1Activity.this, SignUpStep2Activity.class);
-            i.putExtra("signup_nombre", nombre);
-            i.putExtra("signup_apellido", apellido);
-            i.putExtra("signup_dni", dni);
-            i.putExtra("signup_cuil", cuil);
-            startActivity(i);
+    private void observeViewModel() {
+        vm.getEvents().observe(this, event -> {
+            if (event == null) return;
+            SignUpStep1Event payload = event.getContentIfNotHandled();
+            if (payload == null) return;
+            if (payload.getType() == SignUpStep1Event.Type.SHOW_MESSAGE) {
+                if (payload.getMessage() != null) {
+                    Toast.makeText(this, payload.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            } else if (payload.getType() == SignUpStep1Event.Type.NAVIGATE_STEP2 && payload.getData() != null) {
+                Intent i = new Intent(this, SignUpStep2Activity.class);
+                i.putExtra(SignUpStep2Activity.EXTRA_SIGNUP_DATA, payload.getData());
+                startActivity(i);
+            }
         });
     }
-    private void toast(String s) { android.widget.Toast.makeText(this, s, android.widget.Toast.LENGTH_SHORT).show(); }
+
+    private void doNext() {
+        String nombre = textOf(b.etNombreSignup);
+        String apellido = textOf(b.etApellidoSignup);
+        String dni = textOf(b.etDniSignUp);
+        String cuil = textOf(b.etCuilSignUp);
+        vm.submitStepOne(nombre, apellido, dni, cuil);
+    }
+
+    private static String textOf(@Nullable com.google.android.material.textfield.TextInputEditText et) {
+        if (et != null && et.getText() != null) {
+            return et.getText().toString();
+        }
+        return "";
+    }
 }

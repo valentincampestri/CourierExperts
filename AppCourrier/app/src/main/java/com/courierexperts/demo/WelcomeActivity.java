@@ -2,34 +2,48 @@ package com.courierexperts.demo;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.firebase.auth.FirebaseAuth;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.courierexperts.demo.databinding.ActivityWelcomeBinding;
+import com.courierexperts.demo.ui.auth.AuthEvent;
+import com.courierexperts.demo.ui.auth.AuthViewModel;
 
 public class WelcomeActivity extends AppCompatActivity {
+
+    private ActivityWelcomeBinding b;
+    private AuthViewModel vm;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welcome);
+        b = ActivityWelcomeBinding.inflate(getLayoutInflater());
+        setContentView(b.getRoot());
 
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            startActivity(new Intent(this, HomeActivity.class)
-                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
-            finish();
-            return;
-        }
+        vm = new ViewModelProvider(this).get(AuthViewModel.class);
+        observeViewModel();
+        vm.checkSession();
 
-        View btnSignIn = findViewById(R.id.btnSignIn);
-        View btnRegister = findViewById(R.id.btnRegister);
+        b.btnSignIn.setOnClickListener(v -> startActivity(new Intent(this, SignInActivity.class)));
+        b.btnRegister.setOnClickListener(v -> startActivity(new Intent(this, SignUpStep1Activity.class)));
+    }
 
-        btnSignIn.setOnClickListener(v -> {
-            Intent i = new Intent(WelcomeActivity.this, SignInActivity.class);
-            startActivity(i);
+    private void observeViewModel() {
+        vm.getEvents().observe(this, event -> {
+            if (event == null) return;
+            AuthEvent payload = event.getContentIfNotHandled();
+            if (payload == null) return;
+            if (payload.getType() == AuthEvent.Type.NAVIGATE_HOME) {
+                navigateHome();
+            }
         });
-        btnRegister.setOnClickListener(v -> {
-            Intent i = new Intent(WelcomeActivity.this, SignUpStep1Activity.class);
-            startActivity(i);
-        });
+    }
+
+    private void navigateHome() {
+        startActivity(new Intent(this, HomeActivity.class)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+        finish();
     }
 }

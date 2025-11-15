@@ -20,6 +20,21 @@
     <string name="home_greeting_with_name">Hola, %1$s</string>
     <string name="home_deposit_reminder">Completa tu deposito en Perfil</string>
     <string name="home_last_shipment_empty">Aun no has solicitado envios</string>
+    <string name="auth_error_invalid_email">Email invalido</string>
+    <string name="auth_error_invalid_password">Contrasena 4 a 20 caracteres</string>
+    <string name="auth_error_login">No se pudo iniciar sesion</string>
+    <string name="auth_error_generic">Error de autenticacion</string>
+    <string name="auth_reset_email_sent">Si su cuenta existe, enviaremos un email para reestablecer su contrasena</string>
+    <string name="auth_reset_email_failed">No pudimos enviar el email, intente nuevamente mas tarde.</string>
+    <string name="signup_error_name">Ingrese su nombre (2 a 50 caracteres)</string>
+    <string name="signup_error_last_name">Ingrese su apellido (2 a 50 caracteres)</string>
+    <string name="signup_error_dni">DNI 7 a 10 digitos</string>
+    <string name="signup_error_cuil">CUIL formato NN-NNNNNNNN-N</string>
+    <string name="signup_error_address">Direccion 2 a 50 caracteres</string>
+    <string name="signup_error_province">Seleccione una provincia</string>
+    <string name="signup_error_phone">Telefono invalido (usar + y digitos, 6 a 20)</string>
+    <string name="signup_error_register">No se pudo registrar</string>
+    <string name="signup_missing_step">Debes completar el paso anterior</string>
 
     <!-- Nueva compra -->
     <string name="new_purchase_title">Nueva compra</string>
@@ -31,6 +46,9 @@
     <string name="hint_tracking">Nro Tracking</string>
     <string name="action_cancel">Cancelar</string>
     <string name="action_save">Guardar</string>
+    <string name="new_purchase_error_required">Completa Tienda y Nro Tracking</string>
+    <string name="new_purchase_saved_online">Compra guardada</string>
+    <string name="new_purchase_saved_offline">Guardado local, se sincronizara luego</string>
 
     <!-- Perfil -->
     <string name="profile_title">Tus datos</string>
