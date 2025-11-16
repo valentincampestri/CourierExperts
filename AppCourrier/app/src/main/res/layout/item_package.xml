@@ -1,61 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/ce_spacing_md"
-    android:layout_marginEnd="@dimen/ce_spacing_md"
-    android:layout_marginTop="@dimen/ce_spacing_sm"
-    android:layout_marginBottom="@dimen/ce_spacing_sm"
-    android:foreground="?attr/selectableItemBackground">
+    android:layout_marginStart="@dimen/ce_spacing_sm"
+    android:layout_marginEnd="@dimen/ce_spacing_sm"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardCornerRadius="16dp"
+    app:cardUseCompatPadding="false"
+    app:cardPreventCornerOverlap="true"
+    app:cardElevation="3dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="@dimen/ce_spacing_md">
+        android:gravity="center_vertical"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="@dimen/ce_spacing_sm">
 
-        <CheckBox
-            android:id="@+id/cbSelect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:paddingEnd="@dimen/ce_spacing_md" />
-
-        <ImageView
+        <!-- IMAGEN AL INICIO, CON BORDES REDONDEADOS -->
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivThumb"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:scaleType="centerCrop"
+            android:layout_marginEnd="@dimen/ce_spacing_md"
             android:contentDescription="Imagen paquete"
-            android:scaleType="centerCrop"/>
+            app:shapeAppearanceOverlay="@style/RoundedImageStyle" />
 
+        <!-- CONTENIDO DE TEXTO -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:paddingStart="@dimen/ce_spacing_md">
+            android:orientation="vertical">
 
+            <!-- Nombre o tienda -->
             <TextView
                 android:id="@+id/tvLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:textColor="@color/black" />
 
+            <!-- Estado con pastilla -->
             <TextView
                 android:id="@+id/tvStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Pendiente"
                 android:textSize="12sp"
-                android:textColor="@android:color/darker_gray"/>
+                android:textColor="@android:color/white"
+                android:background="@drawable/bg_status_chip_pending"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="3dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:textStyle="bold"
+                android:gravity="center_vertical" />
 
+            <!-- Descripción -->
             <TextView
                 android:id="@+id/tvDesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="13sp"/>
+                android:textSize="13sp"
+                android:textColor="@android:color/black" />
         </LinearLayout>
 
+        <!-- CHECKBOX AL FINAL (DERECHA) -->
+        <CheckBox
+            android:id="@+id/cbSelect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_gravity="center_vertical"
+            android:buttonTint="@color/gray_disabled" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

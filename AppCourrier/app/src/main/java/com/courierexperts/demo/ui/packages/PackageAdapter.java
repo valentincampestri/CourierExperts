@@ -60,12 +60,24 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.VH> {
         h.b.tvDesc.setText(it.description);
         Glide.with(h.b.getRoot()).load(it.thumbnailUrl).into(h.b.ivThumb);
 
+        int bgRes;
+        String status = it.status != null ? it.status : "";
+
+        if (status.equalsIgnoreCase("RECEIVED") || status.equalsIgnoreCase("DELIVERED")) {
+            // Paquetes ya recibidos / entregados → pill verde
+            bgRes = com.courierexperts.demo.R.drawable.bg_status_chip_delivered;
+        } else {
+            // Resto de estados → pill pendiente (amarillo/gris, según tu drawable)
+            bgRes = com.courierexperts.demo.R.drawable.bg_status_chip_pending;
+        }
+        h.b.tvStatus.setBackgroundResource(bgRes);
+
         // checkbox state (hide if selection disabled)
         if (!selectionEnabled) {
             h.b.cbSelect.setVisibility(android.view.View.GONE);
         } else {
             h.b.cbSelect.setVisibility(android.view.View.VISIBLE);
-            boolean selectable = "IN_WAREHOUSE".equals(it.status);
+            boolean selectable = "RECEIVED".equals(it.status);
             h.b.cbSelect.setEnabled(selectable);
             if (!selectable) {
                 h.b.cbSelect.setOnClickListener(v -> android.widget.Toast.makeText(

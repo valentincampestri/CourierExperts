@@ -291,7 +291,7 @@ public class PurchaseRepository {
             price = snapshot.getDouble("price");
         } catch (Exception ignored) {}
         pkg.price = price != null ? price : 0d;
-        pkg.status = "PENDING";
+        pkg.status = "RECEIVED";
         pkg.lastUpdate = System.currentTimeMillis();
         String thumb = snapshot.getString("thumbnailUrl");
         pkg.thumbnailUrl = thumb != null ? thumb : "";
@@ -320,7 +320,7 @@ public class PurchaseRepository {
                 data.put("label", pkg.label);
                 data.put("description", pkg.description);
                 data.put("price", pkg.price);
-                data.put("status", "PENDING");
+                data.put("status", pkg.status);
                 data.put("thumbnailUrl", pkg.thumbnailUrl);
                 data.put("shipmentId", pkg.shipmentId);
                 data.put("lastUpdate", FieldValue.serverTimestamp());
