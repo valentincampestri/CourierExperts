@@ -22,11 +22,11 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.Query;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -45,7 +45,7 @@ public class PurchaseRepository {
         this.packageDao = db.packageDao();
     }
 
-    /** Observa la lista desde Room y, en paralelo, hace refresh desde red (mock por ahora). */
+    /** Observa la lista desde Room y, en paralelo, hace refresh desde red. */
     public LiveData<List<PurchaseEntity>> observePurchases() {
         ensureListener();
         return dao.observeAll();
@@ -55,7 +55,7 @@ public class PurchaseRepository {
         return remoteErrors;
     }
 
-    public androidx.lifecycle.LiveData<com.courierexperts.demo.data.local.entity.PurchaseEntity> observePurchaseById(long id) {
+    public LiveData<PurchaseEntity> observePurchaseById(long id) {
         ensureListener();
         return dao.observeById(id);
     }
@@ -65,21 +65,36 @@ public class PurchaseRepository {
         ensureListener();
     }
 
-    /** Crea localmente y trata de sincronizar con backend (mock). */
-    public void createLocalAndSync(String storeName, String orderId, String description, String createdAtIso) {
-        // Crear documento en Firestore; si falla, guardar local como pending
+    /**
+     * Crea localmente y trata de sincronizar con backend.
+     * Ahora soporta: productName, storeName, carrierName, price, orderId, description.
+     */
+    public void createLocalAndSync(
+            String productName,
+            String storeName,
+            String carrierName,
+            Double price,
+            String orderId,
+            String description,
+            String createdAtIso
+    ) {
         final String uid = safeUid();
+        final long createdAtEpoch = parseIsoToEpoch(createdAtIso);
+
         if (uid == null) {
-            // sin usuario, guardar local
+            // Sin usuario → guardar solo local, pendingSync
             AppExecutors.io().execute(() -> {
                 PurchaseEntity e = new PurchaseEntity();
                 e.id = 0;
                 e.fsId = null;
+                e.productName = productName;
                 e.storeName = storeName;
+                e.carrierName = carrierName;
+                e.price = price != null ? price : 0d;
                 e.orderId = orderId;
                 e.status = "PENDING";
                 e.description = description;
-                e.createdAt = System.currentTimeMillis();
+                e.createdAt = createdAtEpoch;
                 e.thumbnailUrl = "";
                 e.pendingSync = true;
                 dao.insert(e);
@@ -88,12 +103,15 @@ public class PurchaseRepository {
         }
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        com.google.firebase.firestore.DocumentReference doc = db.collection("users").document(uid)
+        DocumentReference doc = db.collection("users").document(uid)
                 .collection("purchases").document();
 
         java.util.HashMap<String, Object> data = new java.util.HashMap<>();
         data.put("id", doc.getId());
+        data.put("productName", productName);
         data.put("storeName", storeName);
+        data.put("carrierName", carrierName);
+        data.put("price", price != null ? price : 0d);
         data.put("orderId", orderId);
         data.put("status", "PENDING");
         data.put("description", description);
@@ -101,21 +119,28 @@ public class PurchaseRepository {
         data.put("thumbnailUrl", "");
 
         doc.set(data)
-                .addOnSuccessListener(v -> doc.get().addOnSuccessListener(snapshot -> upsertFromSnapshot(snapshot)))
-                .addOnFailureListener(err -> AppExecutors.io().execute(() -> {
-                    // Offline: queda local con pendingSync
-                    PurchaseEntity e = new PurchaseEntity();
-                    e.id = 0;
-                    e.fsId = doc.getId();
-                    e.storeName = storeName;
-                    e.orderId = orderId;
-                    e.status = "PENDING";
-                    e.description = description;
-                    e.createdAt = System.currentTimeMillis();
-                    e.thumbnailUrl = "";
-                    e.pendingSync = true;
-                    dao.insert(e);
-                }));
+                .addOnSuccessListener(v ->
+                        doc.get().addOnSuccessListener(this::upsertFromSnapshot)
+                )
+                .addOnFailureListener(err ->
+                        AppExecutors.io().execute(() -> {
+                            // Offline / error → guardar local con pendingSync
+                            PurchaseEntity e = new PurchaseEntity();
+                            e.id = 0;
+                            e.fsId = doc.getId();
+                            e.productName = productName;
+                            e.storeName = storeName;
+                            e.carrierName = carrierName;
+                            e.price = price != null ? price : 0d;
+                            e.orderId = orderId;
+                            e.status = "PENDING";
+                            e.description = description;
+                            e.createdAt = createdAtEpoch;
+                            e.thumbnailUrl = "";
+                            e.pendingSync = true;
+                            dao.insert(e);
+                        })
+                );
     }
 
     public void syncPendingIfNetworkAvailable() {
@@ -131,12 +156,11 @@ public class PurchaseRepository {
                 if (doc == null) continue;
                 java.util.Map<String, Object> data = buildPendingPayload(entity);
                 doc.set(data)
-                        .addOnSuccessListener(v -> doc.get().addOnSuccessListener(snapshot -> upsertFromSnapshot(snapshot)))
+                        .addOnSuccessListener(v -> doc.get().addOnSuccessListener(this::upsertFromSnapshot))
                         .addOnFailureListener(err -> remoteErrors.postValue("Sync pendientes: " + err.getMessage()));
             }
         });
     }
-
 
     private static long parseIsoToEpoch(String iso) {
         if (iso == null || iso.isEmpty()) return System.currentTimeMillis();
@@ -187,11 +211,22 @@ public class PurchaseRepository {
         PurchaseEntity e = new PurchaseEntity();
         e.fsId = d.getId();
         Long existingId = null;
-        try { existingId = dao.findLocalIdByFsId(e.fsId); } catch (Exception ignored) {}
+        try {
+            existingId = dao.findLocalIdByFsId(e.fsId);
+        } catch (Exception ignored) {}
         e.id = existingId != null ? existingId : stableLongFromString(e.fsId);
+
+        // 🔹 Campos nuevos
+        e.productName = d.getString("productName");
         e.storeName = d.getString("storeName");
+        e.carrierName = d.getString("carrierName");
+        Double price = null;
+        try { price = d.getDouble("price"); } catch (Exception ignored) {}
+        e.price = price != null ? price : 0d;
+
         e.orderId = d.getString("orderId");
         e.description = d.getString("description");
+
         String status = d.getString("status");
         boolean delivered = status != null && "DELIVERED".equalsIgnoreCase(status);
         if (delivered) {
@@ -199,8 +234,10 @@ public class PurchaseRepository {
             handleDeliveredPurchase(d);
         }
         e.status = status != null ? status : "PENDING";
-        com.google.firebase.Timestamp ts = d.getTimestamp("createdAt");
+
+        Timestamp ts = d.getTimestamp("createdAt");
         e.createdAt = ts != null ? ts.toDate().getTime() : System.currentTimeMillis();
+
         String thumb = d.getString("thumbnailUrl");
         e.thumbnailUrl = thumb != null ? thumb : "";
         e.pendingSync = false;
@@ -218,7 +255,11 @@ public class PurchaseRepository {
     }
 
     private static String safeUid() {
-        try { return FirebaseAuth.getInstance().getUid(); } catch (Exception ex) { return null; }
+        try {
+            return FirebaseAuth.getInstance().getUid();
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     private void handleDeliveredPurchase(DocumentSnapshot snapshot) {
@@ -246,7 +287,9 @@ public class PurchaseRepository {
         pkg.label = derivePackageLabel(snapshot);
         pkg.description = derivePackageDescription(snapshot);
         Double price = null;
-        try { price = snapshot.getDouble("price"); } catch (Exception ignored) {}
+        try {
+            price = snapshot.getDouble("price");
+        } catch (Exception ignored) {}
         pkg.price = price != null ? price : 0d;
         pkg.status = "PENDING";
         pkg.lastUpdate = System.currentTimeMillis();
@@ -310,11 +353,15 @@ public class PurchaseRepository {
 
     private java.util.Map<String, Object> buildPendingPayload(PurchaseEntity entity) {
         java.util.HashMap<String, Object> data = new java.util.HashMap<>();
-        data.put("storeName", entity.storeName != null ? entity.storeName : "");
-        data.put("orderId", entity.orderId != null ? entity.orderId : "");
+        data.put("productName", entity.productName != null ? entity.productName : "");
+        data.put("storeName",   entity.storeName   != null ? entity.storeName   : "");
+        data.put("carrierName", entity.carrierName != null ? entity.carrierName : "");
+        data.put("price",       entity.price       != null ? entity.price       : 0d);
+        data.put("orderId",     entity.orderId     != null ? entity.orderId     : "");
         data.put("description", entity.description != null ? entity.description : "");
-        data.put("status", entity.status != null ? entity.status : "PENDING");
-        data.put("thumbnailUrl", entity.thumbnailUrl != null ? entity.thumbnailUrl : "");
+        data.put("status",      entity.status      != null ? entity.status      : "PENDING");
+        data.put("thumbnailUrl",entity.thumbnailUrl!= null ? entity.thumbnailUrl: "");
+
         if (entity.createdAt > 0) {
             data.put("createdAt", new Timestamp(new java.util.Date(entity.createdAt)));
         } else {
@@ -347,7 +394,4 @@ public class PurchaseRepository {
         if (order != null && !order.isEmpty()) return "Orden " + order;
         return "Generado desde compra";
     }
-
 }
-
-

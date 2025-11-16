@@ -20,7 +20,8 @@ import java.util.TimeZone;
 public class NewPurchaseViewModel extends AndroidViewModel {
 
     private final PurchaseRepository repository;
-    private final MutableLiveData<NewPurchaseUiState> uiState = new MutableLiveData<>(new NewPurchaseUiState.Idle());
+    private final MutableLiveData<NewPurchaseUiState> uiState =
+            new MutableLiveData<>(new NewPurchaseUiState.Idle());
     private final MutableLiveData<Event<NewPurchaseEvent>> events = new MutableLiveData<>();
 
     public NewPurchaseViewModel(@NonNull Application application) {
@@ -36,33 +37,86 @@ public class NewPurchaseViewModel extends AndroidViewModel {
         return events;
     }
 
-    public void savePurchase(String store, String description, String orderId) {
-        String storeName = safe(store);
-        String order = safe(orderId);
-        if (storeName.isEmpty() || order.isEmpty()) {
-            events.setValue(new Event<>(NewPurchaseEvent.showMessage(getApplication().getString(R.string.new_purchase_error_required))));
+    /**
+     * Guarda una nueva compra con todos los datos del formulario.
+     *
+     * @param productName  Nombre del producto
+     * @param description  Descripción
+     * @param storeName    Nombre de la tienda (OBLIGATORIO)
+     * @param carrierName  Nombre del carrier / empresa de envío
+     * @param priceStr     Precio como texto (se parsea a Double)
+     * @param orderId      Id de orden / tracking (OBLIGATORIO)
+     */
+    public void savePurchase(
+            String productName,
+            String description,
+            String storeName,
+            String carrierName,
+            String priceStr,
+            String orderId
+    ) {
+        String store  = safe(storeName);
+        String order  = safe(orderId);
+
+        // Validación mínima: tienda y orden son obligatorios
+        if (store.isEmpty() || order.isEmpty()) {
+            events.setValue(new Event<>(
+                    NewPurchaseEvent.showMessage(
+                            getApplication().getString(R.string.new_purchase_error_required)
+                    )
+            ));
             return;
         }
-        String desc = safe(description);
+
+        String prod     = safe(productName);
+        String desc     = safe(description);
+        String carrier  = safe(carrierName);
+        String priceTxt = safe(priceStr);
+
+        Double price = null;
+        if (!priceTxt.isEmpty()) {
+            try {
+                price = Double.parseDouble(priceTxt);
+            } catch (NumberFormatException e) {
+                // Si querés que el precio inválido corte el flujo, podés descomentar:
+                // events.setValue(new Event<>(NewPurchaseEvent.showMessage("Precio inválido")));
+                // return;
+            }
+        }
+
         uiState.setValue(new NewPurchaseUiState.Loading());
 
         String nowIso = nowIso();
-        repository.createLocalAndSync(storeName, order, desc, nowIso);
+
+        // Llamamos al repositorio con TODOS los campos
+        repository.createLocalAndSync(
+                prod,
+                store,
+                carrier,
+                price,
+                order,
+                desc,
+                nowIso
+        );
 
         boolean online = NetworkUtils.isOnline(getApplication());
         String message = online
                 ? getApplication().getString(R.string.new_purchase_saved_online)
                 : getApplication().getString(R.string.new_purchase_saved_offline);
+
         uiState.setValue(new NewPurchaseUiState.Idle());
         events.setValue(new Event<>(NewPurchaseEvent.success(message)));
     }
+
+    // Helpers
 
     private static String safe(String value) {
         return value != null ? value.trim() : "";
     }
 
     private static String nowIso() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
+        SimpleDateFormat sdf =
+                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         return sdf.format(new Date());
     }

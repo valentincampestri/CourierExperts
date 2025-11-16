@@ -40,6 +40,7 @@
     <string name="new_purchase_title">Nueva compra</string>
     <string name="new_purchase_subtitle">Informanos sobre tu compra</string>
     <string name="hint_store">Tienda</string>
+    <string name="hint_productnName">Nombre del Producto</string>
     <string name="hint_description">Descripcion</string>
     <string name="hint_carrier">Empresa de Envio</string>
     <string name="hint_price">Precio</string>

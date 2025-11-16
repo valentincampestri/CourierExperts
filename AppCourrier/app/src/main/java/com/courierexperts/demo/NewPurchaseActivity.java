@@ -15,6 +15,7 @@ import com.courierexperts.demo.ui.purchases.NewPurchaseEvent;
 import com.courierexperts.demo.ui.purchases.NewPurchaseUiState;
 import com.courierexperts.demo.ui.purchases.NewPurchaseViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.textfield.TextInputEditText;
 
 public class NewPurchaseActivity extends AppCompatActivity {
 
@@ -29,7 +30,6 @@ public class NewPurchaseActivity extends AppCompatActivity {
 
         vm = new ViewModelProvider(this).get(NewPurchaseViewModel.class);
         observeViewModel();
-
         setupBottomBar();
 
         if (b.btnCancelarnuevaCompra != null) {
@@ -47,7 +47,9 @@ public class NewPurchaseActivity extends AppCompatActivity {
                 b.btnGuardarNuevaCompra.setEnabled(!loading);
             }
             if (b.progressBar != null) {
-                b.progressBar.setVisibility(loading ? android.view.View.VISIBLE : android.view.View.GONE);
+                b.progressBar.setVisibility(
+                        loading ? android.view.View.VISIBLE : android.view.View.GONE
+                );
             }
         });
 
@@ -55,6 +57,7 @@ public class NewPurchaseActivity extends AppCompatActivity {
             if (event == null) return;
             NewPurchaseEvent payload = event.getContentIfNotHandled();
             if (payload == null) return;
+
             if (payload.getType() == NewPurchaseEvent.Type.SHOW_MESSAGE) {
                 if (payload.getMessage() != null) {
                     Toast.makeText(this, payload.getMessage(), Toast.LENGTH_SHORT).show();
@@ -71,15 +74,28 @@ public class NewPurchaseActivity extends AppCompatActivity {
     }
 
     private void savePurchase() {
-        String store = textOf(b.etStoreName);
+        // 📌 Leemos TODOS los campos del formulario
+        String productName = textOf(b.etProductName);
         String description = textOf(b.etDescription);
-        String orderId = textOf(b.etOrderId);
-        vm.savePurchase(store, description, orderId);
+        String storeName   = textOf(b.etStoreName);
+        String carrierName = textOf(b.etCarrierName);
+        String orderId     = textOf(b.etOrderId);
+        String priceStr    = textOf(b.etPrice);
+
+        // Enviamos todo al ViewModel
+        vm.savePurchase(
+                productName,
+                description,
+                storeName,
+                carrierName,
+                priceStr,
+                orderId
+        );
     }
 
-    private static String textOf(@Nullable com.google.android.material.textfield.TextInputEditText et) {
+    private static String textOf(@Nullable TextInputEditText et) {
         if (et != null && et.getText() != null) {
-            return et.getText().toString();
+            return et.getText().toString().trim();
         }
         return "";
     }

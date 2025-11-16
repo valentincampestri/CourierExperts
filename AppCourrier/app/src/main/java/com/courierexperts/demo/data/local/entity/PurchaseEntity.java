@@ -14,4 +14,9 @@ public class PurchaseEntity {
     public long createdAt;      // epoch millis (Firestore Timestamp)
     public String thumbnailUrl; // URL del logo/imagen de la tienda
     public boolean pendingSync; // true si falta enviar al servidor
+
+    public String productName;
+    public String carrierName;
+    public Double price;
+
 }
