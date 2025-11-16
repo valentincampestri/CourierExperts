@@ -56,3 +56,6 @@ AppCourrier/.gradle
 
 # Optional: ignore build artifacts from other modules
 /*/build/
+
+# Ignorar reportes temporales
+*.html

@@ -14,6 +14,7 @@ import com.courierexperts.demo.databinding.ItemPackageBinding;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.VH> {
@@ -61,16 +62,31 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.VH> {
         Glide.with(h.b.getRoot()).load(it.thumbnailUrl).into(h.b.ivThumb);
 
         int bgRes;
-        String status = it.status != null ? it.status : "";
+        String status = it.status != null ? it.status.toUpperCase(Locale.ROOT) : "";
 
-        if (status.equalsIgnoreCase("RECEIVED") || status.equalsIgnoreCase("DELIVERED")) {
-            // Paquetes ya recibidos / entregados → pill verde
-            bgRes = com.courierexperts.demo.R.drawable.bg_status_chip_delivered;
-        } else {
-            // Resto de estados → pill pendiente (amarillo/gris, según tu drawable)
-            bgRes = com.courierexperts.demo.R.drawable.bg_status_chip_pending;
+        // Selección del color según el estado
+        switch (status) {
+            case "DELIVERED":
+            case "RECEIVED":
+                bgRes = com.courierexperts.demo.R.drawable.bg_status_chip_delivered; // verde
+                break;
+
+            case "IN_TRANSIT":
+                bgRes = com.courierexperts.demo.R.drawable.bg_status_chip_transit; // azul o violeta (según tu diseño)
+                break;
+
+            case "CANCELLED":
+                bgRes = com.courierexperts.demo.R.drawable.bg_status_chip_cancelled; // rojo
+                break;
+
+            case "PENDING":
+            default:
+                bgRes = com.courierexperts.demo.R.drawable.bg_status_chip_pending; // amarillo o gris
+                break;
         }
+
         h.b.tvStatus.setBackgroundResource(bgRes);
+
 
         // checkbox state (hide if selection disabled)
         if (!selectionEnabled) {
