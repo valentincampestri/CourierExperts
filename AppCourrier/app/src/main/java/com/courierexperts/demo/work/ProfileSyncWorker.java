@@ -14,6 +14,7 @@ import com.courierexperts.demo.data.local.db.AppDatabase;
 import com.courierexperts.demo.data.local.entity.UserProfileEntity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.google.android.gms.tasks.Tasks;
 
 import java.text.SimpleDateFormat;
@@ -36,22 +37,31 @@ public class ProfileSyncWorker extends Worker {
         if (uid == null) return Result.success();
         UserProfileEntity e = AppDatabase.get(getApplicationContext()).userProfileDao().getProfileSync(uid);
         if (e == null) return Result.success();
+        if (e.dirty != null && !e.dirty) return Result.success();
 
         try {
             HashMap<String,Object> map = new HashMap<>();
-            map.put("name", e.name);
-            map.put("lastName", e.lastName);
-            map.put("dni", e.dni);
-            map.put("cuil", e.cuil);
-            map.put("address", e.address);
-            map.put("province", e.province);
-            map.put("country", e.country);
-            map.put("email", e.email);
-            map.put("phone", e.phone);
-            map.put("depositId", e.depositId);
-            map.put("notificationsEnabled", e.notificationsEnabled != null && e.notificationsEnabled);
+            putIfNotEmpty(map, "name", e.name);
+            putIfNotEmpty(map, "lastName", e.lastName);
+            putIfNotEmpty(map, "dni", e.dni);
+            putIfNotEmpty(map, "cuil", e.cuil);
+            putIfNotEmpty(map, "address", e.address);
+            putIfNotEmpty(map, "province", e.province);
+            putIfNotEmpty(map, "country", e.country);
+            putIfNotEmpty(map, "email", e.email);
+            putIfNotEmpty(map, "phone", e.phone);
+            if (e.depositId != null) {
+                map.put("depositId", e.depositId);
+            }
+            if (e.notificationsEnabled != null) {
+                map.put("notificationsEnabled", e.notificationsEnabled);
+            }
+            if (map.isEmpty()) return Result.success();
             map.put("updatedAt", nowIso());
-            Tasks.await(FirebaseFirestore.getInstance().collection("users").document(uid).set(map));
+            Tasks.await(FirebaseFirestore.getInstance()
+                    .collection("users")
+                    .document(uid)
+                    .set(map, SetOptions.merge()));
             // marcar clean
             e.dirty = Boolean.FALSE;
             AppDatabase.get(getApplicationContext()).userProfileDao().upsert(e);
@@ -65,6 +75,12 @@ public class ProfileSyncWorker extends Worker {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         return sdf.format(new Date());
+    }
+
+    private static void putIfNotEmpty(HashMap<String, Object> map, String key, String value) {
+        if (value != null && !value.trim().isEmpty()) {
+            map.put(key, value);
+        }
     }
 
     public static void enqueue(Context ctx) {

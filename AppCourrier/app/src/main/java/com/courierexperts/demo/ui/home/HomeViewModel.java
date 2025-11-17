@@ -63,6 +63,7 @@ public class HomeViewModel extends AndroidViewModel {
         shipmentRepository = new ShipmentRepository(application);
         purchaseRepository = new PurchaseRepository(application);
         packageRepository = new PackageRepository(application);
+        profileRepository.syncFromFirestore();
 
         profilePrefs = application.getSharedPreferences("profile_prefs", Application.MODE_PRIVATE);
         uiState.setValue(new HomeUiState.Loading());

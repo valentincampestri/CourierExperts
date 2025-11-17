@@ -24,6 +24,7 @@ public class ProfileViewModel extends AndroidViewModel {
     public ProfileViewModel(@NonNull Application application) {
         super(application);
         repository = new UserProfileRepository(application);
+        repository.syncFromFirestore();
         uiState.setValue(new ProfileUiState.Loading());
 
         LiveData<UserProfileEntity> source = repository.observeProfile();

@@ -178,17 +178,18 @@ public class UserProfileRepository {
         UserProfileEntity local = dao.getProfileSync(uid);
         UserProfileEntity e = (local != null) ? local : new UserProfileEntity();
         e.uid = uid;
-        e.name = doc.getString("name");
-        e.lastName = doc.getString("lastName");
-        e.email = doc.getString("email");
-        e.address = doc.getString("address");
-        e.province = doc.getString("province");
-        e.country = doc.getString("country");
-        e.phone = doc.getString("phone");
-        e.dni = doc.getString("dni");
-        e.cuil = doc.getString("cuil");
+        e.name = firstNonEmpty(doc, "name", "nombre");
+        e.lastName = firstNonEmpty(doc, "lastName", "apellido");
+        e.email = firstNonEmpty(doc, "email", "correo");
+        e.address = firstNonEmpty(doc, "address", "direccion");
+        e.province = firstNonEmpty(doc, "province", "provincia");
+        e.country = firstNonEmpty(doc, "country", "pais");
+        e.phone = firstNonEmpty(doc, "phone", "telefono");
+        e.dni = firstNonEmpty(doc, "dni");
+        e.cuil = firstNonEmpty(doc, "cuil");
         Object dep = doc.get("depositId");
-        e.depositId = (dep instanceof Number) ? ((Number) dep).longValue() : null;
+        if (dep == null) dep = doc.get("depositoId");
+        e.depositId = coerceLong(dep);
         Boolean notif = doc.getBoolean("notificationsEnabled");
         e.notificationsEnabled = notif != null ? notif : Boolean.FALSE;
         e.updatedAt = doc.getString("updatedAt");
@@ -218,6 +219,35 @@ public class UserProfileRepository {
                 .set(data, SetOptions.merge())
                 .addOnSuccessListener(v -> AppExecutors.io().execute(() -> { e.dirty = Boolean.FALSE; dao.upsert(e);} ))
                 .addOnFailureListener(err -> { try { com.courierexperts.demo.work.ProfileSyncWorker.enqueue(app); } catch (Exception ignored) {} });
+    }
+
+    private static String firstNonEmpty(DocumentSnapshot doc, String... keys) {
+        if (doc == null || keys == null) return null;
+        for (String key : keys) {
+            if (key == null) continue;
+            String value = doc.getString(key);
+            if (value != null) {
+                String trimmed = value.trim();
+                if (!trimmed.isEmpty()) {
+                    return trimmed;
+                }
+            }
+        }
+        return null;
+    }
+
+    private static Long coerceLong(Object value) {
+        if (value instanceof Number) {
+            return ((Number) value).longValue();
+        }
+        if (value instanceof String) {
+            String trimmed = ((String) value).trim();
+            if (trimmed.isEmpty()) return null;
+            try {
+                return Long.parseLong(trimmed);
+            } catch (NumberFormatException ignored) {}
+        }
+        return null;
     }
 
     private static boolean notEmpty(String s) { return s != null && !s.trim().isEmpty(); }
