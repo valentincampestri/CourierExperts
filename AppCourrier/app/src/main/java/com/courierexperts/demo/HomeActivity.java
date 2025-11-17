@@ -19,10 +19,13 @@ import com.courierexperts.demo.ui.home.BannerAdapter;
 import com.courierexperts.demo.ui.home.HomeEvent;
 import com.courierexperts.demo.ui.home.HomeUiState;
 import com.courierexperts.demo.ui.home.HomeViewModel;
+import com.courierexperts.demo.ui.home.RecentActivityAdapter;
+import com.courierexperts.demo.ui.home.RecentActivityItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
@@ -35,6 +38,8 @@ public class HomeActivity extends AppCompatActivity {
     private boolean bannerPaused = false;
     private int bannerPosition = 0;
 
+    private RecentActivityAdapter recentAdapter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +51,7 @@ public class HomeActivity extends AppCompatActivity {
         setupBottomBar();
         setupBannerCarousel();
         setupButtons();
+        setupRecentActivityList();
         observeViewModel();
         setupSeedDebug();
     }
@@ -77,52 +83,30 @@ public class HomeActivity extends AppCompatActivity {
         if (b.tvSaludo != null) {
             b.tvSaludo.setText(getString(R.string.home_greeting_generic));
         }
-        renderLastShipment(null);
+        if (recentAdapter != null) {
+            recentAdapter.submit(Collections.emptyList());
+        }
     }
 
     private void renderContentState(HomeUiState.Content content) {
         if (b.tvSaludo != null) {
             b.tvSaludo.setText(content.getGreeting());
         }
-        renderLastShipment(content.getLastShipment());
+
+        if (recentAdapter != null) {
+            List<RecentActivityItem> items = content.getRecentActivityItems();
+            if (items != null) {
+                recentAdapter.submit(items);
+            } else {
+                recentAdapter.submit(Collections.emptyList());
+            }
+        }
     }
 
     private void renderErrorState(HomeUiState.Error error) {
         Toast.makeText(this, error.getMessage(), Toast.LENGTH_LONG).show();
-        renderLastShipment(null);
-    }
-
-    private void renderLastShipment(@Nullable HomeUiState.LastShipmentCard card) {
-        if (card == null) {
-            if (b.Tvenvultimo != null) {
-                b.Tvenvultimo.setText(R.string.home_last_shipment_empty);
-            }
-            if (b.Tvenvultimoestado != null) {
-                b.Tvenvultimoestado.setText("");
-            }
-            if (b.tvVerDetallesHome != null) {
-                b.tvVerDetallesHome.setVisibility(View.GONE);
-                b.tvVerDetallesHome.setOnClickListener(null);
-            }
-            return;
-        }
-
-        if (b.Tvenvultimo != null) {
-            b.Tvenvultimo.setText(card.getTitle());
-        }
-        if (b.Tvenvultimoestado != null) {
-            b.Tvenvultimoestado.setText(card.getStatusLabel());
-        }
-        if (b.tvVerDetallesHome != null) {
-            b.tvVerDetallesHome.setVisibility(View.VISIBLE);
-            b.tvVerDetallesHome.setOnClickListener(v -> {
-                Intent i = new Intent(HomeActivity.this, ShipmentDetailActivity.class);
-                if (card.getFirestoreId() != null && !card.getFirestoreId().isEmpty()) {
-                    i.putExtra("shipmentFsId", card.getFirestoreId());
-                }
-                i.putExtra("shipmentLocalId", card.getLocalId());
-                startActivity(i);
-            });
+        if (recentAdapter != null) {
+            recentAdapter.submit(Collections.emptyList());
         }
     }
 
@@ -241,5 +225,39 @@ public class HomeActivity extends AppCompatActivity {
                 bannerHandler.postDelayed(this, 4000);
             }
         }, 4000);
+    }
+
+    private void setupRecentActivityList() {
+        if (b.rvActividadReciente == null) return;
+
+        recentAdapter = new RecentActivityAdapter();
+        b.rvActividadReciente.setLayoutManager(new LinearLayoutManager(this));
+        b.rvActividadReciente.setAdapter(recentAdapter);
+
+        recentAdapter.setOnItemClickListener(item -> {
+            switch (item.getType()) {
+                case PURCHASE:
+                    startActivity(new Intent(this, PurchaseDetailActivity.class)
+                            .putExtra("purchaseId", item.getId()));
+                    break;
+                case PACKAGE:
+                    startActivity(new Intent(this, PackageDetailActivity.class)
+                            .putExtra("packageId", item.getId()));
+                    break;
+                case SHIPMENT:
+                    Intent intent = new Intent(this, ShipmentDetailActivity.class);
+
+                    // 🔹 Enviamos el Firestore ID si está disponible
+                    if (item.getFirestoreId() != null && !item.getFirestoreId().isEmpty()) {
+                        intent.putExtra("shipmentFsId", item.getFirestoreId());
+                    }
+
+                    // 🔹 Siempre mandamos también el ID local
+                    intent.putExtra("shipmentLocalId", item.getId());
+
+                    startActivity(intent);
+                    break;
+            }
+        });
     }
 }

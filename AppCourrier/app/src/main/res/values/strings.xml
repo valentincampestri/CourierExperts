@@ -35,6 +35,13 @@
     <string name="signup_error_phone">Telefono invalido (usar + y digitos, 6 a 20)</string>
     <string name="signup_error_register">No se pudo registrar</string>
     <string name="signup_missing_step">Debes completar el paso anterior</string>
+    <!-- Actividad reciente -->
+    <string name="home_recent_purchase_fallback_title">Compra</string>
+    <string name="home_recent_purchase_subtitle">Orden %1$s</string>
+    <string name="home_recent_package_fallback_title">Paquete</string>
+    <string name="home_recent_package_subtitle">Paquete #%1$d</string>
+    <string name="home_recent_shipment_subtitle">Envío #%1$d</string>
+
 
     <!-- Nueva compra -->
     <string name="new_purchase_title">Nueva compra</string>

@@ -12,40 +12,62 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.courierexperts.demo.R;
+import com.courierexperts.demo.data.local.entity.PackageEntity;
+import com.courierexperts.demo.data.local.entity.PurchaseEntity;
 import com.courierexperts.demo.data.local.entity.ShipmentEntity;
 import com.courierexperts.demo.data.local.entity.UserProfileEntity;
+import com.courierexperts.demo.data.repository.PackageRepository;
+import com.courierexperts.demo.data.repository.PurchaseRepository;
 import com.courierexperts.demo.data.repository.ShipmentRepository;
 import com.courierexperts.demo.data.repository.UserProfileRepository;
 import com.courierexperts.demo.domain.StatusMapper;
 import com.courierexperts.demo.util.Event;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
- * Combina perfil + ultimo envA-o para renderizar HomeActivity y expone eventos
- * puntuales (recordatorio de depA3sito, errores remotos).
+ * Combina perfil + actividad reciente (compras, paquetes y envíos)
+ * para renderizar HomeActivity y expone eventos puntuales.
  */
 public class HomeViewModel extends AndroidViewModel {
 
     private final UserProfileRepository profileRepository;
     private final ShipmentRepository shipmentRepository;
+    private final PurchaseRepository purchaseRepository;
+    private final PackageRepository packageRepository;
+
     private final MediatorLiveData<HomeUiState> uiState = new MediatorLiveData<>();
     private final MutableLiveData<Event<HomeEvent>> events = new MutableLiveData<>();
     private final SharedPreferences profilePrefs;
 
     private boolean profileLoaded;
     private boolean shipmentsLoaded;
+    private boolean purchasesLoaded;
+    private boolean packagesLoaded;
+
     @Nullable private UserProfileEntity latestProfile;
-    @Nullable private ShipmentEntity latestShipment;
+    @Nullable private List<ShipmentEntity> shipmentsList;
+    @Nullable private List<PurchaseEntity> purchasesList;
+    @Nullable private List<PackageEntity> packagesList;
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
         profileRepository = new UserProfileRepository(application);
         shipmentRepository = new ShipmentRepository(application);
+        purchaseRepository = new PurchaseRepository(application);
+        packageRepository = new PackageRepository(application);
+
         profilePrefs = application.getSharedPreferences("profile_prefs", Application.MODE_PRIVATE);
         uiState.setValue(new HomeUiState.Loading());
 
+        // Perfil
         LiveData<UserProfileEntity> profileSource = profileRepository.observeProfile();
         uiState.addSource(profileSource, profile -> {
             profileLoaded = true;
@@ -54,15 +76,33 @@ public class HomeViewModel extends AndroidViewModel {
             publishState();
         });
 
+        // Envíos
         LiveData<List<ShipmentEntity>> shipmentsSource = shipmentRepository.observeShipments();
         uiState.addSource(shipmentsSource, list -> {
             shipmentsLoaded = true;
-            latestShipment = pickLatestShipment(list);
+            shipmentsList = list;
             publishState();
         });
 
-        LiveData<String> errors = shipmentRepository.getErrors();
-        uiState.addSource(errors, message -> {
+        // Compras
+        LiveData<List<PurchaseEntity>> purchasesSource = purchaseRepository.observePurchases();
+        uiState.addSource(purchasesSource, list -> {
+            purchasesLoaded = true;
+            purchasesList = list;
+            publishState();
+        });
+
+        // Paquetes (ordenados por lastUpdate)
+        LiveData<List<PackageEntity>> packagesSource = packageRepository.observeAllOrdered();
+        uiState.addSource(packagesSource, list -> {
+            packagesLoaded = true;
+            packagesList = list;
+            publishState();
+        });
+
+        // Errores remotos (por ahora usamos el de envíos, podés sumar los otros si querés)
+        LiveData<String> shipmentErrors = shipmentRepository.getErrors();
+        uiState.addSource(shipmentErrors, message -> {
             if (message != null && !message.trim().isEmpty()) {
                 events.setValue(new Event<>(HomeEvent.showError(message)));
             }
@@ -77,19 +117,32 @@ public class HomeViewModel extends AndroidViewModel {
         return events;
     }
 
+    // Si querés refrescar a mano desde la Home (por ahora sólo envíos)
     public void refreshShipments() {
         shipmentRepository.refreshFromNetwork();
     }
 
+    /**
+     * Publica el estado combinado: saludo + lista de actividad reciente.
+     */
     private void publishState() {
-        if (!profileLoaded && !shipmentsLoaded) {
+        // Si todavía no cargó nada, mostramos loading
+        if (!profileLoaded && !shipmentsLoaded && !purchasesLoaded && !packagesLoaded) {
             uiState.setValue(new HomeUiState.Loading());
             return;
         }
+
         String greeting = formatGreeting(latestProfile);
-        HomeUiState.LastShipmentCard card = buildLastShipmentCard(latestShipment);
-        uiState.setValue(new HomeUiState.Content(greeting, card));
+        List<RecentActivityItem> recent = buildRecentActivityList(
+                purchasesList,
+                packagesList,
+                shipmentsList
+        );
+
+        uiState.setValue(new HomeUiState.Content(greeting, recent));
     }
+
+    // ---------- Greeting / Perfil ----------
 
     private String formatGreeting(@Nullable UserProfileEntity profile) {
         Application app = getApplication();
@@ -131,38 +184,156 @@ public class HomeViewModel extends AndroidViewModel {
         }
     }
 
-    @Nullable
-    private ShipmentEntity pickLatestShipment(@Nullable List<ShipmentEntity> list) {
-        if (list == null || list.isEmpty()) {
-            return null;
+    // ---------- Actividad reciente mezclada (compras + paquetes + envíos) ----------
+
+    /**
+     * Construye la lista de las últimas 5 actividades recientes mezclando:
+     * - Compras
+     * - Paquetes
+     * - Envíos
+     */
+    private List<RecentActivityItem> buildRecentActivityList(
+            @Nullable List<PurchaseEntity> purchases,
+            @Nullable List<PackageEntity> packages,
+            @Nullable List<ShipmentEntity> shipments
+    ) {
+        class Row {
+            long epoch;
+            RecentActivityItem item;
         }
-        ShipmentEntity latest = null;
-        for (ShipmentEntity entity : list) {
-            if (entity == null) {
-                continue;
-            }
-            if (latest == null) {
-                latest = entity;
-                continue;
-            }
-            if (entity.lastUpdate > latest.lastUpdate) {
-                latest = entity;
-            } else if (entity.lastUpdate == latest.lastUpdate && entity.id > latest.id) {
-                latest = entity;
+
+        List<Row> rows = new ArrayList<>();
+
+        // Compras
+        if (purchases != null) {
+            for (PurchaseEntity p : purchases) {
+                if (p == null) continue;
+                Row r = new Row();
+                r.epoch = p.createdAt > 0 ? p.createdAt : 0L;
+
+                String title = !TextUtils.isEmpty(p.productName)
+                        ? p.productName
+                        : getApplication().getString(R.string.home_recent_purchase_fallback_title);
+
+                String subtitle = (p.description != null && !p.description.isEmpty())
+                        ? p.description
+                        : "-";
+
+                String statusLabel = StatusMapper.labelPurchase(p.status);
+                String dateLabel = formatShortDate(r.epoch);
+                String thumb = (p.thumbnailUrl != null) ? p.thumbnailUrl : "";
+
+                int iconRes = R.drawable.ic_compras;
+
+                r.item = new RecentActivityItem(
+                        p.id,
+                        null,
+                        RecentActivityItem.Type.PURCHASE,
+                        title,
+                        subtitle,
+                        statusLabel,
+                        dateLabel,
+                        thumb,
+                        iconRes
+                );
+                rows.add(r);
             }
         }
-        return latest;
+
+        // Paquetes
+        if (packages != null) {
+            for (PackageEntity pkg : packages) {
+                if (pkg == null) continue;
+                Row r = new Row();
+                r.epoch = pkg.lastUpdate > 0 ? pkg.lastUpdate : 0L;
+
+                String title = !TextUtils.isEmpty(pkg.label)
+                        ? pkg.label
+                        : getApplication().getString(R.string.home_recent_package_fallback_title);
+
+                String subtitle = !TextUtils.isEmpty(pkg.description)
+                        ? pkg.description
+                        : getApplication().getString(R.string.home_recent_package_subtitle, pkg.id);
+
+                String statusLabel = StatusMapper.labelPackage(pkg.status);
+                String dateLabel = formatShortDate(r.epoch);
+                String thumb = (pkg.thumbnailUrl != null) ? pkg.thumbnailUrl : "";
+
+                int iconRes = R.drawable.ic_paquetes; // o ic_box
+
+                r.item = new RecentActivityItem(
+                        pkg.id,
+                        null,
+                        RecentActivityItem.Type.PACKAGE,
+                        title,
+                        subtitle,
+                        statusLabel,
+                        dateLabel,
+                        thumb,
+                        iconRes
+                );
+                rows.add(r);
+            }
+        }
+
+        // Envíos
+        if (shipments != null) {
+            for (ShipmentEntity s : shipments) {
+                if (s == null) continue;
+                Row r = new Row();
+                r.epoch = s.lastUpdate > 0 ? s.lastUpdate : 0L;
+
+                String title = !TextUtils.isEmpty(s.title)
+                        ? s.title
+                        : getApplication().getString(R.string.shipment_title_placeholder);
+
+                String subtitle = getApplication().getString(
+                        R.string.home_recent_shipment_subtitle,  // ej: "Envío #%1$d"
+                        s.id
+                );
+
+                String statusLabel = StatusMapper.labelShipment(s.status);
+                String dateLabel = formatShortDate(r.epoch);
+                String thumb = (s.thumbnailUrl != null) ? s.thumbnailUrl : "";
+
+                int iconRes = R.drawable.ic_envios;
+
+                r.item = new RecentActivityItem(
+                        s.id,
+                        s.fsId,
+                        RecentActivityItem.Type.SHIPMENT,
+                        title,
+                        subtitle,
+                        statusLabel,
+                        dateLabel,
+                        thumb,
+                        iconRes
+                );
+                rows.add(r);
+            }
+        }
+
+        // Ordenar por fecha (más reciente primero)
+        Collections.sort(rows, new Comparator<Row>() {
+            @Override
+            public int compare(Row a, Row b) {
+                return Long.compare(b.epoch, a.epoch);
+            }
+        });
+
+        // Tomar solo las últimas 5
+        List<RecentActivityItem> result = new ArrayList<>();
+        int max = Math.min(rows.size(), 5);
+        for (int i = 0; i < max; i++) {
+            result.add(rows.get(i).item);
+        }
+
+        return result;
     }
 
-    @Nullable
-    private HomeUiState.LastShipmentCard buildLastShipmentCard(@Nullable ShipmentEntity entity) {
-        if (entity == null) {
-            return null;
-        }
-        String title = !TextUtils.isEmpty(entity.title)
-                ? entity.title
-                : getApplication().getString(R.string.shipment_title_placeholder);
-        String status = StatusMapper.labelShipment(entity.status);
-        return new HomeUiState.LastShipmentCard(entity.id, entity.fsId, title, status);
+    private String formatShortDate(long epochMillis) {
+        if (epochMillis <= 0) return "";
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM HH:mm", Locale.getDefault());
+        return sdf.format(new Date(epochMillis));
     }
 }

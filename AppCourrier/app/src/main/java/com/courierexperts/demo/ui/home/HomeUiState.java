@@ -1,35 +1,38 @@
 package com.courierexperts.demo.ui.home;
 
-import androidx.annotation.Nullable;
+import java.util.List;
 
 /**
- * Representa los estados de HomeActivity (saludo y tarjeta del A?ltimo envA-o).
+ * Representa los estados de HomeActivity
+ * (saludo y lista de actividad reciente).
  */
 public abstract class HomeUiState {
 
     private HomeUiState() { }
 
+    // Estado de carga
     public static final class Loading extends HomeUiState { }
 
+    // Estado con contenido
     public static final class Content extends HomeUiState {
         private final String greeting;
-        @Nullable private final LastShipmentCard lastShipment;
+        private final List<RecentActivityItem> recentActivityItems;
 
-        public Content(String greeting, @Nullable LastShipmentCard lastShipment) {
+        public Content(String greeting, List<RecentActivityItem> recentActivityItems) {
             this.greeting = greeting;
-            this.lastShipment = lastShipment;
+            this.recentActivityItems = recentActivityItems;
         }
 
         public String getGreeting() {
             return greeting;
         }
 
-        @Nullable
-        public LastShipmentCard getLastShipment() {
-            return lastShipment;
+        public List<RecentActivityItem> getRecentActivityItems() {
+            return recentActivityItems;
         }
     }
 
+    // Estado de error
     public static final class Error extends HomeUiState {
         private final String message;
 
@@ -39,40 +42,6 @@ public abstract class HomeUiState {
 
         public String getMessage() {
             return message;
-        }
-    }
-
-    public static final class LastShipmentCard {
-        private final long localId;
-        @Nullable private final String firestoreId;
-        private final String title;
-        private final String statusLabel;
-
-        public LastShipmentCard(long localId,
-                                @Nullable String firestoreId,
-                                String title,
-                                String statusLabel) {
-            this.localId = localId;
-            this.firestoreId = firestoreId;
-            this.title = title;
-            this.statusLabel = statusLabel;
-        }
-
-        public long getLocalId() {
-            return localId;
-        }
-
-        @Nullable
-        public String getFirestoreId() {
-            return firestoreId;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public String getStatusLabel() {
-            return statusLabel;
         }
     }
 }
