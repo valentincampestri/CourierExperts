@@ -111,12 +111,12 @@
                     android:text="@string/placeholder_mail"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Telfono -->
+            <!-- Telefono -->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nro de telfono"
+                android:hint="Nro de telefono"
                 android:layout_marginTop="@dimen/ce_spacing_sm">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -134,7 +134,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Direccin"
+                android:hint="Direccion"
                 android:layout_marginTop="@dimen/ce_spacing_sm">
 
                 <com.google.android.material.textfield.TextInputEditText

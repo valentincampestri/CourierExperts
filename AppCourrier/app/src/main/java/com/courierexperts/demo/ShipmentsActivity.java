@@ -44,7 +44,6 @@ public class ShipmentsActivity extends AppCompatActivity {
 
         vm = new ViewModelProvider(this).get(ShipmentsViewModel.class);
         observeUiState();
-        b.srlEnvios.setOnRefreshListener(() -> vm.refresh());
         vm.refresh();
 
         setupBottomBar();
@@ -54,14 +53,8 @@ public class ShipmentsActivity extends AppCompatActivity {
         vm.getUiState().observe(this, state -> {
             b.progressBar.setVisibility(View.GONE);
             b.tvStateMessage.setVisibility(View.GONE);
-            if (!(state instanceof ShipmentsUiState.Loading)) {
-                b.srlEnvios.setRefreshing(false);
-            }
-
             if (state instanceof ShipmentsUiState.Loading) {
-                if (!b.srlEnvios.isRefreshing()) {
-                    b.progressBar.setVisibility(View.VISIBLE);
-                }
+                b.progressBar.setVisibility(View.VISIBLE);
                 b.rvEnvios.setVisibility(View.GONE);
             } else if (state instanceof ShipmentsUiState.Success) {
                 b.rvEnvios.setVisibility(View.VISIBLE);

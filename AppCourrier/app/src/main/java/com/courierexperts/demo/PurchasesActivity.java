@@ -45,7 +45,6 @@ public class PurchasesActivity extends AppCompatActivity {
 
         // ViewModel + LiveData
         vm = new ViewModelProvider(this).get(PurchasesViewModel.class);
-        b.srlCompras.setOnRefreshListener(() -> vm.refresh());
         observeUiState();
         vm.refresh();
 
@@ -63,14 +62,8 @@ public class PurchasesActivity extends AppCompatActivity {
         vm.getUiState().observe(this, state -> {
             b.progressBar.setVisibility(View.GONE);
             b.tvStateMessage.setVisibility(View.GONE);
-            if (!(state instanceof PurchasesUiState.Loading)) {
-                b.srlCompras.setRefreshing(false);
-            }
-
             if (state instanceof PurchasesUiState.Loading) {
-                if (!b.srlCompras.isRefreshing()) {
-                    b.progressBar.setVisibility(View.VISIBLE);
-                }
+                b.progressBar.setVisibility(View.VISIBLE);
                 b.rvCompras.setVisibility(View.GONE);
             } else if (state instanceof PurchasesUiState.Success) {
                 b.rvCompras.setVisibility(View.VISIBLE);

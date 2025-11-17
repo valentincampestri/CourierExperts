@@ -43,7 +43,6 @@ public class PackagesActivity extends AppCompatActivity {
 
         vm = new ViewModelProvider(this).get(PackagesViewModel.class);
         observeUiState();
-        b.srlPaquetes.setOnRefreshListener(() -> vm.refresh());
         vm.refresh();
 
         b.btnSolicitar.setOnClickListener(v -> onSolicitarEnvio());
@@ -55,14 +54,8 @@ public class PackagesActivity extends AppCompatActivity {
         vm.getUiState().observe(this, state -> {
             b.progressBar.setVisibility(android.view.View.GONE);
             b.tvStateMessage.setVisibility(android.view.View.GONE);
-            if (!(state instanceof PackagesUiState.Loading)) {
-                b.srlPaquetes.setRefreshing(false);
-            }
-
             if (state instanceof PackagesUiState.Loading) {
-                if (!b.srlPaquetes.isRefreshing()) {
-                    b.progressBar.setVisibility(android.view.View.VISIBLE);
-                }
+                b.progressBar.setVisibility(android.view.View.VISIBLE);
                 b.rvPaquetes.setVisibility(android.view.View.GONE);
                 b.btnSolicitar.setEnabled(false);
             } else if (state instanceof PackagesUiState.Success) {
