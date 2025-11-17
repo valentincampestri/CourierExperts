@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.courierexperts.demo.ui.fragments.HomeFragment"
+        android:label="@string/app_name" >
+        <action
+            android:id="@+id/action_nav_home_to_purchasesFragment"
+            app:destination="@id/purchasesFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_packagesFragment"
+            app:destination="@id/packagesFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_shipmentsFragment"
+            app:destination="@id/shipmentsFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_purchaseDetailFragment"
+            app:destination="@id/purchaseDetailFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_packageDetailFragment"
+            app:destination="@id/packageDetailFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_shipmentDetailFragment"
+            app:destination="@id/shipmentDetailFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_newPurchaseFragment"
+            app:destination="@id/newPurchaseFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/purchasesFragment"
+        android:name="com.courierexperts.demo.ui.fragments.PurchasesFragment"
+        android:label="Purchases" >
+        <action
+            android:id="@+id/action_purchasesFragment_to_purchaseDetailFragment"
+            app:destination="@id/purchaseDetailFragment" />
+        <action
+            android:id="@+id/action_purchasesFragment_to_newPurchaseFragment"
+            app:destination="@id/newPurchaseFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/packagesFragment"
+        android:name="com.courierexperts.demo.ui.fragments.PackagesFragment"
+        android:label="Packages" >
+        <action
+            android:id="@+id/action_packagesFragment_to_shipmentsFragment"
+            app:destination="@id/shipmentsFragment" />
+        <action
+            android:id="@+id/action_packagesFragment_to_packageDetailFragment"
+            app:destination="@id/packageDetailFragment" />
+        <action
+            android:id="@+id/action_packagesFragment_to_shipmentDetailFragment"
+            app:destination="@id/shipmentDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/shipmentsFragment"
+        android:name="com.courierexperts.demo.ui.fragments.ShipmentsFragment"
+        android:label="Shipments">
+        <action
+            android:id="@+id/action_shipmentsFragment_to_shipmentDetailFragment"
+            app:destination="@id/shipmentDetailFragment" />
+        <action
+            android:id="@+id/action_shipmentsFragment_to_newPurchaseFragment"
+            app:destination="@id/newPurchaseFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.courierexperts.demo.ui.fragments.ProfileFragment"
+        android:label="Profile" >
+        <action
+            android:id="@+id/action_nav_profile_to_newPurchaseFragment"
+            app:destination="@id/newPurchaseFragment" />
+        <action
+            android:id="@+id/action_nav_profile_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/purchaseDetailFragment"
+        android:name="com.courierexperts.demo.ui.fragments.PurchaseDetailFragment"
+        android:label="Purchase Detail">
+        <argument
+            android:name="purchaseId"
+            android:defaultValue="0L"
+            app:argType="long" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/packageDetailFragment"
+        android:name="com.courierexperts.demo.ui.fragments.PackageDetailFragment"
+        android:label="Package Detail">
+        <argument
+            android:name="packageId"
+            android:defaultValue="0L"
+            app:argType="long" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/shipmentDetailFragment"
+        android:name="com.courierexperts.demo.ui.fragments.ShipmentDetailFragment"
+        android:label="Shipment Detail">
+        <argument
+            android:name="shipmentFsId"
+            android:defaultValue=""
+            app:argType="string" />
+        <argument
+            android:name="shipmentLocalId"
+            android:defaultValue="-1L"
+            app:argType="long" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/newPurchaseFragment"
+        android:name="com.courierexperts.demo.ui.fragments.NewPurchaseFragment"
+        android:label="New Purchase" />
+
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.courierexperts.demo.ui.fragments.EditProfileFragment"
+        android:label="Edit Profile" />
+
+</navigation>

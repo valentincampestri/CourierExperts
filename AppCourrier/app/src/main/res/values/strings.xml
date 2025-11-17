@@ -1,4 +1,4 @@
-<resources>
+﻿<resources>
     <string name="app_name">currier</string>
 
     <!-- Envios -->
@@ -40,7 +40,7 @@
     <string name="home_recent_purchase_subtitle">Orden %1$s</string>
     <string name="home_recent_package_fallback_title">Paquete</string>
     <string name="home_recent_package_subtitle">Paquete #%1$d</string>
-    <string name="home_recent_shipment_subtitle">Envío #%1$d</string>
+    <string name="home_recent_shipment_subtitle">Env�o #%1$d</string>
 
 
     <!-- Nueva compra -->
@@ -61,19 +61,26 @@
     <!-- Perfil -->
     <string name="profile_title">Tus datos</string>
     <string name="hint_name">Nombre</string>
+    <string name="hint_last_name">Apellido</string>
     <string name="placeholder_name">Maria Perez</string>
     <string name="hint_mail">Mail</string>
     <string name="placeholder_mail">maria@gmail.com</string>
     <string name="hint_phone">Nro de telefono</string>
     <string name="hint_address">Direccion</string>
     <string name="placeholder_address">Av. Corrientes 1000</string>
-    <string name="purchases_empty_message">Todavía no informaste compras</string>
+    <string name="purchases_empty_message">Todav�a no informaste compras</string>
     <string name="packages_empty_message">No hay paquetes disponibles por ahora</string>
-    <string name="state_error_retry">No hay servicio actualmente, intente nuevamente más tarde.</string>
+    <string name="state_error_retry">No hay servicio actualmente, intente nuevamente m�s tarde.</string>
     <string name="purchase_detail_not_found">Compra no encontrada</string>
-    <string name="shipment_detail_not_found">Envío no encontrado</string>
+    <string name="shipment_detail_not_found">Env�o no encontrado</string>
     <string name="package_detail_not_found">Paquete no encontrado</string>
-    <string name="profile_placeholder_address">Sin dirección</string>
-    <string name="profile_placeholder_phone">Sin teléfono</string>
-    <!-- Existing -->
+    <string name="package_detail_ticket_title">Detalles del paquete</string>
+    <string name="profile_placeholder_address">Sin direcci�n</string>
+    <string name="profile_placeholder_phone">Sin tel�fono</string>
+    <string name="feature_placeholder">Funcionalidad en migracion (proximamente).</string>
+<!-- Existing -->
 </resources>
+
+
+
+

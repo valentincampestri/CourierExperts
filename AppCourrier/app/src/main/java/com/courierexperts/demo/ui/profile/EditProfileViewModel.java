@@ -76,6 +76,7 @@ public class EditProfileViewModel extends AndroidViewModel {
         }
 
         userRepo.updateName(name);
+        userRepo.updateLastName(lastName);
         userRepo.updatePhone(phone);
         userRepo.updateAddress(address);
         userRepo.updateEmail(email);

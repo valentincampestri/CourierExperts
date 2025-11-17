@@ -69,6 +69,18 @@ public class UserProfileRepository {
         });
     }
 
+    public void updateLastName(String lastName) {
+        AppExecutors.io().execute(() -> {
+            String uid = currentUid();
+            UserProfileEntity e = dao.getProfileSync(uid);
+            if (e == null) { e = new UserProfileEntity(); e.uid = uid; }
+            e.lastName = lastName;
+            stamp(e);
+            dao.upsert(e);
+            pushToFirestoreAsync(e);
+        });
+    }
+
     public void updateEmail(String email) {
         AppExecutors.io().execute(() -> {
             String uid = currentUid();

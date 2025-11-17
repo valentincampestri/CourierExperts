@@ -42,7 +42,7 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     private void navigateHome() {
-        startActivity(new Intent(this, HomeActivity.class)
+        startActivity(new Intent(this, FragmentsHostActivity.class)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
         finish();
     }
