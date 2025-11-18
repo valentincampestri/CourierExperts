@@ -93,17 +93,9 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.VH> {
             h.b.cbSelect.setVisibility(android.view.View.GONE);
         } else {
             h.b.cbSelect.setVisibility(android.view.View.VISIBLE);
-            boolean selectable = "RECEIVED".equals(it.status);
+            boolean selectable = "RECEIVED".equalsIgnoreCase(status);
             h.b.cbSelect.setEnabled(selectable);
-            if (!selectable) {
-                h.b.cbSelect.setOnClickListener(v -> android.widget.Toast.makeText(
-                        h.b.getRoot().getContext(),
-                        "Solo seleccionables en depósito",
-                        android.widget.Toast.LENGTH_SHORT
-                ).show());
-            } else {
-                h.b.cbSelect.setOnClickListener(null);
-            }
+            h.b.cbSelect.setOnClickListener(null);
             boolean checked = selectedIds.contains(it.id);
             h.b.cbSelect.setOnCheckedChangeListener(null);
             h.b.cbSelect.setChecked(checked);
@@ -116,7 +108,6 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.VH> {
                 if (selectionListener != null) selectionListener.onSelectionChanged(selectedIds.size());
             });
         }
-
         // click en fila mantiene navegación existente
         h.b.getRoot().setOnClickListener(v -> { if (listener != null) listener.onClick(it); });
     }

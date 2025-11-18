@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/auth_nav_graph"
+    app:startDestination="@id/welcomeFragment">
+
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.courierexperts.demo.ui.fragments.WelcomeFragment"
+        android:label="Welcome">
+        <action
+            android:id="@+id/action_welcomeFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_welcomeFragment_to_signUpStep1Fragment"
+            app:destination="@id/signUpStep1Fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.courierexperts.demo.ui.fragments.SignInFragment"
+        android:label="Sign In" />
+
+    <fragment
+        android:id="@+id/signUpStep1Fragment"
+        android:name="com.courierexperts.demo.ui.fragments.SignUpStep1Fragment"
+        android:label="Sign Up Step 1">
+        <action
+            android:id="@+id/action_signUpStep1Fragment_to_signUpStep2Fragment"
+            app:destination="@id/signUpStep2Fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/signUpStep2Fragment"
+        android:name="com.courierexperts.demo.ui.fragments.SignUpStep2Fragment"
+        android:label="Sign Up Step 2">
+        <argument
+            android:name="signUpData"
+            app:argType="com.courierexperts.demo.ui.signup.SignUpData" />
+    </fragment>
+
+</navigation>

@@ -42,8 +42,7 @@ public class NewPurchaseFragment extends Fragment {
         }
         observeViewModel();
         if (binding.btnCancelarnuevaCompra != null) {
-            binding.btnCancelarnuevaCompra.setOnClickListener(v ->
-                    NavHostFragment.findNavController(NewPurchaseFragment.this).popBackStack());
+            binding.btnCancelarnuevaCompra.setOnClickListener(v -> navigateHome());
         }
         if (binding.btnGuardarNuevaCompra != null) {
             binding.btnGuardarNuevaCompra.setOnClickListener(v -> savePurchase());
@@ -76,7 +75,7 @@ public class NewPurchaseFragment extends Fragment {
                 if (payload.getMessage() != null) {
                     Toast.makeText(requireContext(), payload.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-                NavHostFragment.findNavController(NewPurchaseFragment.this).popBackStack();
+                navigateHome();
             }
         });
     }
@@ -104,6 +103,11 @@ public class NewPurchaseFragment extends Fragment {
             return et.getText().toString().trim();
         }
         return "";
+    }
+
+    private void navigateHome() {
+        NavHostFragment.findNavController(NewPurchaseFragment.this)
+                .navigate(com.courierexperts.demo.R.id.nav_home);
     }
 
     @Override

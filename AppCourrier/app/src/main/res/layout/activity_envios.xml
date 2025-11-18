@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -19,11 +18,11 @@
             android:id="@+id/imgEnvios"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/ic_envios"
             android:contentDescription="@string/envios_icon_desc"
+            android:src="@drawable/ic_envios"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvEnvios"
@@ -33,9 +32,9 @@
             android:textColor="@android:color/white"
             android:textSize="20sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/imgEnvios"
-            app:layout_constraintTop_toTopOf="@id/imgEnvios"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toTopOf="@id/imgEnvios" />
 
         <TextView
             android:id="@+id/tvMensaje"
@@ -44,22 +43,22 @@
             android:text="@string/envios_subtitle"
             android:textColor="@android:color/white"
             android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@id/tvEnvios"
-            app:layout_constraintTop_toBottomOf="@id/tvEnvios"
+            app:layout_constraintBottom_toBottomOf="@id/imgEnvios"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/imgEnvios"/>
+            app:layout_constraintStart_toStartOf="@id/tvEnvios"
+            app:layout_constraintTop_toBottomOf="@id/tvEnvios" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvEnvios"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:clipToPadding="false"
         android:paddingStart="@dimen/ce_spacing_md"
         android:paddingEnd="@dimen/ce_spacing_md"
-        android:paddingBottom="96dp"
-        android:clipToPadding="false"
+        android:paddingBottom="80dp"
         app:layout_constraintTop_toBottomOf="@id/header"
-        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintBottom_toTopOf="@id/btnBack"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -70,7 +69,7 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/header"
-        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintBottom_toTopOf="@id/btnBack"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -78,15 +77,28 @@
         android:id="@+id/tvStateMessage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="32dp"
         android:text="@string/envios_empty"
         android:textSize="16sp"
-        android:gravity="center"
-        android:paddingBottom="64dp"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/header"
-        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintBottom_toTopOf="@id/btnBack"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnBack"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/ce_spacing_md"
+        android:layout_marginEnd="@dimen/ce_spacing_md"
+        android:layout_marginBottom="16dp"
+        android:text="@string/action_back"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
@@ -95,18 +107,14 @@
         android:background="@drawable/bg_bottom_bar"
         android:paddingStart="24dp"
         android:paddingEnd="24dp"
-        app:menu="@menu/bottom_nav_menu"
+        app:elevation="8dp"
         app:itemIconSize="40dp"
         app:itemIconTint="@null"
         app:itemRippleColor="@color/purple_200"
         app:labelVisibilityMode="unlabeled"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:elevation="8dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-

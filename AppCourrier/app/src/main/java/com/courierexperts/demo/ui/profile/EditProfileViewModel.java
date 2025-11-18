@@ -48,6 +48,15 @@ public class EditProfileViewModel extends AndroidViewModel {
 
     public LiveData<EditProfileUiState> getUiState() { return uiState; }
 
+    public void normalizeNamesIfNeeded(String name, String lastName) {
+        if (!TextUtils.isEmpty(name)) {
+            userRepo.updateName(name);
+        }
+        if (!TextUtils.isEmpty(lastName)) {
+            userRepo.updateLastName(lastName);
+        }
+    }
+
     public void save(String name,
                      String lastName,
                      String phone,

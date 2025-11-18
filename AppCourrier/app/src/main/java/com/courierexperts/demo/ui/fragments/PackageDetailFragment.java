@@ -63,7 +63,7 @@ public class PackageDetailFragment extends Fragment {
         }
 
         binding.btnBack.setOnClickListener(v ->
-                NavHostFragment.findNavController(PackageDetailFragment.this).popBackStack());
+                NavHostFragment.findNavController(PackageDetailFragment.this).navigateUp());
     }
 
     private void observeState() {

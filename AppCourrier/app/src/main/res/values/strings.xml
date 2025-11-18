@@ -54,6 +54,7 @@
     <string name="hint_tracking">Nro Tracking</string>
     <string name="action_cancel">Cancelar</string>
     <string name="action_save">Guardar</string>
+    <string name="action_back">Volver</string>
     <string name="new_purchase_error_required">Completa Tienda y Nro Tracking</string>
     <string name="new_purchase_saved_online">Compra guardada</string>
     <string name="new_purchase_saved_offline">Guardado local, se sincronizara luego</string>

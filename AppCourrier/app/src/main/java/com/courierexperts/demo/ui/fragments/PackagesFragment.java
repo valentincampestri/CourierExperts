@@ -55,7 +55,12 @@ public class PackagesFragment extends Fragment {
         binding.rvPaquetes.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rvPaquetes.setAdapter(adapter);
         binding.btnSolicitar.setEnabled(false);
-        adapter.setOnSelectionChangeListener(count -> binding.btnSolicitar.setEnabled(count > 0));
+        binding.btnSolicitar.setVisibility(View.GONE);
+        adapter.setOnSelectionChangeListener(count -> {
+            boolean hasSelection = count > 0;
+            binding.btnSolicitar.setEnabled(hasSelection);
+            binding.btnSolicitar.setVisibility(hasSelection ? View.VISIBLE : View.GONE);
+        });
 
         adapter.setOnItemClickListener(item -> {
             Bundle args = new Bundle();
@@ -73,6 +78,7 @@ public class PackagesFragment extends Fragment {
                 binding.progressBar.setVisibility(View.VISIBLE);
                 binding.rvPaquetes.setVisibility(View.GONE);
                 binding.btnSolicitar.setEnabled(false);
+                binding.btnSolicitar.setVisibility(View.GONE);
             } else if (state instanceof PackagesUiState.Success) {
                 binding.rvPaquetes.setVisibility(View.VISIBLE);
                 adapter.submit(((PackagesUiState.Success) state).getPackages());
@@ -81,11 +87,13 @@ public class PackagesFragment extends Fragment {
                 binding.tvStateMessage.setText(R.string.packages_empty_message);
                 binding.rvPaquetes.setVisibility(View.GONE);
                 binding.btnSolicitar.setEnabled(false);
+                binding.btnSolicitar.setVisibility(View.GONE);
             } else if (state instanceof PackagesUiState.Error) {
                 binding.tvStateMessage.setVisibility(View.VISIBLE);
                 binding.tvStateMessage.setText(R.string.state_error_retry);
                 binding.rvPaquetes.setVisibility(View.GONE);
                 binding.btnSolicitar.setEnabled(false);
+                binding.btnSolicitar.setVisibility(View.GONE);
                 Toast.makeText(requireContext(), R.string.state_error_retry, Toast.LENGTH_LONG).show();
             }
         });

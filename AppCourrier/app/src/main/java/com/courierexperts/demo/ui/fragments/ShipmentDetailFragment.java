@@ -73,6 +73,12 @@ public class ShipmentDetailFragment extends Fragment {
         if (binding.bottomNav != null) {
             binding.bottomNav.setVisibility(View.GONE);
         }
+
+        if (binding.btnBack != null) {
+            binding.btnBack.setVisibility(View.VISIBLE);
+            binding.btnBack.setOnClickListener(v ->
+                    NavHostFragment.findNavController(ShipmentDetailFragment.this).navigateUp());
+        }
     }
 
     private void observeUiState() {

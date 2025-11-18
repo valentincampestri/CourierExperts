@@ -1,17 +1,20 @@
-package com.courierexperts.demo;
+package com.courierexperts.demo.ui.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.courierexperts.demo.FragmentsHostActivity;
 import com.courierexperts.demo.databinding.ActivitySigninBinding;
 import com.courierexperts.demo.ui.auth.AuthEvent;
 import com.courierexperts.demo.ui.auth.AuthUiState;
@@ -20,55 +23,60 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class SignInActivity extends AppCompatActivity {
+public class SignInFragment extends Fragment {
 
-    private ActivitySigninBinding b;
-    private AuthViewModel vm;
+    private ActivitySigninBinding binding;
+    private AuthViewModel viewModel;
     private AlertDialog resetDialog;
     private android.widget.Button resetPositiveButton;
     private TextInputLayout resetEmailTil;
 
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        b = ActivitySigninBinding.inflate(getLayoutInflater());
-        setContentView(b.getRoot());
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = ActivitySigninBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
 
-        vm = new ViewModelProvider(this).get(AuthViewModel.class);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        viewModel = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
         observeViewModel();
+        setupClicks();
+    }
 
-        if (b.btnBack != null) {
-            b.btnBack.setOnClickListener(v -> finish());
+    private void setupClicks() {
+        if (binding.btnBack != null) {
+            binding.btnBack.setOnClickListener(v -> requireActivity().getOnBackPressedDispatcher().onBackPressed());
         }
-        if (b.btnLogin != null) {
-            b.btnLogin.setOnClickListener(v -> doEmailLogin());
+        if (binding.btnLogin != null) {
+            binding.btnLogin.setOnClickListener(v -> doEmailLogin());
         }
-        if (b.tvForgot != null) {
-            b.tvForgot.setOnClickListener(v -> showResetPasswordDialog());
+        if (binding.tvForgot != null) {
+            binding.tvForgot.setOnClickListener(v -> showResetPasswordDialog());
         }
     }
 
     private void observeViewModel() {
-        vm.getUiState().observe(this, state -> {
+        viewModel.getUiState().observe(getViewLifecycleOwner(), state -> {
             boolean loading = state instanceof AuthUiState.Loading;
-            if (b.btnLogin != null) {
-                b.btnLogin.setEnabled(!loading);
+            if (binding.btnLogin != null) {
+                binding.btnLogin.setEnabled(!loading);
             }
-            if (b.progressBar != null) {
-                b.progressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
+            if (binding.progressBar != null) {
+                binding.progressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
             }
         });
 
-        vm.getEvents().observe(this, event -> {
+        viewModel.getEvents().observe(getViewLifecycleOwner(), event -> {
             if (event == null) return;
             AuthEvent payload = event.getContentIfNotHandled();
             if (payload == null) return;
             if (payload.getType() == AuthEvent.Type.NAVIGATE_HOME) {
                 navigateHome();
-            } else if (payload.getType() == AuthEvent.Type.SHOW_MESSAGE) {
-                if (payload.getMessage() != null) {
-                    toast(payload.getMessage());
-                }
+            } else if (payload.getType() == AuthEvent.Type.SHOW_MESSAGE && payload.getMessage() != null) {
+                toast(payload.getMessage());
             } else if (payload.getType() == AuthEvent.Type.RESET_EMAIL_DONE) {
                 handleResetResult(payload);
             }
@@ -76,28 +84,28 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void doEmailLogin() {
-        String email = b.etEmailSignin != null && b.etEmailSignin.getText() != null
-                ? b.etEmailSignin.getText().toString().trim()
+        String email = binding.etEmailSignin != null && binding.etEmailSignin.getText() != null
+                ? binding.etEmailSignin.getText().toString().trim()
                 : "";
-        String pass = b.etPasswordSignin != null && b.etPasswordSignin.getText() != null
-                ? b.etPasswordSignin.getText().toString()
+        String pass = binding.etPasswordSignin != null && binding.etPasswordSignin.getText() != null
+                ? binding.etPasswordSignin.getText().toString()
                 : "";
-        vm.login(email, pass);
+        viewModel.login(email, pass);
     }
 
     private void showResetPasswordDialog() {
-        resetEmailTil = new TextInputLayout(this);
+        resetEmailTil = new TextInputLayout(requireContext());
         resetEmailTil.setHint("Email");
-        TextInputEditText et = new TextInputEditText(this);
+        TextInputEditText et = new TextInputEditText(requireContext());
         et.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-        if (b.etEmailSignin != null && b.etEmailSignin.getText() != null) {
-            et.setText(b.etEmailSignin.getText().toString());
+        if (binding.etEmailSignin != null && binding.etEmailSignin.getText() != null) {
+            et.setText(binding.etEmailSignin.getText().toString());
         }
         resetEmailTil.addView(et);
 
-        resetDialog = new MaterialAlertDialogBuilder(this)
-                .setTitle("Recuperar contrasena")
-                .setMessage("Ingresa tu email para enviarte el enlace de recuperacion")
+        resetDialog = new MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Recuperar contrase\u00f1a")
+                .setMessage("Ingresa tu email para enviarte el enlace de recuperaci\u00f3n")
                 .setView(resetEmailTil)
                 .setNegativeButton("Cancelar", (d, w) -> clearResetDialogRefs())
                 .setPositiveButton("Enviar", null)
@@ -112,7 +120,7 @@ public class SignInActivity extends AppCompatActivity {
                     }
                     resetPositiveButton.setEnabled(false);
                     String email = et.getText() != null ? et.getText().toString().trim() : "";
-                    vm.resetPassword(email);
+                    viewModel.resetPassword(email);
                 });
             }
         });
@@ -139,9 +147,10 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void navigateHome() {
-        startActivity(new Intent(this, FragmentsHostActivity.class)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
-        finish();
+        Intent intent = new Intent(requireContext(), FragmentsHostActivity.class)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        requireActivity().finish();
     }
 
     private void clearResetDialogRefs() {
@@ -151,6 +160,13 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void toast(@NonNull String s) {
-        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireContext(), s, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        clearResetDialogRefs();
+        binding = null;
     }
 }

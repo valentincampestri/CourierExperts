@@ -29,16 +29,42 @@ public class FragmentsHostActivity extends AppCompatActivity {
         NavController navController = navHostFragment.getNavController();
 
         binding.bottomNavHost.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.nav_add) {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_add) {
                 navController.navigate(R.id.newPurchaseFragment);
                 return false;
+            } else if (itemId == R.id.nav_home) {
+                boolean popped = navController.popBackStack(R.id.nav_home, false);
+                if (!popped || navController.getCurrentDestination() == null
+                        || navController.getCurrentDestination().getId() != R.id.nav_home) {
+                    navController.navigate(R.id.nav_home);
+                }
+                return true;
+            } else if (itemId == R.id.nav_profile) {
+                if (navController.getCurrentDestination() == null
+                        || navController.getCurrentDestination().getId() != R.id.nav_profile) {
+                    navController.navigate(R.id.nav_profile);
+                }
+                return true;
             }
             return NavigationUI.onNavDestinationSelected(item, navController);
         });
 
         binding.bottomNavHost.setOnItemReselectedListener(item -> {
-            if (item.getItemId() == R.id.nav_add) {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_add) {
                 navController.navigate(R.id.newPurchaseFragment);
+            } else if (itemId == R.id.nav_home) {
+                boolean popped = navController.popBackStack(R.id.nav_home, false);
+                if (!popped || navController.getCurrentDestination() == null
+                        || navController.getCurrentDestination().getId() != R.id.nav_home) {
+                    navController.navigate(R.id.nav_home);
+                }
+            } else if (itemId == R.id.nav_profile) {
+                if (navController.getCurrentDestination() == null
+                        || navController.getCurrentDestination().getId() != R.id.nav_profile) {
+                    navController.navigate(R.id.nav_profile);
+                }
             }
         });
 
