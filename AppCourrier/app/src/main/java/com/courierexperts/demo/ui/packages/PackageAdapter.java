@@ -72,7 +72,7 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.VH> {
                 break;
 
             case "IN_TRANSIT":
-                bgRes = com.courierexperts.demo.R.drawable.bg_status_chip_transit; // azul o violeta (según tu diseño)
+                bgRes = com.courierexperts.demo.R.drawable.bg_status_chip_transit; // azul o violeta
                 break;
 
             case "CANCELLED":
@@ -87,18 +87,24 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.VH> {
 
         h.b.tvStatus.setBackgroundResource(bgRes);
 
-
         // checkbox state (hide if selection disabled)
         if (!selectionEnabled) {
             h.b.cbSelect.setVisibility(android.view.View.GONE);
         } else {
             h.b.cbSelect.setVisibility(android.view.View.VISIBLE);
-            boolean selectable = "RECEIVED".equalsIgnoreCase(status);
+
+            // ✅ CORRECCIÓN: Ahora permite seleccionar si es RECEIVED o DELIVERED
+            boolean selectable = "RECEIVED".equalsIgnoreCase(status) || "DELIVERED".equalsIgnoreCase(status);
+
             h.b.cbSelect.setEnabled(selectable);
+
+            // Es importante limpiar el listener antes de setear el estado para evitar recursividad
             h.b.cbSelect.setOnClickListener(null);
-            boolean checked = selectedIds.contains(it.id);
             h.b.cbSelect.setOnCheckedChangeListener(null);
+
+            boolean checked = selectedIds.contains(it.id);
             h.b.cbSelect.setChecked(checked);
+
             h.b.cbSelect.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (!selectable) {
                     buttonView.setChecked(false);
