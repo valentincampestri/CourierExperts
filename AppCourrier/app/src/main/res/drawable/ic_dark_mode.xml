@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Icono de luna simple -->
+    <path
+        android:fillColor="@color/black"
+        android:pathData="M21,12.79C20.71,12.86 20.41,12.9 20.1,12.9
+            15.7,12.9 12.1,9.3 12.1,4.9
+            12.1,4.59 12.14,4.29 12.21,4
+            8.72,4.74 6.1,7.77 6.1,11.4
+            6.1,15.58 9.52,19 13.7,19
+            17.33,19 20.36,16.38 21,12.89
+            Z"/>
+</vector>

@@ -1,5 +1,8 @@
 package com.courierexperts.demo.ui.fragments;
 
+import android.content.Context;
+import androidx.core.content.ContextCompat;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
@@ -18,6 +22,7 @@ import com.courierexperts.demo.databinding.PerfilActivityBinding;
 import com.courierexperts.demo.ui.profile.ProfileUiState;
 import com.courierexperts.demo.ui.profile.ProfileViewModel;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 public class ProfileFragment extends Fragment {
 
@@ -45,6 +50,7 @@ public class ProfileFragment extends Fragment {
         observeState();
         observeLogout();
         setupClicks();
+        setupDarkModeSwitch();
     }
 
     private void observeState() {
@@ -83,8 +89,31 @@ public class ProfileFragment extends Fragment {
         binding.telefono.setOnClickListener(v -> navigateToEditProfile());
         binding.cardLogout.setOnClickListener(v -> showLogoutDialog());
 
+        // NOTIFICACIONES (igual que antes)
         binding.switchNotificaciones.setOnCheckedChangeListener((buttonView, isChecked) ->
                 viewModel.updateNotifications(isChecked));
+    }
+
+    // MODO OSCURO
+    private void setupDarkModeSwitch() {
+        SwitchMaterial switchDark = binding.switchDarkMode;
+
+        SharedPreferences prefs =
+                requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
+
+        boolean isDark = prefs.getBoolean("dark_mode", false);
+
+        switchDark.setChecked(isDark);
+
+        switchDark.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            prefs.edit().putBoolean("dark_mode", isChecked).apply();
+
+            AppCompatDelegate.setDefaultNightMode(
+                    isChecked ?
+                            AppCompatDelegate.MODE_NIGHT_YES :
+                            AppCompatDelegate.MODE_NIGHT_NO
+            );
+        });
     }
 
     private void navigateToEditProfile() {
@@ -103,6 +132,7 @@ public class ProfileFragment extends Fragment {
 
     private void renderProfile(com.courierexperts.demo.data.local.entity.UserProfileEntity profile) {
         if (profile == null) return;
+
         String name = profile.name != null ? profile.name.trim() : "";
         binding.tvSaludo.setText(name.isEmpty() ? getString(R.string.home_greeting_generic) : ("Hola, " + name));
         binding.tvMail.setText(profile.email != null ? profile.email.trim() : "");
@@ -112,6 +142,10 @@ public class ProfileFragment extends Fragment {
         binding.tvTelefono.setText(profile.phone != null && !profile.phone.trim().isEmpty()
                 ? profile.phone.trim()
                 : getString(R.string.profile_placeholder_phone));
+
+        int white = ContextCompat.getColor(requireContext(), android.R.color.white);
+        binding.tvTelefono.setTextColor(white);
+        binding.tvTelefonoLabel.setTextColor(white);
 
         boolean enabled = profile.notificationsEnabled != null && profile.notificationsEnabled;
         if (binding.switchNotificaciones.isChecked() != enabled) {
