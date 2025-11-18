@@ -15,13 +15,11 @@ import com.courierexperts.demo.util.Event;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.firestore.FirebaseFirestore;
+// Se eliminaron imports de Firestore directos para evitar conflictos
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.TimeZone;
 
 public class SignUpStep2ViewModel extends AndroidViewModel {
@@ -101,43 +99,31 @@ public class SignUpStep2ViewModel extends AndroidViewModel {
                               String email) {
         FirebaseUser user = auth.getCurrentUser();
         if (user != null) {
+            // 1. Actualizar DisplayName en Auth (Opcional pero recomendado)
             user.updateProfile(new UserProfileChangeRequest.Builder()
                     .setDisplayName(step1.getNombre())
                     .build());
+
+            // 2. Obtener el UID seguro
             String uid = user.getUid();
-            Map<String, Object> map = new HashMap<>();
-            map.put("name", step1.getNombre());
-            map.put("lastName", step1.getApellido());
-            map.put("dni", step1.getDni());
-            map.put("cuil", step1.getCuil());
-            map.put("address", direccion);
-            map.put("province", provincia);
-            map.put("country", "Argentina");
-            map.put("email", email);
-            map.put("phone", telefono);
-            map.put("updatedAt", nowIso());
-            FirebaseFirestore.getInstance().collection("users").document(uid).set(map);
+
+            // 3. Delegar todo el guardado al Repositorio pasando el UID explícito
+            profileRepository.saveAllSignupProfile(
+                    uid, // <--- IMPORTANTE: Pasamos el UID aquí
+                    step1.getNombre(),
+                    step1.getApellido(),
+                    step1.getDni(),
+                    step1.getCuil(),
+                    direccion,
+                    provincia,
+                    "Argentina",
+                    email,
+                    telefono
+            );
         }
-        profileRepository.saveAllSignupProfile(
-                step1.getNombre(),
-                step1.getApellido(),
-                step1.getDni(),
-                step1.getCuil(),
-                direccion,
-                provincia,
-                "Argentina",
-                email,
-                telefono
-        );
     }
 
     private static String safe(String s) {
         return s != null ? s.trim() : "";
-    }
-
-    private static String nowIso() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        return sdf.format(new Date());
     }
 }

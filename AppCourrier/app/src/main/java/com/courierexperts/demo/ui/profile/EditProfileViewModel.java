@@ -3,6 +3,7 @@ package com.courierexperts.demo.ui.profile;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Patterns;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -10,6 +11,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 
 import com.courierexperts.demo.data.local.entity.DepositEntity;
+import com.courierexperts.demo.data.local.entity.UserProfileEntity;
 import com.courierexperts.demo.data.repository.DepositRepository;
 import com.courierexperts.demo.data.repository.UserProfileRepository;
 
@@ -30,15 +32,14 @@ public class EditProfileViewModel extends AndroidViewModel {
         depositRepo = new DepositRepository(application);
         uiState.setValue(new EditProfileUiState.Loading());
 
-        LiveData<com.courierexperts.demo.data.local.entity.UserProfileEntity> profile = userRepo.observeProfile();
+        LiveData<UserProfileEntity> profile = userRepo.observeProfile();
         LiveData<List<DepositEntity>> deposits = depositRepo.observeDeposits();
 
         uiState.addSource(profile, prof -> emitUiState(prof, deposits.getValue()));
         uiState.addSource(deposits, deps -> emitUiState(profile.getValue(), deps));
     }
 
-    private void emitUiState(com.courierexperts.demo.data.local.entity.UserProfileEntity profile,
-                             List<DepositEntity> deposits) {
+    private void emitUiState(UserProfileEntity profile, List<DepositEntity> deposits) {
         if (profile == null || deposits == null) {
             uiState.setValue(new EditProfileUiState.Loading());
         } else {
@@ -49,6 +50,7 @@ public class EditProfileViewModel extends AndroidViewModel {
     public LiveData<EditProfileUiState> getUiState() { return uiState; }
 
     public void normalizeNamesIfNeeded(String name, String lastName) {
+        // Aquí usamos las versiones individuales porque son actualizaciones parciales reactivas
         if (!TextUtils.isEmpty(name)) {
             userRepo.updateName(name);
         }
@@ -63,33 +65,32 @@ public class EditProfileViewModel extends AndroidViewModel {
                      String address,
                      String email,
                      Long depositId) {
+        // Validaciones
         if (TextUtils.isEmpty(name) || name.length() < 2) {
-            uiState.setValue(new EditProfileUiState.Error("Nombre invalido"));
+            uiState.setValue(new EditProfileUiState.Error("Nombre inválido"));
             return;
         }
         if (TextUtils.isEmpty(lastName) || lastName.length() < 2) {
-            uiState.setValue(new EditProfileUiState.Error("Apellido invalido"));
+            uiState.setValue(new EditProfileUiState.Error("Apellido inválido"));
             return;
         }
         if (TextUtils.isEmpty(address) || address.length() < 5) {
-            uiState.setValue(new EditProfileUiState.Error("Direccion invalida"));
+            uiState.setValue(new EditProfileUiState.Error("Dirección inválida"));
             return;
         }
         if (!phone.matches("[+0-9]{6,20}")) {
-            uiState.setValue(new EditProfileUiState.Error("Telefono invalido"));
+            uiState.setValue(new EditProfileUiState.Error("Teléfono inválido"));
             return;
         }
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            uiState.setValue(new EditProfileUiState.Error("Email invalido"));
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            uiState.setValue(new EditProfileUiState.Error("Email inválido"));
             return;
         }
 
-        userRepo.updateName(name);
-        userRepo.updateLastName(lastName);
-        userRepo.updatePhone(phone);
-        userRepo.updateAddress(address);
-        userRepo.updateEmail(email);
-        userRepo.updateDepositId(depositId);
+        // SOLUCIÓN: Usamos el nuevo método que actualiza todo junto
+        // Esto evita que los hilos se pisen entre sí.
+        userRepo.updateProfileData(name, lastName, phone, address, email, depositId);
+
         saveSelectedDeposit(depositId);
         uiState.setValue(new EditProfileUiState.Saved());
     }

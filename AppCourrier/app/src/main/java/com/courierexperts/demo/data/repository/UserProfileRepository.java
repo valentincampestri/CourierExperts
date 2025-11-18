@@ -1,6 +1,7 @@
 package com.courierexperts.demo.data.repository;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -33,11 +34,34 @@ public class UserProfileRepository {
         return dao.observeProfile(uid);
     }
 
+    // --- NUEVO MÉTODO ATÓMICO (SOLUCIÓN AL PROBLEMA) ---
+    public void updateProfileData(String name, String lastName, String phone, String address, String email, Long depositId) {
+        AppExecutors.io().execute(() -> {
+            String uid = currentUid();
+            if (uid == null) return;
+
+            UserProfileEntity e = getOrCreate(uid);
+
+            // Actualizamos todos los campos en el mismo objeto antes de guardar
+            e.name = name;
+            e.lastName = lastName;
+            e.phone = phone;
+            e.address = address;
+            e.email = email;
+            e.depositId = depositId;
+
+            stamp(e);       // Marcamos fecha y dirty
+            dao.upsert(e);  // Guardamos en Room (1 sola vez)
+            pushToFirestoreAsync(e); // Subimos a Firestore (1 sola vez)
+        });
+    }
+
+    // --- Métodos individuales (Se mantienen por compatibilidad) ---
     public void updateAddress(String address) {
         AppExecutors.io().execute(() -> {
             String uid = currentUid();
-            UserProfileEntity e = dao.getProfileSync(uid);
-            if (e == null) { e = new UserProfileEntity(); e.uid = uid; }
+            if (uid == null) return;
+            UserProfileEntity e = getOrCreate(uid);
             e.address = address;
             stamp(e);
             dao.upsert(e);
@@ -48,8 +72,8 @@ public class UserProfileRepository {
     public void updatePhone(String phone) {
         AppExecutors.io().execute(() -> {
             String uid = currentUid();
-            UserProfileEntity e = dao.getProfileSync(uid);
-            if (e == null) { e = new UserProfileEntity(); e.uid = uid; }
+            if (uid == null) return;
+            UserProfileEntity e = getOrCreate(uid);
             e.phone = phone;
             stamp(e);
             dao.upsert(e);
@@ -60,8 +84,8 @@ public class UserProfileRepository {
     public void updateName(String name) {
         AppExecutors.io().execute(() -> {
             String uid = currentUid();
-            UserProfileEntity e = dao.getProfileSync(uid);
-            if (e == null) { e = new UserProfileEntity(); e.uid = uid; }
+            if (uid == null) return;
+            UserProfileEntity e = getOrCreate(uid);
             e.name = name;
             stamp(e);
             dao.upsert(e);
@@ -72,8 +96,8 @@ public class UserProfileRepository {
     public void updateLastName(String lastName) {
         AppExecutors.io().execute(() -> {
             String uid = currentUid();
-            UserProfileEntity e = dao.getProfileSync(uid);
-            if (e == null) { e = new UserProfileEntity(); e.uid = uid; }
+            if (uid == null) return;
+            UserProfileEntity e = getOrCreate(uid);
             e.lastName = lastName;
             stamp(e);
             dao.upsert(e);
@@ -84,8 +108,8 @@ public class UserProfileRepository {
     public void updateEmail(String email) {
         AppExecutors.io().execute(() -> {
             String uid = currentUid();
-            UserProfileEntity e = dao.getProfileSync(uid);
-            if (e == null) { e = new UserProfileEntity(); e.uid = uid; }
+            if (uid == null) return;
+            UserProfileEntity e = getOrCreate(uid);
             e.email = email;
             stamp(e);
             dao.upsert(e);
@@ -96,8 +120,8 @@ public class UserProfileRepository {
     public void updateDepositId(Long depositId) {
         AppExecutors.io().execute(() -> {
             String uid = currentUid();
-            UserProfileEntity e = dao.getProfileSync(uid);
-            if (e == null) { e = new UserProfileEntity(); e.uid = uid; }
+            if (uid == null) return;
+            UserProfileEntity e = getOrCreate(uid);
             e.depositId = depositId;
             stamp(e);
             dao.upsert(e);
@@ -108,8 +132,8 @@ public class UserProfileRepository {
     public void updateNotifications(boolean enabled) {
         AppExecutors.io().execute(() -> {
             String uid = currentUid();
-            UserProfileEntity e = dao.getProfileSync(uid);
-            if (e == null) { e = new UserProfileEntity(); e.uid = uid; }
+            if (uid == null) return;
+            UserProfileEntity e = getOrCreate(uid);
             e.notificationsEnabled = enabled;
             stamp(e);
             dao.upsert(e);
@@ -117,27 +141,29 @@ public class UserProfileRepository {
         });
     }
 
+    // --- Helpers ---
+
     private void ensureSeed() {
         AppExecutors.io().execute(() -> {
             String uid = currentUid();
-            if (uid == null) return; // sin usuario, no se siembra
+            if (uid == null) return;
             UserProfileEntity e = dao.getProfileSync(uid);
             if (e == null) {
                 e = new UserProfileEntity();
                 e.uid = uid;
-                e.name = "";
-                e.email = "";
-                e.address = "";
-                e.phone = "";
+                e.name = ""; e.email = ""; e.address = ""; e.phone = "";
                 e.depositId = null;
                 e.notificationsEnabled = Boolean.FALSE;
-                e.updatedAt = null;
-                e.lastSyncedAt = null;
-                e.remoteVersion = null;
                 e.dirty = Boolean.FALSE;
                 dao.upsert(e);
             }
         });
+    }
+
+    private UserProfileEntity getOrCreate(String uid) {
+        UserProfileEntity e = dao.getProfileSync(uid);
+        if (e == null) { e = new UserProfileEntity(); e.uid = uid; }
+        return e;
     }
 
     private static void stamp(UserProfileEntity e) {
@@ -151,13 +177,11 @@ public class UserProfileRepository {
         return sdf.format(new Date());
     }
 
-    public void saveAllSignupProfile(String nombre, String apellido, String dni, String cuil,
+    public void saveAllSignupProfile(String uid, String nombre, String apellido, String dni, String cuil,
                                      String direccion, String provincia, String pais, String email, String phone) {
         AppExecutors.io().execute(() -> {
-            String uid = currentUid();
             if (uid == null) return;
-            UserProfileEntity e = dao.getProfileSync(uid);
-            if (e == null) { e = new UserProfileEntity(); e.uid = uid; }
+            UserProfileEntity e = getOrCreate(uid);
             e.name = nombre;
             e.lastName = apellido;
             e.dni = dni;
@@ -182,7 +206,7 @@ public class UserProfileRepository {
         if (uid == null) return;
         FirebaseFirestore.getInstance().collection("users").document(uid).get()
                 .addOnSuccessListener(doc -> AppExecutors.io().execute(() -> applyRemote(uid, doc)))
-                .addOnFailureListener(err -> { /* opcional: log */ });
+                .addOnFailureListener(err -> Log.w("Repo", "Error syncing: " + err.getMessage()));
     }
 
     private void applyRemote(String uid, DocumentSnapshot doc) {
@@ -210,10 +234,10 @@ public class UserProfileRepository {
     }
 
     private void pushToFirestoreAsync(UserProfileEntity e) {
-        final String uid = currentUid();
+        final String uid = e.uid;
         if (uid == null) return;
+
         java.util.HashMap<String, Object> data = new java.util.HashMap<>();
-        // Sólo mandamos campos no nulos/ no vacíos para evitar sobreescrituras con valores vacíos
         if (notEmpty(e.name)) data.put("name", e.name);
         if (notEmpty(e.lastName)) data.put("lastName", e.lastName);
         if (notEmpty(e.email)) data.put("email", e.email);
@@ -230,7 +254,9 @@ public class UserProfileRepository {
         FirebaseFirestore.getInstance().collection("users").document(uid)
                 .set(data, SetOptions.merge())
                 .addOnSuccessListener(v -> AppExecutors.io().execute(() -> { e.dirty = Boolean.FALSE; dao.upsert(e);} ))
-                .addOnFailureListener(err -> { try { com.courierexperts.demo.work.ProfileSyncWorker.enqueue(app); } catch (Exception ignored) {} });
+                .addOnFailureListener(err -> {
+                    try { com.courierexperts.demo.work.ProfileSyncWorker.enqueue(app); } catch (Exception ignored) {}
+                });
     }
 
     private static String firstNonEmpty(DocumentSnapshot doc, String... keys) {
@@ -238,26 +264,15 @@ public class UserProfileRepository {
         for (String key : keys) {
             if (key == null) continue;
             String value = doc.getString(key);
-            if (value != null) {
-                String trimmed = value.trim();
-                if (!trimmed.isEmpty()) {
-                    return trimmed;
-                }
-            }
+            if (value != null && !value.trim().isEmpty()) return value.trim();
         }
         return null;
     }
 
     private static Long coerceLong(Object value) {
-        if (value instanceof Number) {
-            return ((Number) value).longValue();
-        }
-        if (value instanceof String) {
-            String trimmed = ((String) value).trim();
-            if (trimmed.isEmpty()) return null;
-            try {
-                return Long.parseLong(trimmed);
-            } catch (NumberFormatException ignored) {}
+        if (value instanceof Number) return ((Number) value).longValue();
+        if (value instanceof String && !((String) value).trim().isEmpty()) {
+            try { return Long.parseLong(((String) value).trim()); } catch (NumberFormatException ignored) {}
         }
         return null;
     }
