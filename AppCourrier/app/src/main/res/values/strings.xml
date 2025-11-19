@@ -3,12 +3,22 @@
     <string name="title_activity_nueva_compra">nueva_compra</string>
     <string name="title_activity_compras">ComprasActivity</string>
 
+<<<<<<< Updated upstream
     <string-array name="depositos_array">
         <item>Miami Florida</item>
         <item>New York</item>
         <item>Los Angeles</item>
         <item>Madrid</item>
     </string-array>
+=======
+    <!-- Envios -->
+    <string name="envios_icon_desc">Icono envios</string>
+    <string name="envios_title">Tus envios</string>
+    <string name="envios_subtitle">Revisa el estado de tus envios</string>
+    <string name="envios_empty">Todavia no hay envios en curso</string>
+    <string name="shipment_cost_placeholder">Costo estimado: $ 0.00</string>
+    <string name="shipment_cost_label">Costo estimado: %1$s</string>
+>>>>>>> Stashed changes
 
     
     <string name="default_web_client_id">REEMPLAZAR_CON_CLIENT_ID</string>

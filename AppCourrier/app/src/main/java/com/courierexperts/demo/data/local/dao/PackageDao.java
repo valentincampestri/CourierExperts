@@ -19,6 +19,33 @@ public interface PackageDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void upsertAll(List<PackageEntity> items);
 
+<<<<<<< Updated upstream
+=======
+    @Query("SELECT id FROM packages WHERE fsId = :fsId LIMIT 1")
+    Long findLocalIdByFsId(String fsId);
+
+    @Query("SELECT id FROM packages WHERE purchaseFsId = :purchaseFsId LIMIT 1")
+    Long findLocalIdByPurchaseFsId(String purchaseFsId);
+
+    @Query("SELECT * FROM packages WHERE purchaseFsId = :purchaseFsId LIMIT 1")
+    PackageEntity findByPurchaseFsId(String purchaseFsId);
+
+    @Query("SELECT fsId FROM packages WHERE id = :id LIMIT 1")
+    String getFsIdByLocalId(long id);
+
+    @Query("SELECT price FROM packages WHERE id IN (:ids)")
+    List<Double> findPricesByIds(List<Long> ids);
+
+    @Query("UPDATE packages SET shipmentId = :shipmentId, status = :status, lastUpdate = :lastUpdate WHERE id = :id")
+    void updateShipmentAndStatus(long id, String shipmentId, String status, long lastUpdate);
+
+    @Query("SELECT * FROM packages WHERE shipmentId = :shipmentId ORDER BY lastUpdate DESC")
+    LiveData<List<PackageEntity>> observeByShipmentId(String shipmentId);
+
+    @Query("SELECT * FROM packages WHERE id = :id LIMIT 1")
+    LiveData<PackageEntity> observeById(long id);
+
+>>>>>>> Stashed changes
     @Query("DELETE FROM packages")
     void clear();
 }

@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
         android:layout_width="0dp"
-        android:layout_height="120dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/header_background"
         android:padding="@dimen/ce_spacing_lg"
         app:layout_constraintTop_toTopOf="parent"
@@ -46,9 +46,27 @@
             android:textColor="@android:color/white"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@id/tvEnvios"
+<<<<<<< Updated upstream
             app:layout_constraintTop_toBottomOf="@id/tvEnvios"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/imgEnvios"/>
+=======
+            app:layout_constraintTop_toBottomOf="@id/tvEnvios" />
+
+        <TextView
+            android:id="@+id/tvCostHeader"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/shipment_cost_placeholder"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:paddingTop="4dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/tvMensaje"
+            app:layout_constraintStart_toStartOf="@id/tvEnvios"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+>>>>>>> Stashed changes
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- LISTA con Pull-to-Refresh -->

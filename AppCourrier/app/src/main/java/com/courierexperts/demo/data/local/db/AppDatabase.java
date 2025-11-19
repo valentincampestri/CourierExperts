@@ -19,7 +19,11 @@ import com.courierexperts.demo.data.local.entity.ShipmentEntity;
 
 @Database(
         entities = { PurchaseEntity.class, PackageEntity.class, ShipmentEntity.class, DepositEntity.class, UserProfileEntity.class },
+<<<<<<< Updated upstream
         version = 10,
+=======
+        version = 17,
+>>>>>>> Stashed changes
         exportSchema = false
 )
 public abstract class AppDatabase extends RoomDatabase {

@@ -8,11 +8,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.courierexperts.demo.R;
 import com.courierexperts.demo.data.local.entity.ShipmentEntity;
 import com.courierexperts.demo.databinding.ItemShipmentBinding;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ShipmentAdapter extends RecyclerView.Adapter<ShipmentAdapter.VH> {
 
@@ -48,8 +50,20 @@ public class ShipmentAdapter extends RecyclerView.Adapter<ShipmentAdapter.VH> {
         ShipmentEntity it = items.get(position);
 
         h.b.tvTitle.setText(it.title);
+<<<<<<< Updated upstream
         h.b.tvSubtitle.setText("#" + it.trackingNumber);
         h.b.tvStatus.setText(prettyStatus(it.status));
+=======
+        String subtitle = "#" + (it.trackingNumber != null ? it.trackingNumber : "");
+        if (it.fsId != null && it.fsId.startsWith("local-")) {
+            subtitle += "  • sin conexión";
+        }
+        h.b.tvSubtitle.setText(subtitle);
+        String formattedCost = String.format(Locale.getDefault(), "$ %.2f", it.cost);
+        h.b.tvCost.setText(h.b.getRoot().getContext()
+                .getString(R.string.shipment_cost_label, formattedCost));
+        h.b.tvStatus.setText(StatusMapper.labelShipment(it.status));
+>>>>>>> Stashed changes
 
         Glide.with(h.b.getRoot())
                 .load(it.thumbnailUrl)
