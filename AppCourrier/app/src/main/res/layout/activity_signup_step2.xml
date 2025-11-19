@@ -77,19 +77,30 @@
 
         <Space android:layout_width="match_parent" android:layout_height="12dp"/>
 
+        <!-- Provincia -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Provincia"
             android:textColor="@android:color/black"
             android:textSize="14sp"/>
+
         <Spinner
             android:id="@+id/spProvinciaSignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:entries="@array/provincias_ar"/>
 
+        <!-- Botón GPS debajo del spinner -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDetectProvincia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Usar mi ubicación"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
         <Space android:layout_width="match_parent" android:layout_height="12dp"/>
+
 
         <TextView
             android:layout_width="match_parent"

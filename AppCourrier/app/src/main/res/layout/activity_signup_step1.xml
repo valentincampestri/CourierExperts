@@ -125,37 +125,6 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="12dp" />
-
-        <!-- PROVINCIA (nuevo campo auto-completado por GPS) -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:hintEnabled="false">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etProvinciaSignup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Provincia"
-                android:focusable="false"
-                android:clickable="false" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="8dp" />
-
-        <!-- Botón que usa el GPS -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnDetectProvincia"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Usar mi ubicación"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
-
-        <Space
-            android:layout_width="match_parent"
             android:layout_height="16dp" />
 
         <!-- Botones atrás / continuar -->
@@ -163,7 +132,7 @@
             android:id="@+id/btnBack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Atr&#225;s" />
+            android:text="Atrás" />
 
         <Space
             android:layout_width="match_parent"
