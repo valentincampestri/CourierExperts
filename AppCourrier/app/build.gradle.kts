@@ -85,6 +85,9 @@ dependencies {
     implementation("androidx.credentials:credentials:1.3.0")
     implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
+
+    //Ubicacion
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 }
 
 // Task helpers to compile with -Xlint flags and surface deprecation details
