@@ -29,7 +29,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import com.courierexperts.demo.FragmentsHostActivity;
 import com.courierexperts.demo.R;

@@ -130,6 +130,7 @@
     <string name="signup_sub_welcome">Te damos la bienvenida</string>
     <string name="label_province">Provincia</string>
     <string name="action_use_location">Usar mi ubicación</string>
+    <string name="action_add">Agregar</string>
     <string name="signup_hint_phone">+5491122334455</string>
     <string name="signup_hint_email">correo@ejemplo.com</string>
     <string name="signup_label_password">Contrasena</string>
