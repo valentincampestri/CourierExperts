@@ -20,6 +20,8 @@ import com.courierexperts.demo.databinding.ActivityPurchaseDetailBinding;
 import com.courierexperts.demo.domain.StatusMapper;
 import com.courierexperts.demo.ui.purchases.PurchaseDetailUiState;
 import com.courierexperts.demo.ui.purchases.PurchaseDetailViewModel;
+import com.courierexperts.demo.util.ClipboardUtils;
+import com.courierexperts.demo.util.CurrencyUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -84,9 +86,18 @@ public class PurchaseDetailFragment extends Fragment {
         binding.tvSub.setText(safe(p.storeName));
         binding.tvProductNameValue.setText(safe(p.productName));
         binding.tvProductDescriptionValue.setText(safe(p.description));
-        binding.tvPriceValue.setText(p.price != null ? "$ " + p.price : "");
+        binding.tvPriceValue.setText(p.price != null ? CurrencyUtils.formatUSD(p.price) : "N/A");
         binding.tvStoreValue.setText(safe(p.storeName));
         binding.tvOrderValue.setText(safe(p.orderId));
+        
+        // Long press para copiar Order ID
+        binding.tvOrderValue.setOnLongClickListener(v -> {
+            String orderId = safe(p.orderId);
+            if (!orderId.isEmpty()) {
+                ClipboardUtils.copyToClipboard(requireContext(), "Order ID", orderId);
+            }
+            return true;
+        });
         binding.tvDateValue.setText(formatDate(p.createdAt));
 
         Glide.with(requireContext())

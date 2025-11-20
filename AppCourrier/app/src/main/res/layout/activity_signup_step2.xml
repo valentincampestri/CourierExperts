@@ -40,7 +40,7 @@
             android:id="@+id/tvSub"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/signup_sub_welcome"
+            android:text="Paso 2 de 2 - Contacto y cuenta"
             android:textColor="@android:color/white"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@id/tvTitle"
@@ -62,18 +62,23 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/hint_address"
-            android:textColor="@color/ce_text_primary"
+            android:text="@string/label_direccion"
+            android:textColor="@android:color/black"
             android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilDireccionSignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintEnabled="false">
+            app:hintEnabled="false"
+            app:counterEnabled="true"
+            app:counterMaxLength="50">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etDireccionSignup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/placeholder_address"/>
+                android:hint="Av. Corrientes 1000"
+                android:inputType="textCapWords"
+                android:maxLength="50"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space android:layout_width="match_parent" android:layout_height="12dp"/>
@@ -82,8 +87,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_province"
-            android:textColor="@color/ce_text_primary"
+            android:text="@string/label_provincia"
+            android:textColor="@android:color/black"
             android:textSize="14sp"/>
 
         <Spinner
@@ -91,6 +96,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:entries="@array/provincias_ar"/>
+        
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnUseLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="USAR MI UBICACIÓN"
+            android:textColor="@color/purple_700"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_marginTop="8dp"/>
 
         <!-- Botón GPS debajo del spinner -->
         <com.google.android.material.button.MaterialButton
@@ -106,29 +120,51 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/hint_phone"
-            android:textColor="@color/ce_text_primary"
+            android:text="@string/label_telefono"
+            android:textColor="@android:color/black"
             android:textSize="14sp"/>
-        <com.google.android.material.textfield.TextInputLayout
+        
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintEnabled="false">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etTelefonoSignup"
-                android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            
+            <Spinner
+                android:id="@+id/spCountryCode"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="@string/signup_hint_phone"/>
-        </com.google.android.material.textfield.TextInputLayout>
+                android:minWidth="110dp"
+                android:entries="@array/country_codes"/>
+            
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilTelefonoSignup"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                app:hintEnabled="false">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etTelefonoSignup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="1150280649"
+                    android:inputType="phone"
+                    android:maxLength="20"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            
+        </LinearLayout>
 
         <Space android:layout_width="match_parent" android:layout_height="16dp"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/hint_mail"
-            android:textColor="@color/ce_text_primary"
+            android:text="@string/label_email"
+            android:textColor="@android:color/black"
             android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilEmailSignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hintEnabled="false">
@@ -145,28 +181,54 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/signup_label_password"
-            android:textColor="@color/ce_text_primary"
+            android:text="@string/label_contrasena"
+            android:textColor="@android:color/black"
             android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPasswordSignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintEnabled="false">
+            app:hintEnabled="false"
+            app:endIconMode="password_toggle">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPasswordSignup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/signup_hint_password"
+                android:hint="@string/hint_password"
                 android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
+
+        <Space android:layout_width="match_parent" android:layout_height="12dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_confirmar_contrasena"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilConfirmPasswordSignup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="false"
+            app:endIconMode="password_toggle">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etConfirmPasswordSignup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_confirmar_password"
+                android:inputType="textPassword"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Space android:layout_width="match_parent" android:layout_height="24dp"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnBack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/action_back"/>
+            android:text="Atrás"/>
 
-        <Space android:layout_width="match_parent" android:layout_height="8dp"/>
+        <Space android:layout_width="match_parent" android:layout_height="12dp"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSave"

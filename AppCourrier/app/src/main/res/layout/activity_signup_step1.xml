@@ -40,7 +40,7 @@
             android:id="@+id/tvSub"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Te damos la bienvenida"
+            android:text="Paso 1 de 2 - Información personal"
             android:textColor="@android:color/white"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@id/tvTitle"
@@ -59,8 +59,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Nombre -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_nombre"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilNombreSignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hintEnabled="false">
@@ -69,15 +75,22 @@
                 android:id="@+id/etNombreSignup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Carlos" />
+                android:hint="@string/hint_nombre_example"
+                android:inputType="textCapWords"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="12dp" />
 
-        <!-- Apellido -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_apellido"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilApellidoSignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hintEnabled="false">
@@ -86,15 +99,22 @@
                 android:id="@+id/etApellidoSignup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Gomez" />
+                android:hint="@string/hint_apellido_example"
+                android:inputType="textCapWords"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="12dp" />
 
-        <!-- DNI -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_dni_passport"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilDniSignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hintEnabled="false">
@@ -103,15 +123,21 @@
                 android:id="@+id/etDniSignUp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="DNI / Pasaporte" />
+                android:hint="@string/hint_dni_number"
+                android:inputType="number"
+                android:maxLength="10"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="12dp" />
+        <Space android:layout_width="match_parent" android:layout_height="12dp"/>
 
-        <!-- CUIL -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_cuil"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilCuilSignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hintEnabled="false">
@@ -120,7 +146,10 @@
                 android:id="@+id/etCuilSignUp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="20-30303030-1" />
+                android:hint="@string/hint_cuil_format"
+                android:inputType="phone"
+                android:digits="0123456789-"
+                android:maxLength="13"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space

@@ -2,7 +2,16 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/auth_nav_graph"
-    app:startDestination="@id/welcomeFragment">
+    app:startDestination="@id/onboardingFragment">
+
+    <fragment
+        android:id="@+id/onboardingFragment"
+        android:name="com.courierexperts.demo.ui.fragments.OnboardingFragment"
+        android:label="Onboarding">
+        <action
+            android:id="@+id/action_onboardingFragment_to_welcomeFragment"
+            app:destination="@id/welcomeFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/welcomeFragment"

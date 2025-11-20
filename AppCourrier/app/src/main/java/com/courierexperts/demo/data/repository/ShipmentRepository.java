@@ -10,6 +10,7 @@ import com.courierexperts.demo.data.local.dao.ShipmentDao;
 import com.courierexperts.demo.data.local.db.AppDatabase;
 import com.courierexperts.demo.data.local.entity.ShipmentEntity;
 import com.courierexperts.demo.util.AppExecutors;
+import com.courierexperts.demo.util.HashUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -89,7 +90,7 @@ public class ShipmentRepository {
         e.fsId = d.getId();
         Long existingId = null;
         try { existingId = dao.findLocalIdByFsId(e.fsId); } catch (Exception ignored) {}
-        e.id = existingId != null ? existingId : stableLongFromString(e.fsId);
+        e.id = existingId != null ? existingId : HashUtils.stableLongFromString(e.fsId);
         e.title = safeStr(d.getString("title"));
         e.trackingNumber = safeStr(d.getString("trackingNumber"));
         String status = d.getString("status");
@@ -120,12 +121,6 @@ public class ShipmentRepository {
         }
         sb.append(']');
         return sb.toString();
-    }
-
-    private static long stableLongFromString(String s) {
-        long h = 1125899906842597L;
-        for (int i = 0; i < s.length(); i++) h = 31*h + s.charAt(i);
-        return h & Long.MAX_VALUE;
     }
 
     private static String safeStr(String s) { return s != null ? s : ""; }
@@ -201,7 +196,7 @@ public class ShipmentRepository {
                 }
 
                 batch.commit()
-                        .addOnSuccessListener(v -> AppExecutors.main().execute(() -> cb.onSuccess(stableLongFromString(id))))
+                        .addOnSuccessListener(v -> AppExecutors.main().execute(() -> cb.onSuccess(HashUtils.stableLongFromString(id))))
                         .addOnFailureListener(err -> AppExecutors.main().execute(cb::onOffline));
 
             } catch (Exception ex) {
@@ -209,7 +204,7 @@ public class ShipmentRepository {
                 AppExecutors.io().execute(() -> {
                     String localId = "local-" + System.currentTimeMillis();
                     ShipmentEntity e = new ShipmentEntity();
-                    e.id = stableLongFromString(localId);
+                    e.id = HashUtils.stableLongFromString(localId);
                     e.fsId = localId;
                     e.title = "Envío " + localId.substring(Math.max(0, localId.length()-6));
                     e.trackingNumber = String.format(java.util.Locale.US, "TRK-%06d", (int)(System.currentTimeMillis()%1000000));

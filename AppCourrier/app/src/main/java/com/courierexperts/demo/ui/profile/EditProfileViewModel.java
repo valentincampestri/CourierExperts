@@ -78,7 +78,7 @@ public class EditProfileViewModel extends AndroidViewModel {
             uiState.setValue(new EditProfileUiState.Error("Dirección inválida"));
             return;
         }
-        if (!phone.matches("[+0-9]{6,20}")) {
+        if (!phone.matches("[+0-9\\s\\-]{6,25}")) {
             uiState.setValue(new EditProfileUiState.Error("Teléfono inválido"));
             return;
         }

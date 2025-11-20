@@ -77,10 +77,13 @@ public class NewPurchaseViewModel extends AndroidViewModel {
         if (!priceTxt.isEmpty()) {
             try {
                 price = Double.parseDouble(priceTxt);
+                if (price < 0) {
+                    events.setValue(new Event<>(NewPurchaseEvent.showMessage("El precio no puede ser negativo")));
+                    return;
+                }
             } catch (NumberFormatException e) {
-                // Si querés que el precio inválido corte el flujo, podés descomentar:
-                // events.setValue(new Event<>(NewPurchaseEvent.showMessage("Precio inválido")));
-                // return;
+                events.setValue(new Event<>(NewPurchaseEvent.showMessage("Precio inválido. Use números con punto decimal (ej: 99.99)")));
+                return;
             }
         }
 

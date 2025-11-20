@@ -17,6 +17,8 @@ import com.courierexperts.demo.databinding.ActivitySignupStep1Binding;
 import com.courierexperts.demo.ui.signup.SignUpStep1Event;
 import com.courierexperts.demo.ui.signup.SignUpStep1ViewModel;
 import com.google.android.material.textfield.TextInputEditText;
+import com.courierexperts.demo.util.CUILTextWatcher;
+import com.courierexperts.demo.util.CapitalizeTextWatcher;
 
 public class SignUpStep1Fragment extends Fragment {
 
@@ -40,6 +42,16 @@ public class SignUpStep1Fragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(SignUpStep1ViewModel.class);
         observeViewModel();
         setupClicks();
+        setupFormatters();
+    }
+
+    private void setupFormatters() {
+        // Formato automático de CUIL: 20303030301 → 20-30303030-1
+        binding.etCuilSignUp.addTextChangedListener(new CUILTextWatcher());
+        
+        // Capitalizar primera letra de nombre y apellido
+        binding.etNombreSignup.addTextChangedListener(new CapitalizeTextWatcher(binding.etNombreSignup));
+        binding.etApellidoSignup.addTextChangedListener(new CapitalizeTextWatcher(binding.etApellidoSignup));
     }
 
     private void setupClicks() {
@@ -55,17 +67,10 @@ public class SignUpStep1Fragment extends Fragment {
             if (event == null) return;
             SignUpStep1Event payload = event.getContentIfNotHandled();
             if (payload == null) return;
-
-            if (payload.getType() == SignUpStep1Event.Type.SHOW_MESSAGE
-                    && payload.getMessage() != null) {
-
-                Toast.makeText(requireContext(),
-                        payload.getMessage(),
-                        Toast.LENGTH_SHORT).show();
-
-            } else if (payload.getType() == SignUpStep1Event.Type.NAVIGATE_STEP2
-                    && payload.getData() != null) {
-
+            if (payload.getType() == SignUpStep1Event.Type.SHOW_MESSAGE && payload.getMessage() != null) {
+                showErrorForMessage(payload.getMessage());
+                Toast.makeText(requireContext(), payload.getMessage(), Toast.LENGTH_SHORT).show();
+            } else if (payload.getType() == SignUpStep1Event.Type.NAVIGATE_STEP2 && payload.getData() != null) {
                 Bundle args = new Bundle();
                 args.putParcelable(SignUpStep2Fragment.ARG_SIGNUP_DATA,
                         payload.getData());
@@ -74,8 +79,46 @@ public class SignUpStep1Fragment extends Fragment {
             }
         });
     }
+    
+    private void clearAllErrors() {
+        if (binding == null) return;
+        if (binding.tilNombreSignup != null) binding.tilNombreSignup.setError(null);
+        if (binding.tilApellidoSignup != null) binding.tilApellidoSignup.setError(null);
+        if (binding.tilDniSignup != null) binding.tilDniSignup.setError(null);
+        if (binding.tilCuilSignup != null) binding.tilCuilSignup.setError(null);
+    }
+    
+    private void showErrorForMessage(String message) {
+        clearAllErrors();
+        if (binding == null || message == null) return;
+        
+        String msgLower = message.toLowerCase();
+        
+        if (msgLower.contains("nombre")) {
+            if (binding.tilNombreSignup != null) {
+                binding.tilNombreSignup.setError(" ");
+                binding.etNombreSignup.requestFocus();
+            }
+        } else if (msgLower.contains("apellido")) {
+            if (binding.tilApellidoSignup != null) {
+                binding.tilApellidoSignup.setError(" ");
+                binding.etApellidoSignup.requestFocus();
+            }
+        } else if (msgLower.contains("dni")) {
+            if (binding.tilDniSignup != null) {
+                binding.tilDniSignup.setError(" ");
+                binding.etDniSignUp.requestFocus();
+            }
+        } else if (msgLower.contains("cuil") || msgLower.contains("cuit")) {
+            if (binding.tilCuilSignup != null) {
+                binding.tilCuilSignup.setError(" ");
+                binding.etCuilSignUp.requestFocus();
+            }
+        }
+    }
 
     private void doNext() {
+        clearAllErrors();
         String nombre = textOf(binding.etNombreSignup);
         String apellido = textOf(binding.etApellidoSignup);
         String dni = textOf(binding.etDniSignUp);

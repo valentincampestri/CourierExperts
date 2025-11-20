@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
- * Gestiona login, recordatorio de contraseA3n y navegaciA3n de Welcome/SignIn.
+ * Gestiona login, recordatorio de contraseña y navegación de Welcome/SignIn.
  */
 public class AuthViewModel extends AndroidViewModel {
 
@@ -51,7 +51,7 @@ public class AuthViewModel extends AndroidViewModel {
             events.setValue(new Event<>(AuthEvent.showMessage(getApplication().getString(R.string.auth_error_invalid_email))));
             return;
         }
-        if (password.length() < 4 || password.length() > 20) {
+        if (password.length() < 8 || password.length() > 20) {
             events.setValue(new Event<>(AuthEvent.showMessage(getApplication().getString(R.string.auth_error_invalid_password))));
             return;
         }

@@ -1,38 +1,51 @@
-﻿<resources>
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
     <string name="app_name">currier</string>
+    <string name="title_activity_nueva_compra">nueva_compra</string>
+    <string name="title_activity_compras">ComprasActivity</string>
 
-    <!-- Envios -->
-    <string name="envios_icon_desc">Icono envios</string>
-    <string name="envios_title">Tus envios</string>
-    <string name="envios_subtitle">Revisa el estado de tus envios</string>
-    <string name="envios_empty">Todavia no hay envios en curso</string>
+    <string-array name="depositos_array">
+        <item>Miami Florida</item>
+        <item>New York</item>
+        <item>Los Angeles</item>
+        <item>Madrid</item>
+    </string-array>
+
+    <!-- Envíos -->
+    <string name="envios_icon_desc">Icono envíos</string>
+    <string name="envios_title">Tus envíos</string>
+    <string name="envios_subtitle">Revisa el estado de tus envíos</string>
+    <string name="envios_empty">Todavía no hay envíos en curso</string>
+    <string name="shipment_cost_placeholder">Costo: $ 0.00</string>
+    <string name="shipment_status_with_cost">%1$s&#10;&#10;| Costo: %2$s</string>
 
     <!-- Home -->
     <string name="greeting_name">Hola, Maria</string>
-    <string name="greeting_message">Que bueno volver a verte!</string>
+    <string name="greeting_message">Qué bueno volver a verte!</string>
     <string name="label_packages">Paquetes</string>
-    <string name="label_shipments">Envios</string>
+    <string name="label_shipments">Envíos</string>
     <string name="recent_activity">Tu actividad reciente</string>
-    <string name="shipment_title_placeholder">Envio 5</string>
+    <string name="shipment_title_placeholder">Envío 5</string>
     <string name="shipment_status_sent">Enviado</string>
     <string name="action_view_details">Ver detalles</string>
+    <string name="shipment_cost_label">Costo estimado: %1$s</string>
     <string name="home_greeting_generic">Hola</string>
     <string name="home_greeting_with_name">Hola, %1$s</string>
-    <string name="home_deposit_reminder">Completa tu deposito en Perfil</string>
-    <string name="home_last_shipment_empty">Aun no has solicitado envios</string>
-    <string name="auth_error_invalid_email">Email invalido</string>
-    <string name="auth_error_invalid_password">Contrasena 4 a 20 caracteres</string>
-    <string name="auth_error_login">No se pudo iniciar sesion</string>
-    <string name="auth_error_generic">Error de autenticacion</string>
-    <string name="auth_reset_email_sent">Si su cuenta existe, enviaremos un email para reestablecer su contrasena</string>
+    <string name="home_deposit_reminder">Completa tu depósito en Perfil</string>
+    <string name="home_last_shipment_empty">Aún no has solicitado envíos</string>
+    <string name="auth_error_invalid_email">Email inválido</string>
+    <string name="auth_error_invalid_password">Contraseña 8 a 20 caracteres</string>
+    <string name="auth_error_login">No se pudo iniciar sesión</string>
+    <string name="auth_error_generic">Error de autenticación</string>
+    <string name="auth_reset_email_sent">Si su cuenta existe, enviaremos un email para restablecer su contraseña</string>
     <string name="auth_reset_email_failed">No pudimos enviar el email, intente nuevamente mas tarde.</string>
     <string name="signup_error_name">Ingrese su nombre (2 a 50 caracteres)</string>
     <string name="signup_error_last_name">Ingrese su apellido (2 a 50 caracteres)</string>
-    <string name="signup_error_dni">DNI 7 a 10 digitos</string>
+    <string name="signup_error_dni">DNI 7 a 10 dígitos</string>
     <string name="signup_error_cuil">CUIL formato NN-NNNNNNNN-N</string>
-    <string name="signup_error_address">Direccion 2 a 50 caracteres</string>
+    <string name="signup_error_address">Dirección 2 a 50 caracteres</string>
     <string name="signup_error_province">Seleccione una provincia</string>
-    <string name="signup_error_phone">Telefono invalido (usar + y digitos, 6 a 20)</string>
+    <string name="signup_error_phone">Teléfono inválido (usar + y dígitos, 6 a 20)</string>
     <string name="signup_error_register">No se pudo registrar</string>
     <string name="signup_missing_step">Debes completar el paso anterior</string>
     <!-- Actividad reciente -->
@@ -40,16 +53,16 @@
     <string name="home_recent_purchase_subtitle">Orden %1$s</string>
     <string name="home_recent_package_fallback_title">Paquete</string>
     <string name="home_recent_package_subtitle">Paquete #%1$d</string>
-    <string name="home_recent_shipment_subtitle">Env�o #%1$d</string>
+    <string name="home_recent_shipment_subtitle">Envío #%1$d</string>
 
 
     <!-- Nueva compra -->
     <string name="new_purchase_title">Nueva compra</string>
-    <string name="new_purchase_subtitle">Informanos sobre tu compra</string>
+    <string name="new_purchase_subtitle">Infórmanos sobre tu compra</string>
     <string name="hint_store">Tienda</string>
     <string name="hint_productnName">Nombre del Producto</string>
-    <string name="hint_description">Descripcion</string>
-    <string name="hint_carrier">Empresa de Envio</string>
+    <string name="hint_description">Descripción</string>
+    <string name="hint_carrier">Empresa de Envío</string>
     <string name="hint_price">Precio</string>
     <string name="hint_tracking">Nro Tracking</string>
     <string name="action_cancel">Cancelar</string>
@@ -57,7 +70,7 @@
     <string name="action_back">Volver</string>
     <string name="new_purchase_error_required">Completa Tienda y Nro Tracking</string>
     <string name="new_purchase_saved_online">Compra guardada</string>
-    <string name="new_purchase_saved_offline">Guardado local, se sincronizara luego</string>
+    <string name="new_purchase_saved_offline">Guardado local, se sincronizará luego</string>
 
     <!-- Perfil -->
     <string name="profile_title">Tus datos</string>
@@ -66,22 +79,52 @@
     <string name="placeholder_name">Maria Perez</string>
     <string name="hint_mail">Mail</string>
     <string name="placeholder_mail">maria@gmail.com</string>
-    <string name="hint_phone">Nro de telefono</string>
-    <string name="hint_address">Direccion</string>
+    <string name="hint_phone">Nro de teléfono</string>
+    <string name="hint_address">Dirección</string>
+    <string name="hint_password">Mínimo 8 caracteres</string>
+    <string name="hint_dni_number">12345678</string>
+    <string name="hint_cuil_format">20-12345678-1 (solo números)</string>
+    <string name="hint_nombre_example">Carlos</string>
+    <string name="hint_apellido_example">Gomez</string>
+    <string name="label_nombre">Nombre</string>
+    <string name="label_apellido">Apellido</string>
+    <string name="label_dni_passport">DNI / Pasaporte</string>
+    <string name="label_cuil">CUIL / CUIT</string>
+    <string name="label_direccion">Dirección</string>
+    <string name="label_provincia">Provincia</string>
+    <string name="label_telefono">Teléfono</string>
+    <string name="label_email">Email</string>
+    <string name="label_contrasena">Contraseña</string>
+    <string name="label_confirmar_contrasena">Confirmar contraseña</string>
+    <string name="hint_confirmar_password">Ingrese nuevamente su contraseña</string>
+    <string name="error_passwords_dont_match">Las contraseñas no coinciden</string>
+    <string name="loading_login">Iniciando sesión...</string>
+    <string name="loading_saving">Guardando...</string>
+    <string name="loading_syncing">Sincronizando...</string>
+    <string name="success_saved">✓ Guardado exitosamente</string>
+    <string name="success_profile_updated">✓ Perfil actualizado</string>
+    <string name="success_purchase_created">✓ Compra registrada</string>
+    <string name="action_copy">Copiar</string>
+    <string name="copied_to_clipboard">Copiado al portapapeles</string>
+    <string name="empty_purchases_title">¡Comenzá a registrar tus compras!</string>
+    <string name="empty_purchases_subtitle">Agregá tus compras internacionales para hacer seguimiento</string>
+    <string name="empty_shipments_title">Todavía no tenés envíos</string>
+    <string name="empty_shipments_subtitle">Cuando registres compras, podrás crear envíos</string>
+    <string name="action_add_first_purchase">Agregar mi primera compra</string>
     <string name="placeholder_address">Av. Corrientes 1000</string>
-    <string name="purchases_empty_message">Todav�a no informaste compras</string>
+    <string name="purchases_empty_message">Todavía no informaste compras</string>
     <string name="packages_empty_message">No hay paquetes disponibles por ahora</string>
-    <string name="state_error_retry">No hay servicio actualmente, intente nuevamente m�s tarde.</string>
+    <string name="state_error_retry">No hay servicio actualmente, intente nuevamente más tarde.</string>
     <string name="purchase_detail_not_found">Compra no encontrada</string>
-    <string name="shipment_detail_not_found">Env�o no encontrado</string>
+    <string name="shipment_detail_not_found">Envío no encontrado</string>
     <string name="package_detail_not_found">Paquete no encontrado</string>
     <string name="package_detail_ticket_title">Detalles del paquete</string>
-    <string name="profile_placeholder_address">Sin direcci�n</string>
-    <string name="profile_placeholder_phone">Sin tel�fono</string>
-    <string name="feature_placeholder">Funcionalidad en migracion (proximamente).</string>
-    <string name="label_deposito">Deposito elegido</string>
-    <string name="desc_avatar">Avatar del usuario</string>
-    <string name="desc_shipment_image">Imagen de envío</string>
+    <string name="profile_placeholder_address">Sin dirección</string>
+    <string name="profile_placeholder_phone">Sin teléfono</string>
+    <string name="feature_placeholder">Funcionalidad en migración (próximamente).</string>
+
+    <string name="default_web_client_id">REEMPLAZAR_CON_CLIENT_ID</string>
+</resources>
 
     <!-- Signup Step 2 -->
     <string name="signup_title_hello">Hola</string>

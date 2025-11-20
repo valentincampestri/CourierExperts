@@ -86,9 +86,11 @@
             android:textSize="14sp"/>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPasswordSignin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintEnabled="false">
+            app:hintEnabled="false"
+            app:endIconMode="password_toggle">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPasswordSignin"
                 android:layout_width="match_parent"

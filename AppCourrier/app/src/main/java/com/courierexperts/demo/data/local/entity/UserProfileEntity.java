@@ -1,9 +1,13 @@
 package com.courierexperts.demo.data.local.entity;
 
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "user_profile")
+@Entity(tableName = "user_profile",
+        indices = {
+            @Index(value = "uid", unique = true)
+        })
 public class UserProfileEntity {
     @PrimaryKey(autoGenerate = true) public long id;
     public String uid;

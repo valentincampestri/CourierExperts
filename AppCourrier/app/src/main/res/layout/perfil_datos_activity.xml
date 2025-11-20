@@ -96,6 +96,7 @@
                     android:id="@+id/etNombrePerfil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
                     android:text="@string/placeholder_name"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -110,7 +111,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etApellidoPerfil"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -128,35 +130,60 @@
                     android:text="@string/placeholder_mail"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <!-- Teléfono con selector de país -->
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_phone"
-                android:layout_marginTop="@dimen/ce_spacing_sm">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etTelefonoPerfil"
-                    android:layout_width="match_parent"
+                android:text="Teléfono"
+                android:textSize="14sp"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="@dimen/ce_spacing_sm"/>
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="4dp">
+                
+                <Spinner
+                    android:id="@+id/spCountryCodePerfil"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="phone"
-                    android:digits="+0123456789"
-                    android:maxLength="20"
-                    android:text=""/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:minWidth="110dp"
+                    android:entries="@array/country_codes"/>
+                
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    app:hintEnabled="false">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etTelefonoPerfil"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:maxLength="20"
+                        android:text=""/>
+                </com.google.android.material.textfield.TextInputLayout>
+                
+            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_address"
+                android:hint="Dirección"
                 android:layout_marginTop="@dimen/ce_spacing_sm">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etDireccionPerfil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPostalAddress"
+                    android:inputType="textCapWords"
                     android:maxLength="80"
                     android:text="@string/placeholder_address"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -165,7 +192,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/ce_spacing_sm"
-                android:text="@string/label_deposito"
+                android:text="Depósito elegido"
                 android:textStyle="bold"
                 android:textSize="14sp"/>
 

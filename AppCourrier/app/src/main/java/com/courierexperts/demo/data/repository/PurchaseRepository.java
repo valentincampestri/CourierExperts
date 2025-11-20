@@ -11,6 +11,7 @@ import com.courierexperts.demo.data.local.db.AppDatabase;
 import com.courierexperts.demo.data.local.entity.PackageEntity;
 import com.courierexperts.demo.data.local.entity.PurchaseEntity;
 import com.courierexperts.demo.util.AppExecutors;
+import com.courierexperts.demo.util.HashUtils;
 import com.courierexperts.demo.util.NetworkUtils;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -214,7 +215,7 @@ public class PurchaseRepository {
         try {
             existingId = dao.findLocalIdByFsId(e.fsId);
         } catch (Exception ignored) {}
-        e.id = existingId != null ? existingId : stableLongFromString(e.fsId);
+        e.id = existingId != null ? existingId : HashUtils.stableLongFromString(e.fsId);
 
         // 🔹 Campos nuevos
         e.productName = d.getString("productName");
@@ -283,7 +284,7 @@ public class PurchaseRepository {
         String purchaseFsId = snapshot.getId();
         pkg.purchaseFsId = purchaseFsId;
         pkg.fsId = purchaseFsId;
-        pkg.id = stableLongFromString(purchaseFsId);
+        pkg.id = HashUtils.stableLongFromString(purchaseFsId);
         pkg.label = derivePackageLabel(snapshot);
         pkg.description = derivePackageDescription(snapshot);
         Double price = null;
@@ -368,15 +369,6 @@ public class PurchaseRepository {
             data.put("createdAt", FieldValue.serverTimestamp());
         }
         return data;
-    }
-
-    private static long stableLongFromString(String s) {
-        if (s == null) return System.currentTimeMillis();
-        long h = 1125899906842597L;
-        for (int i = 0; i < s.length(); i++) {
-            h = 31 * h + s.charAt(i);
-        }
-        return h & Long.MAX_VALUE;
     }
 
     private static String derivePackageLabel(DocumentSnapshot snapshot) {

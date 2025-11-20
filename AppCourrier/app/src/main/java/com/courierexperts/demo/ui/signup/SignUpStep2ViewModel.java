@@ -48,7 +48,8 @@ public class SignUpStep2ViewModel extends AndroidViewModel {
                          String provincia,
                          String telefono,
                          String email,
-                         String password) {
+                         String password,
+                         String confirmPassword) {
         if (step1 == null) {
             events.setValue(new Event<>(SignUpStep2Event.showMessage(getApplication().getString(R.string.signup_missing_step))));
             return;
@@ -64,7 +65,8 @@ public class SignUpStep2ViewModel extends AndroidViewModel {
             return;
         }
         String phone = safe(telefono);
-        if (!phone.matches("[+0-9]{6,20}")) {
+        // Permitir +, dígitos, espacios y guiones
+        if (!phone.matches("[+0-9\\s\\-]{6,25}")) {
             events.setValue(new Event<>(SignUpStep2Event.showMessage(getApplication().getString(R.string.signup_error_phone))));
             return;
         }
@@ -73,8 +75,12 @@ public class SignUpStep2ViewModel extends AndroidViewModel {
             events.setValue(new Event<>(SignUpStep2Event.showMessage(getApplication().getString(R.string.auth_error_invalid_email))));
             return;
         }
-        if (password == null || password.length() < 4 || password.length() > 20) {
+        if (password == null || password.length() < 8 || password.length() > 20) {
             events.setValue(new Event<>(SignUpStep2Event.showMessage(getApplication().getString(R.string.auth_error_invalid_password))));
+            return;
+        }
+        if (!password.equals(confirmPassword)) {
+            events.setValue(new Event<>(SignUpStep2Event.showMessage(getApplication().getString(R.string.error_passwords_dont_match))));
             return;
         }
 

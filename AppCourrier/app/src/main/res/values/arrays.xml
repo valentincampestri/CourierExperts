@@ -6,6 +6,7 @@
         <item>Catamarca</item>
         <item>Chaco</item>
         <item>Chubut</item>
+        <item>Ciudad Autónoma de Buenos Aires</item>
         <item>Córdoba</item>
         <item>Corrientes</item>
         <item>Entre Ríos</item>
@@ -25,7 +26,18 @@
         <item>Santiago del Estero</item>
         <item>Tierra del Fuego</item>
         <item>Tucumán</item>
-        <item>Ciudad Autónoma de Buenos Aires</item>
-        <item>California</item>
+    </string-array>
+
+    <string-array name="country_codes">
+        <item>🇦🇷 +54</item>
+        <item>🇺🇸 +1</item>
+        <item>🇧🇷 +55</item>
+        <item>🇨🇱 +56</item>
+        <item>🇵🇾 +595</item>
+        <item>🇺🇾 +598</item>
+        <item>🇲🇽 +52</item>
+        <item>🇪🇸 +34</item>
+        <item>🇨🇴 +57</item>
+        <item>🇵🇪 +51</item>
     </string-array>
 </resources>
