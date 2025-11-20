@@ -8,12 +8,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.courierexperts.demo.R;
 import com.courierexperts.demo.data.local.entity.ShipmentEntity;
 import com.courierexperts.demo.domain.StatusMapper;
 import com.courierexperts.demo.databinding.ItemShipmentBinding;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ShipmentAdapter extends RecyclerView.Adapter<ShipmentAdapter.VH> {
 
@@ -51,9 +53,14 @@ public class ShipmentAdapter extends RecyclerView.Adapter<ShipmentAdapter.VH> {
         h.b.tvTitle.setText(it.title);
         String subtitle = "#" + (it.trackingNumber != null ? it.trackingNumber : "");
         if (it.fsId != null && it.fsId.startsWith("local-")) {
-            subtitle += "  • sin conexión";
+            subtitle += " - sin conexion";
         }
         h.b.tvSubtitle.setText(subtitle);
+
+        String formattedCost = String.format(Locale.getDefault(), "$ %.2f", it.cost);
+        h.b.tvCost.setText(h.b.getRoot().getContext()
+                .getString(R.string.shipment_cost_label, formattedCost));
+
         h.b.tvStatus.setText(StatusMapper.labelShipment(it.status));
 
         Glide.with(h.b.getRoot())
