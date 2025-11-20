@@ -60,7 +60,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nombre"
+            android:text="@string/label_nombre"
             android:textColor="@android:color/black"
             android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
@@ -71,7 +71,7 @@
                 android:id="@+id/etNombreSignup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Carlos"/>
+                android:hint="@string/hint_nombre_example"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space android:layout_width="match_parent" android:layout_height="12dp"/>
@@ -79,7 +79,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Apellido"
+            android:text="@string/label_apellido"
             android:textColor="@android:color/black"
             android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
@@ -90,7 +90,7 @@
                 android:id="@+id/etApellidoSignup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Gomez"/>
+                android:hint="@string/hint_apellido_example"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space android:layout_width="match_parent" android:layout_height="12dp"/>
@@ -98,7 +98,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="DNI / Pasaporte"
+            android:text="@string/label_dni_passport"
             android:textColor="@android:color/black"
             android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
@@ -109,7 +109,7 @@
                 android:id="@+id/etDniSignUp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="12345678"/>
+                android:hint="@string/hint_dni_number"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space android:layout_width="match_parent" android:layout_height="12dp"/>
@@ -117,7 +117,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="CUIL"
+            android:text="@string/label_cuil"
             android:textColor="@android:color/black"
             android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
@@ -129,7 +129,7 @@
                 android:id="@+id/etCuilSignUp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="20-30303030-1"/>
+                android:hint="@string/hint_cuil_format"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space android:layout_width="match_parent" android:layout_height="16dp"/>

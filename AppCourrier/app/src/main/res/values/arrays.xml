@@ -6,6 +6,7 @@
         <item>Catamarca</item>
         <item>Chaco</item>
         <item>Chubut</item>
+        <item>Ciudad Autónoma de Buenos Aires</item>
         <item>Córdoba</item>
         <item>Corrientes</item>
         <item>Entre Ríos</item>
@@ -25,6 +26,5 @@
         <item>Santiago del Estero</item>
         <item>Tierra del Fuego</item>
         <item>Tucumán</item>
-        <item>Ciudad Autónoma de Buenos Aires</item>
     </string-array>
 </resources>

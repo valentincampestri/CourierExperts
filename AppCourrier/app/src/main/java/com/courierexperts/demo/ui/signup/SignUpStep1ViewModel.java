@@ -1,7 +1,6 @@
 package com.courierexperts.demo.ui.signup;
 
 import android.app.Application;
-import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -10,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.courierexperts.demo.R;
 import com.courierexperts.demo.util.Event;
+import com.courierexperts.demo.util.ValidationUtils;
 
 public class SignUpStep1ViewModel extends AndroidViewModel {
 
@@ -43,8 +43,12 @@ public class SignUpStep1ViewModel extends AndroidViewModel {
             return;
         }
         String c = safe(cuil);
-        if (!c.matches("\\d{2}-\\d{8}-\\d")) {
+        if (!ValidationUtils.hasValidCUILFormat(c)) {
             events.setValue(new Event<>(SignUpStep1Event.showMessage(getApplication().getString(R.string.signup_error_cuil))));
+            return;
+        }
+        if (!ValidationUtils.isValidCUIL(c)) {
+            events.setValue(new Event<>(SignUpStep1Event.showMessage("CUIL inv\u00e1lido. Verifique el d\u00edgito verificador")));
             return;
         }
         events.setValue(new Event<>(SignUpStep1Event.navigate(new SignUpData(n, a, d, c))));

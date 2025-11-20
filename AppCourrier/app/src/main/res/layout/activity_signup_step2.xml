@@ -61,7 +61,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Direccion"
+            android:text="@string/label_direccion"
             android:textColor="@android:color/black"
             android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
@@ -80,7 +80,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Provincia"
+            android:text="@string/label_provincia"
             android:textColor="@android:color/black"
             android:textSize="14sp"/>
         <Spinner
@@ -94,7 +94,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Telefono"
+            android:text="@string/label_telefono"
             android:textColor="@android:color/black"
             android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
@@ -113,7 +113,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Email"
+            android:text="@string/label_email"
             android:textColor="@android:color/black"
             android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
@@ -133,7 +133,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Contrasena"
+            android:text="@string/label_contrasena"
             android:textColor="@android:color/black"
             android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
@@ -144,7 +144,7 @@
                 android:id="@+id/etPasswordSignup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="(4-20)"
+                android:hint="@string/hint_password"
                 android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -152,7 +152,7 @@
             android:id="@+id/btnBack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Atras"/>
+            android:text="Atrás"/>
 
         <Space android:layout_width="match_parent" android:layout_height="8dp"/>
 

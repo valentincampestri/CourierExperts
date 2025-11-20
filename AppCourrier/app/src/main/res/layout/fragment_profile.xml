@@ -138,7 +138,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_phone"
-            android:contentDescription="Icono de telefono" />
+            android:contentDescription="Icono de teléfono" />
 
         <LinearLayout
             android:layout_width="wrap_content"

@@ -9,6 +9,7 @@ import com.courierexperts.demo.data.local.dao.PackageDao;
 import com.courierexperts.demo.data.local.db.AppDatabase;
 import com.courierexperts.demo.data.local.entity.PackageEntity;
 import com.courierexperts.demo.util.AppExecutors;
+import com.courierexperts.demo.util.HashUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -88,7 +89,7 @@ public class PackageRepository {
         if (existingId == null && e.purchaseFsId != null && !e.purchaseFsId.isEmpty()) {
             try { existingId = dao.findLocalIdByPurchaseFsId(e.purchaseFsId); } catch (Exception ignored) {}
         }
-        e.id = existingId != null ? existingId : stableLongFromString(e.fsId);
+        e.id = existingId != null ? existingId : HashUtils.stableLongFromString(e.fsId);
         e.label = d.getString("label");
         e.description = d.getString("description");
         Double price = null;
@@ -103,15 +104,6 @@ public class PackageRepository {
         String sh = d.getString("shipmentId");
         e.shipmentId = sh != null ? sh : null;
         return e;
-    }
-
-    private static long stableLongFromString(String s) {
-        // Simple hash-based stable id (non-crypto), ensures positive long
-        long h = 1125899906842597L; // prime
-        for (int i = 0; i < s.length(); i++) {
-            h = 31*h + s.charAt(i);
-        }
-        return h & Long.MAX_VALUE;
     }
 
     private static String safeUid() {
