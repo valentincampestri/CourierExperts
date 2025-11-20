@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ContentDescription"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -37,9 +39,11 @@
             android:id="@+id/imgAvatar"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:contentDescription="@string/desc_avatar"
             android:src="@drawable/ic_avatar"
-            android:background="@drawable/circle_background"
-            android:scaleType="centerCrop" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
 
     <ProgressBar
@@ -128,7 +132,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nro de telefono"
+                android:hint="@string/hint_phone"
                 android:layout_marginTop="@dimen/ce_spacing_sm">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -145,7 +149,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Direccion"
+                android:hint="@string/hint_address"
                 android:layout_marginTop="@dimen/ce_spacing_sm">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -161,7 +165,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/ce_spacing_sm"
-                android:text="Depsito elegido"
+                android:text="@string/label_deposito"
                 android:textStyle="bold"
                 android:textSize="14sp"/>
 

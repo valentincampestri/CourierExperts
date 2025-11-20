@@ -79,9 +79,19 @@
     <string name="profile_placeholder_address">Sin direcci�n</string>
     <string name="profile_placeholder_phone">Sin tel�fono</string>
     <string name="feature_placeholder">Funcionalidad en migracion (proximamente).</string>
+    <string name="label_deposito">Deposito elegido</string>
+    <string name="desc_avatar">Avatar del usuario</string>
+    <string name="desc_shipment_image">Imagen de envío</string>
+
+    <!-- Signup Step 2 -->
+    <string name="signup_title_hello">Hola</string>
+    <string name="signup_sub_welcome">Te damos la bienvenida</string>
+    <string name="label_province">Provincia</string>
+    <string name="action_use_location">Usar mi ubicación</string>
+    <string name="signup_hint_phone">+5491122334455</string>
+    <string name="signup_hint_email">correo@ejemplo.com</string>
+    <string name="signup_label_password">Contrasena</string>
+    <string name="signup_hint_password">(4-20)</string>
+    <string name="signup_icon_desc">Icono signup</string>
 <!-- Existing -->
 </resources>
-
-
-
-

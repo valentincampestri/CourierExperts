@@ -55,13 +55,7 @@ public class ShipmentRepository {
     private void ensureListener() {
         if (shipmentsListener != null) return;
         String uid = safeUid();
-        if (uid == null) {
-            android.util.Log.w("ShipmentRepository", "⚠️ No hay usuario autenticado (UID es null)");
-            return;
-        }
-
-        android.util.Log.d("ShipmentRepository", "🔍 Iniciando listener de Firestore para UID: " + uid);
-
+        if (uid == null) return;
         Query q = FirebaseFirestore.getInstance()
                 .collection("users").document(uid)
                 .collection("shipments")
@@ -69,28 +63,18 @@ public class ShipmentRepository {
 
         shipmentsListener = q.addSnapshotListener((snapshots, e) -> {
             if (e != null) {
-                android.util.Log.e("ShipmentRepository", "❌ Error en Firestore: " + e.getMessage(), e);
                 remoteErrors.postValue(e.getMessage());
                 return;
             }
             if (snapshots == null) {
-                android.util.Log.w("ShipmentRepository", "⚠️ Snapshots es null (respuesta vacía)");
                 remoteErrors.postValue("Respuesta vacia de Firestore");
                 return;
             }
-
-            android.util.Log.d("ShipmentRepository", "✅ Recibidos " + snapshots.size() + " documentos de Firestore");
-
             List<ShipmentEntity> list = new ArrayList<>();
             for (DocumentSnapshot d : snapshots.getDocuments()) {
                 ShipmentEntity se = mapDoc(d);
-                if (se != null) {
-                    android.util.Log.d("ShipmentRepository", "  📦 Shipment: " + se.title + " (ID: " + d.getId() + ")");
-                    list.add(se);
-                }
+                if (se != null) list.add(se);
             }
-
-            android.util.Log.d("ShipmentRepository", "💾 Guardando " + list.size() + " shipments en Room");
             AppExecutors.io().execute(() -> dao.upsertAll(list));
         });
     }
