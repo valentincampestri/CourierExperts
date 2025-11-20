@@ -77,6 +77,7 @@
         android:layout_height="wrap_content"
         android:text="@string/packages_empty_message"
         android:textSize="16sp"
+        android:textColor="@color/ce_text_primary"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintBottom_toBottomOf="parent"

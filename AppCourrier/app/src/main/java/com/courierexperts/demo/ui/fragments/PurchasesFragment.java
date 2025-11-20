@@ -42,7 +42,6 @@ public class PurchasesFragment extends Fragment {
         setupRecycler();
         observeUiState();
         viewModel.refresh();
-        setupFab();
 
         if (binding.bottomNav != null) {
             binding.bottomNav.setVisibility(View.GONE);
@@ -62,14 +61,7 @@ public class PurchasesFragment extends Fragment {
         });
     }
 
-    private void setupFab() {
-        View fab = binding.getRoot().findViewById(R.id.fabAdd);
-        if (fab != null) {
-            fab.setOnClickListener(v ->
-                    NavHostFragment.findNavController(PurchasesFragment.this)
-                            .navigate(R.id.action_purchasesFragment_to_newPurchaseFragment));
-        }
-    }
+
 
     private void observeUiState() {
         viewModel.getUiState().observe(getViewLifecycleOwner(), state -> {

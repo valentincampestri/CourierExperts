@@ -16,6 +16,7 @@ import com.courierexperts.demo.R;
 import com.courierexperts.demo.databinding.ActivitySignupStep1Binding;
 import com.courierexperts.demo.ui.signup.SignUpStep1Event;
 import com.courierexperts.demo.ui.signup.SignUpStep1ViewModel;
+import com.google.android.material.textfield.TextInputEditText;
 import com.courierexperts.demo.util.CUILTextWatcher;
 import com.courierexperts.demo.util.CapitalizeTextWatcher;
 
@@ -26,14 +27,18 @@ public class SignUpStep1Fragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         binding = ActivitySignupStep1Binding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view,
+                              @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         viewModel = new ViewModelProvider(this).get(SignUpStep1ViewModel.class);
         observeViewModel();
         setupClicks();
@@ -50,7 +55,10 @@ public class SignUpStep1Fragment extends Fragment {
     }
 
     private void setupClicks() {
-        binding.btnBack.setOnClickListener(v -> NavHostFragment.findNavController(this).popBackStack());
+        binding.btnBack.setOnClickListener(
+                v -> NavHostFragment.findNavController(this).popBackStack()
+        );
+
         binding.btnNext.setOnClickListener(v -> doNext());
     }
 
@@ -64,7 +72,8 @@ public class SignUpStep1Fragment extends Fragment {
                 Toast.makeText(requireContext(), payload.getMessage(), Toast.LENGTH_SHORT).show();
             } else if (payload.getType() == SignUpStep1Event.Type.NAVIGATE_STEP2 && payload.getData() != null) {
                 Bundle args = new Bundle();
-                args.putParcelable(SignUpStep2Fragment.ARG_SIGNUP_DATA, payload.getData());
+                args.putParcelable(SignUpStep2Fragment.ARG_SIGNUP_DATA,
+                        payload.getData());
                 NavHostFragment.findNavController(this)
                         .navigate(R.id.action_signUpStep1Fragment_to_signUpStep2Fragment, args);
             }
@@ -114,12 +123,13 @@ public class SignUpStep1Fragment extends Fragment {
         String apellido = textOf(binding.etApellidoSignup);
         String dni = textOf(binding.etDniSignUp);
         String cuil = textOf(binding.etCuilSignUp);
+
         viewModel.submitStepOne(nombre, apellido, dni, cuil);
     }
 
-    private static String textOf(@Nullable com.google.android.material.textfield.TextInputEditText et) {
+    private static String textOf(@Nullable TextInputEditText et) {
         if (et != null && et.getText() != null) {
-            return et.getText().toString();
+            return et.getText().toString().trim();
         }
         return "";
     }

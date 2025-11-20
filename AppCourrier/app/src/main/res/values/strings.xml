@@ -126,6 +126,20 @@
     <string name="default_web_client_id">REEMPLAZAR_CON_CLIENT_ID</string>
 </resources>
 
+    <!-- Signup Step 2 -->
+    <string name="signup_title_hello">Hola</string>
+    <string name="signup_sub_welcome">Te damos la bienvenida</string>
+    <string name="label_province">Provincia</string>
+    <string name="action_use_location">Usar mi ubicación</string>
+    <string name="signup_hint_phone">+5491122334455</string>
+    <string name="signup_hint_email">correo@ejemplo.com</string>
+    <string name="signup_label_password">Contrasena</string>
+    <string name="signup_hint_password">(4-20)</string>
+    <string name="signup_icon_desc">Icono signup</string>
+
+    <string name="shipment_cost_label">Costo estimado: %1$s</string>
+    <string name="shipment_status_with_cost">%1$s\n\n| Costo: %2$s</string>
 
 
-
+    <!-- Existing -->
+</resources>

@@ -19,6 +19,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/ic_box"
+            android:contentDescription="@string/signup_icon_desc"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
@@ -27,7 +28,7 @@
             android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Hola"
+            android:text="@string/signup_title_hello"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -82,12 +83,14 @@
 
         <Space android:layout_width="match_parent" android:layout_height="12dp"/>
 
+        <!-- Provincia -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/label_provincia"
             android:textColor="@android:color/black"
             android:textSize="14sp"/>
+
         <Spinner
             android:id="@+id/spProvinciaSignup"
             android:layout_width="match_parent"
@@ -103,7 +106,16 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_marginTop="8dp"/>
 
+        <!-- Botón GPS debajo del spinner -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDetectProvincia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/action_use_location"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
         <Space android:layout_width="match_parent" android:layout_height="12dp"/>
+
 
         <TextView
             android:layout_width="match_parent"
@@ -161,7 +173,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:hint="correo@ejemplo.com"/>
+                android:hint="@string/signup_hint_email"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space android:layout_width="match_parent" android:layout_height="12dp"/>
@@ -222,7 +234,7 @@
             android:id="@+id/btnSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Guardar"
+            android:text="@string/action_save"
             app:backgroundTint="@color/purple_700"
             android:textColor="@android:color/white"/>
 

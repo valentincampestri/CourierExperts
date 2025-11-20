@@ -1,5 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Colores ya existentes -->
+
+    <!-- Tus colores existentes -->
     <color name="purple_200">#BB86FC</color>
     <color name="purple_500">#6200EE</color>
     <color name="purple_700">#745296</color>
@@ -10,4 +12,12 @@
     <color name="gray_light">#F5F5F5</color>
     <color name="gray_dark">#908D8D</color>
     <color name="gray_disabled">#B0B0B0</color>
+
+    <!-- Colores que cambian según el modo -->
+    <color name="ce_bg_card">#FFFFFF</color>
+    <color name="ce_text_primary">#000000</color>
+    <color name="ce_text_secondary">#555555</color>
+    <color name="ce_bg_screen">#FFFFFF</color>
+
+
 </resources>
