@@ -20,6 +20,8 @@ import com.courierexperts.demo.ui.packages.PackageAdapter;
 import com.courierexperts.demo.ui.shipments.ShipmentDetailUiState;
 import com.courierexperts.demo.ui.shipments.ShipmentDetailViewModel;
 
+import java.util.Locale;
+
 public class ShipmentDetailFragment extends Fragment {
 
     public static final String ARG_SHIPMENT_FS_ID = "shipmentFsId";
@@ -103,7 +105,9 @@ public class ShipmentDetailFragment extends Fragment {
 
     private void render(ShipmentDetailUiState.Success state) {
         binding.tvEnvios.setText(state.getShipment().title != null ? state.getShipment().title : "Envio");
-        binding.tvMensaje.setText(StatusMapper.labelShipment(state.getShipment().status));
+        String statusLabel = StatusMapper.labelShipment(state.getShipment().status);
+        String costValue = String.format(Locale.getDefault(), "$ %.2f", state.getShipment().cost);
+        binding.tvMensaje.setText(getString(R.string.shipment_status_with_cost, statusLabel, costValue));
         adapter.submit(state.getPackages());
         binding.rvEnvios.setVisibility(View.VISIBLE);
     }
@@ -112,6 +116,7 @@ public class ShipmentDetailFragment extends Fragment {
         binding.tvStateMessage.setVisibility(View.VISIBLE);
         binding.tvStateMessage.setText(R.string.shipment_detail_not_found);
         binding.rvEnvios.setVisibility(View.GONE);
+        binding.tvMensaje.setText(R.string.envios_subtitle);
     }
 
     @Override

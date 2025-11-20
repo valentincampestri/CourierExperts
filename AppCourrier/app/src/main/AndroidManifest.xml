@@ -9,12 +9,7 @@
         android:theme="@style/Theme.AppCourrier">
         <activity android:name=".FragmentsHostActivity"
             android:label="CourierFragments (WIP)"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false" />
         <activity android:name=".WelcomeActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

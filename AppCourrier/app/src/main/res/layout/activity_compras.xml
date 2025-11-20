@@ -59,6 +59,7 @@
         android:layout_height="0dp"
         android:paddingStart="@dimen/ce_spacing_md"
         android:paddingEnd="@dimen/ce_spacing_md"
+        android:paddingBottom="80dp"
         android:clipToPadding="false"
         app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintBottom_toTopOf="@id/bottomNav"

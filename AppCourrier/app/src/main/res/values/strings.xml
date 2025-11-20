@@ -1,11 +1,22 @@
 ﻿<resources>
     <string name="app_name">currier</string>
+    <string name="title_activity_nueva_compra">nueva_compra</string>
+    <string name="title_activity_compras">ComprasActivity</string>
+
+    <string-array name="depositos_array">
+        <item>Miami Florida</item>
+        <item>New York</item>
+        <item>Los Angeles</item>
+        <item>Madrid</item>
+    </string-array>
 
     <!-- Envios -->
     <string name="envios_icon_desc">Icono envios</string>
     <string name="envios_title">Tus envios</string>
     <string name="envios_subtitle">Revisa el estado de tus envios</string>
     <string name="envios_empty">Todavia no hay envios en curso</string>
+    <string name="shipment_cost_placeholder">Costo: $ 0.00</string>
+    <string name="shipment_status_with_cost">%1$s&#10;&#10;| Costo: %2$s</string>
 
     <!-- Home -->
     <string name="greeting_name">Hola, Maria</string>
@@ -16,6 +27,7 @@
     <string name="shipment_title_placeholder">Envio 5</string>
     <string name="shipment_status_sent">Enviado</string>
     <string name="action_view_details">Ver detalles</string>
+    <string name="shipment_cost_label">Costo estimado: %1$s</string>
     <string name="home_greeting_generic">Hola</string>
     <string name="home_greeting_with_name">Hola, %1$s</string>
     <string name="home_deposit_reminder">Completa tu deposito en Perfil</string>
@@ -79,7 +91,8 @@
     <string name="profile_placeholder_address">Sin direcci�n</string>
     <string name="profile_placeholder_phone">Sin tel�fono</string>
     <string name="feature_placeholder">Funcionalidad en migracion (proximamente).</string>
-<!-- Existing -->
+
+    <string name="default_web_client_id">REEMPLAZAR_CON_CLIENT_ID</string>
 </resources>
 
 

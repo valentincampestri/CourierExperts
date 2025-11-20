@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.courierexperts.demo.data.local.dao.PackageDao;
 import com.courierexperts.demo.data.local.dao.ShipmentDao;
 import com.courierexperts.demo.data.local.db.AppDatabase;
 import com.courierexperts.demo.data.local.entity.ShipmentEntity;
@@ -24,13 +25,16 @@ import java.util.List;
 public class ShipmentRepository {
 
     private final ShipmentDao dao;
+    private final PackageDao packageDao;
     private final Context app;
     private ListenerRegistration shipmentsListener;
     private final MutableLiveData<String> remoteErrors = new MutableLiveData<>();
 
     public ShipmentRepository(Context ctx) {
         this.app = ctx.getApplicationContext();
-        this.dao = AppDatabase.get(this.app).shipmentDao();
+        AppDatabase db = AppDatabase.get(this.app);
+        this.dao = db.shipmentDao();
+        this.packageDao = db.packageDao();
     }
 
     public interface Callback {
@@ -101,6 +105,9 @@ public class ShipmentRepository {
             }
         }
         e.packageIdsJson = toJsonArray(pkgIds);
+        Double cost = null;
+        try { cost = d.getDouble("cost"); } catch (Exception ignored) {}
+        e.cost = cost != null ? cost : 0d;
         return e;
     }
 
@@ -127,6 +134,26 @@ public class ShipmentRepository {
         try { return FirebaseAuth.getInstance().getUid(); } catch (Exception ex) { return null; }
     }
 
+    private double calculateShipmentCost(java.util.List<Long> packageIds) {
+        if (packageIds == null || packageIds.isEmpty() || packageDao == null) return 0d;
+        try {
+            List<Double> prices = packageDao.findPricesByIds(packageIds);
+            double total = 0d;
+            if (prices != null) {
+                for (Double price : prices) {
+                    if (price != null) total += price;
+                }
+            }
+            return roundCost(total * 0.2d);
+        } catch (Exception ignored) {
+            return 0d;
+        }
+    }
+
+    private static double roundCost(double value) {
+        return Math.round(value * 100d) / 100d;
+    }
+
     public void createShipment(java.util.List<Long> packageIds, Callback cb) {
         AppExecutors.io().execute(() -> {
             try {
@@ -134,15 +161,17 @@ public class ShipmentRepository {
                 if (uid == null) { AppExecutors.main().execute(cb::onOffline); return; }
 
                 // Map local package IDs (long) -> Firestore doc ids (String)
-                com.courierexperts.demo.data.local.dao.PackageDao pdao = AppDatabase.get(app).packageDao();
+                PackageDao pdao = packageDao;
                 java.util.List<String> pkgFsIds = new java.util.ArrayList<>();
                 if (packageIds != null) {
                     for (Long pid : packageIds) {
                         if (pid == null) continue;
-                        String fsid = pdao.getFsIdByLocalId(pid);
+                        String fsid = null;
+                        try { fsid = pdao != null ? pdao.getFsIdByLocalId(pid) : null; } catch (Exception ignore) {}
                         if (fsid != null && !fsid.isEmpty()) pkgFsIds.add(fsid);
                     }
                 }
+                double shipmentCost = calculateShipmentCost(packageIds);
 
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 DocumentReference shDoc = db.collection("users").document(uid)
@@ -157,6 +186,7 @@ public class ShipmentRepository {
                 sh.put("lastUpdate", FieldValue.serverTimestamp());
                 sh.put("thumbnailUrl", "https://picsum.photos/seed/newship/96/96");
                 sh.put("packageIds", pkgFsIds);
+                sh.put("cost", shipmentCost);
 
                 WriteBatch batch = db.batch();
                 batch.set(shDoc, sh);
@@ -187,17 +217,18 @@ public class ShipmentRepository {
                     e.lastUpdate = System.currentTimeMillis();
                     e.thumbnailUrl = "";
                     // build local package ids list for json
-                    com.courierexperts.demo.data.local.dao.PackageDao pdao = AppDatabase.get(app).packageDao();
+                    PackageDao pdao = packageDao;
                     java.util.List<String> pkgJsonIds = new java.util.ArrayList<>();
                     if (packageIds != null) {
                         for (Long pid : packageIds) {
                             if (pid == null) continue;
                             String fs = null;
-                            try { fs = pdao.getFsIdByLocalId(pid); } catch (Exception ignore) {}
+                            try { fs = pdao != null ? pdao.getFsIdByLocalId(pid) : null; } catch (Exception ignore) {}
                             pkgJsonIds.add(fs != null && !fs.isEmpty() ? fs : String.valueOf(pid));
                         }
                     }
                     e.packageIdsJson = toJsonArray(pkgJsonIds);
+                    e.cost = calculateShipmentCost(packageIds);
                     java.util.List<ShipmentEntity> one = new java.util.ArrayList<>();
                     one.add(e);
                     dao.upsertAll(one);
@@ -207,7 +238,7 @@ public class ShipmentRepository {
                     if (packageIds != null) {
                         for (Long pid : packageIds) {
                             if (pid == null) continue;
-                            try { pdao.updateShipmentAndStatus(pid, localId, "IN_TRANSIT", now); } catch (Exception ignore) {}
+                            try { if (pdao != null) pdao.updateShipmentAndStatus(pid, localId, "IN_TRANSIT", now); } catch (Exception ignore) {}
                         }
                     }
                     AppExecutors.main().execute(cb::onOffline);

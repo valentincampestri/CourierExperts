@@ -34,6 +34,9 @@ public interface PackageDao {
     @Query("SELECT fsId FROM packages WHERE id = :id LIMIT 1")
     String getFsIdByLocalId(long id);
 
+    @Query("SELECT price FROM packages WHERE id IN (:ids)")
+    List<Double> findPricesByIds(List<Long> ids);
+
     @Query("UPDATE packages SET shipmentId = :shipmentId, status = :status, lastUpdate = :lastUpdate WHERE id = :id")
     void updateShipmentAndStatus(long id, String shipmentId, String status, long lastUpdate);
 
