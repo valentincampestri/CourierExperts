@@ -106,14 +106,6 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_marginTop="8dp"/>
 
-        <!-- Botón GPS debajo del spinner -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnDetectProvincia"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/action_use_location"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
-
         <Space android:layout_width="match_parent" android:layout_height="12dp"/>
 
 

@@ -26,4 +26,19 @@
         app:labelVisibilityMode="unlabeled"
         app:menu="@menu/bottom_nav_menu" />
 
+    <!-- FAB centrado sobresaliendo de la barra inferior -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="36dp"
+        android:src="@drawable/ic_add_24"
+        android:contentDescription="@string/action_add"
+        app:tint="@android:color/white"
+        app:backgroundTint="@color/purple_700"
+        app:borderWidth="0dp"
+        app:fabSize="normal"
+        app:elevation="6dp" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

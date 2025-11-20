@@ -6,14 +6,6 @@
         android:icon="@drawable/nav_icon_home_inset"
         android:title="Inicio" />
 
-    <!-- Botón central "+" (item intermedio) -->
-    <item
-        android:id="@+id/nav_add"
-        android:icon="@drawable/nav_icon_plus_circle"
-        android:title=""
-        android:enabled="true" />
-
-
     <item
         android:id="@+id/nav_profile"
         android:icon="@drawable/nav_icon_profile_inset"

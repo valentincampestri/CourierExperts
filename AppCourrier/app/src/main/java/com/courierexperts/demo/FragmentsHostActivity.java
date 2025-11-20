@@ -28,12 +28,14 @@ public class FragmentsHostActivity extends AppCompatActivity {
         }
         NavController navController = navHostFragment.getNavController();
 
+        // Configurar FAB para agregar nueva compra
+        binding.fabAdd.setOnClickListener(v -> {
+            navController.navigate(R.id.newPurchaseFragment);
+        });
+
         binding.bottomNavHost.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
-            if (itemId == R.id.nav_add) {
-                navController.navigate(R.id.newPurchaseFragment);
-                return false;
-            } else if (itemId == R.id.nav_home) {
+            if (itemId == R.id.nav_home) {
                 boolean popped = navController.popBackStack(R.id.nav_home, false);
                 if (!popped || navController.getCurrentDestination() == null
                         || navController.getCurrentDestination().getId() != R.id.nav_home) {
@@ -52,9 +54,7 @@ public class FragmentsHostActivity extends AppCompatActivity {
 
         binding.bottomNavHost.setOnItemReselectedListener(item -> {
             int itemId = item.getItemId();
-            if (itemId == R.id.nav_add) {
-                navController.navigate(R.id.newPurchaseFragment);
-            } else if (itemId == R.id.nav_home) {
+            if (itemId == R.id.nav_home) {
                 boolean popped = navController.popBackStack(R.id.nav_home, false);
                 if (!popped || navController.getCurrentDestination() == null
                         || navController.getCurrentDestination().getId() != R.id.nav_home) {
