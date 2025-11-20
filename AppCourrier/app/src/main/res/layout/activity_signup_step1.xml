@@ -63,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/label_nombre"
-            android:textColor="@android:color/black"
+            android:textColor="@color/ce_text_primary"
             android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilNombreSignup"
@@ -87,7 +87,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/label_apellido"
-            android:textColor="@android:color/black"
+            android:textColor="@color/ce_text_primary"
             android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilApellidoSignup"
@@ -111,7 +111,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/label_dni_passport"
-            android:textColor="@android:color/black"
+            android:textColor="@color/ce_text_primary"
             android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilDniSignup"
@@ -134,7 +134,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/label_cuil"
-            android:textColor="@android:color/black"
+            android:textColor="@color/ce_text_primary"
             android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilCuilSignup"

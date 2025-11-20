@@ -70,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/label_direccion"
-            android:textColor="@android:color/black"
+            android:textColor="@color/ce_text_primary"
             android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilDireccionSignup"
@@ -95,7 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/label_provincia"
-            android:textColor="@android:color/black"
+            android:textColor="@color/ce_text_primary"
             android:textSize="14sp"/>
 
         <Spinner
@@ -120,7 +120,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/label_telefono"
-            android:textColor="@android:color/black"
+            android:textColor="@color/ce_text_primary"
             android:textSize="14sp"/>
         
         <LinearLayout
@@ -160,7 +160,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/label_email"
-            android:textColor="@android:color/black"
+            android:textColor="@color/ce_text_primary"
             android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilEmailSignup"
@@ -181,7 +181,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/label_contrasena"
-            android:textColor="@android:color/black"
+            android:textColor="@color/ce_text_primary"
             android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilPasswordSignup"
@@ -203,7 +203,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/label_confirmar_contrasena"
-            android:textColor="@android:color/black"
+            android:textColor="@color/ce_text_primary"
             android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilConfirmPasswordSignup"

@@ -61,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Ingrese su email"
-            android:textColor="@android:color/black"
+            android:textColor="@color/ce_text_primary"
             android:textSize="14sp"/>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -82,7 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Contrase&#241;a"
-            android:textColor="@android:color/black"
+            android:textColor="@color/ce_text_primary"
             android:textSize="14sp"/>
 
         <com.google.android.material.textfield.TextInputLayout
