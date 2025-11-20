@@ -13,4 +13,5 @@ public class ShipmentEntity {
     public long lastUpdate;        // epoch millis (Firestore Timestamp)
     public String thumbnailUrl;    // opcional
     public String packageIdsJson;  // JSON con array de IDs de paquetes
+    public double cost;            // Costo estimado (20% de la suma de paquetes)
 }
