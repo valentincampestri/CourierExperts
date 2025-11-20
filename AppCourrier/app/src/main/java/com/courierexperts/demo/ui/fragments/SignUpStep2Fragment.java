@@ -37,14 +37,9 @@ import com.courierexperts.demo.ui.signup.SignUpData;
 import com.courierexperts.demo.ui.signup.SignUpStep2Event;
 import com.courierexperts.demo.ui.signup.SignUpStep2UiState;
 import com.courierexperts.demo.ui.signup.SignUpStep2ViewModel;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.courierexperts.demo.util.CapitalizeTextWatcher;
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 
 public class SignUpStep2Fragment extends Fragment {
 
@@ -55,7 +50,6 @@ public class SignUpStep2Fragment extends Fragment {
     private SignUpData step1Data;
     private ActivityResultLauncher<String[]> locationPermissionLauncher;
 
-    private FusedLocationProviderClient fusedLocationClient;
 
     @Nullable
     @Override
@@ -96,7 +90,6 @@ public class SignUpStep2Fragment extends Fragment {
         }
 
         viewModel = new ViewModelProvider(this).get(SignUpStep2ViewModel.class);
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
 
         observeViewModel();
         setupClicks();
