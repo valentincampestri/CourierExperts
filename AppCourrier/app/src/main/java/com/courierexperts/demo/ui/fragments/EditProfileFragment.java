@@ -20,6 +20,7 @@ import com.courierexperts.demo.databinding.PerfilDatosActivityBinding;
 import com.courierexperts.demo.ui.profile.EditProfileUiState;
 import com.courierexperts.demo.ui.profile.EditProfileViewModel;
 import com.courierexperts.demo.data.local.entity.DepositEntity;
+import com.courierexperts.demo.util.CapitalizeTextWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,10 +57,27 @@ public class EditProfileFragment extends Fragment {
                 NavHostFragment.findNavController(EditProfileFragment.this).popBackStack());
         binding.btnGuardardatosPerfil.setOnClickListener(v -> onSave());
         setupDepositSpinner();
+        setupCapitalizeWatchers();
 
         observeUiState();
     }
 
+    private void setupCapitalizeWatchers() {
+        // Capitalizar primera letra de nombre, apellido y dirección
+        if (binding.etNombrePerfil != null) {
+            binding.etNombrePerfil.addTextChangedListener(new CapitalizeTextWatcher(binding.etNombrePerfil));
+        }
+        
+        EditText apellidoInput = binding.tilApellidoPerfil.getEditText();
+        if (apellidoInput != null) {
+            apellidoInput.addTextChangedListener(new CapitalizeTextWatcher(apellidoInput));
+        }
+        
+        if (binding.etDireccionPerfil != null) {
+            binding.etDireccionPerfil.addTextChangedListener(new CapitalizeTextWatcher(binding.etDireccionPerfil));
+        }
+    }
+    
     private void setupDepositSpinner() {
         depositAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, new ArrayList<>());
         depositAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -128,7 +146,34 @@ public class EditProfileFragment extends Fragment {
             lastNameInput.setText(lastName);
         }
         binding.etMailPerfil.setText(state.getProfile().email);
-        binding.etTelefonoPerfil.setText(state.getProfile().phone);
+        
+        // Separar código de país del número de teléfono
+        String fullPhone = state.getProfile().phone;
+        if (fullPhone != null && fullPhone.contains("+")) {
+            // Buscar el espacio después del código
+            int spaceIndex = fullPhone.indexOf(" ");
+            if (spaceIndex > 0) {
+                String code = fullPhone.substring(0, spaceIndex).trim(); // "+54"
+                String number = fullPhone.substring(spaceIndex + 1).trim(); // "11 1234-5678"
+                
+                // Encontrar y seleccionar el código en el spinner
+                if (binding.spCountryCodePerfil != null) {
+                    for (int i = 0; i < binding.spCountryCodePerfil.getCount(); i++) {
+                        String item = binding.spCountryCodePerfil.getItemAtPosition(i).toString();
+                        if (item.contains(code)) {
+                            binding.spCountryCodePerfil.setSelection(i);
+                            break;
+                        }
+                    }
+                }
+                binding.etTelefonoPerfil.setText(number);
+            } else {
+                binding.etTelefonoPerfil.setText(fullPhone);
+            }
+        } else {
+            binding.etTelefonoPerfil.setText(fullPhone);
+        }
+        
         binding.etDireccionPerfil.setText(state.getProfile().address);
         populateDepositSpinner(state);
     }
@@ -177,7 +222,19 @@ public class EditProfileFragment extends Fragment {
         String name = textOf(binding.etNombrePerfil);
         EditText lastNameInput = binding.tilApellidoPerfil.getEditText();
         String lastName = textOf(lastNameInput);
-        String phone = textOf(binding.etTelefonoPerfil);
+        
+        // Combinar código de país + número de teléfono
+        String countryCode = "";
+        if (binding.spCountryCodePerfil != null && binding.spCountryCodePerfil.getSelectedItem() != null) {
+            String selected = binding.spCountryCodePerfil.getSelectedItem().toString();
+            // Extraer solo el código: "🇦🇷 +54" -> "+54"
+            if (selected.contains("+")) {
+                countryCode = selected.substring(selected.indexOf("+")).trim();
+            }
+        }
+        String phoneNumber = textOf(binding.etTelefonoPerfil);
+        String phone = countryCode + " " + phoneNumber;
+        
         String address = textOf(binding.etDireccionPerfil);
         String email = textOf(binding.etMailPerfil);
         Long depositId = selectedDepositId;

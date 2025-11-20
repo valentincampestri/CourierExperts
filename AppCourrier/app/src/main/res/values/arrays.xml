@@ -27,4 +27,17 @@
         <item>Tierra del Fuego</item>
         <item>Tucumán</item>
     </string-array>
+
+    <string-array name="country_codes">
+        <item>🇦🇷 +54</item>
+        <item>🇺🇸 +1</item>
+        <item>🇧🇷 +55</item>
+        <item>🇨🇱 +56</item>
+        <item>🇵🇾 +595</item>
+        <item>🇺🇾 +598</item>
+        <item>🇲🇽 +52</item>
+        <item>🇪🇸 +34</item>
+        <item>🇨🇴 +57</item>
+        <item>🇵🇪 +51</item>
+    </string-array>
 </resources>
