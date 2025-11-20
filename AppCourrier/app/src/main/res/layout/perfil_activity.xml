@@ -88,6 +88,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="@dimen/ce_spacing_md">
+
         <ImageView
             android:id="@+id/imgLocation"
             android:layout_width="24dp"
@@ -100,22 +101,23 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginStart="@dimen/ce_spacing_md">
+
             <TextView
                 android:id="@+id/tvDireccionLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Dirección"
-                android:textColor="#000000"
+                android:textColor="@color/ce_text_primary"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/tvDireccion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Calle Falsa 123, Springfield"
-                android:textColor="#000000"
-                android:textSize="14sp"
-                 />
+                android:textColor="@color/ce_text_primary"
+                android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -133,6 +135,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/direccion"
         android:layout_margin="@dimen/ce_spacing_md">
+
         <ImageView
             android:id="@+id/imgPhone"
             android:layout_width="24dp"
@@ -145,68 +148,118 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginStart="16dp">
+
             <TextView
                 android:id="@+id/tvTelefonoLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Teléfono"
-                android:textColor="#000000"
+                android:textColor="@color/ce_text_primary"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/tvTelefono"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textColor="#555555"
-                android:textSize="14sp"
-                />
+                android:textColor="@color/ce_text_secondary"
+                android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>
-    <com.google.android.material.card.MaterialCardView
-       android:id="@+id/cardCuenta"
-       android:layout_width="0dp"
-       android:layout_height="wrap_content"
-       android:layout_marginTop="@dimen/ce_spacing_md"
-       app:layout_constraintTop_toBottomOf="@id/telefono"
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintEnd_toEndOf="parent"
-       style="@style/Widget.CE.Card"
-       android:foreground="?attr/selectableItemBackground"
-       android:backgroundTint="#E0E0E0"
-       android:layout_marginHorizontal="@dimen/ce_spacing_md">
 
-       <LinearLayout
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:orientation="horizontal"
-           android:padding="@dimen/ce_spacing_md">
-              <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_account"
-                    android:contentDescription="Icono cuenta" />
-                <TextView
-                    android:id="@+id/tvCuenta"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Mis Datos"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginStart="16dp"/>
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardCuenta"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ce_spacing_md"
+        app:layout_constraintTop_toBottomOf="@id/telefono"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/Widget.CE.Card"
+        android:foreground="?attr/selectableItemBackground"
+        android:backgroundTint="@color/ce_bg_card"
+        android:layout_marginHorizontal="@dimen/ce_spacing_md">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/ce_spacing_md">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_account"
+                android:contentDescription="Icono cuenta" />
+
+            <TextView
+                android:id="@+id/tvCuenta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mis Datos"
+                android:textColor="@color/ce_text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginStart="16dp"/>
         </LinearLayout>
-       <ImageView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:src="@drawable/ic_arrow"
-           android:layout_gravity="center_vertical|end"
-           android:layout_marginEnd="16dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="16dp"/>
     </com.google.android.material.card.MaterialCardView>
 
-
+    <!-- Card de NOTIFICACIONES -->
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardLogout"
+        android:id="@+id/cardNotificaciones"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ce_spacing_md"
+        app:layout_constraintTop_toBottomOf="@id/cardCuenta"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/Widget.CE.Card"
+        android:foreground="?attr/selectableItemBackground"
+        android:backgroundTint="@color/ce_bg_card"
+        android:layout_marginHorizontal="@dimen/ce_spacing_md">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/ce_spacing_md">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_notifiaction"
+                android:contentDescription="Icono noti" />
+
+            <TextView
+                android:id="@+id/tvNotificaciones"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Notificaciones"
+                android:textColor="@color/ce_text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginStart="16dp"/>
+        </LinearLayout>
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switchNotificaciones"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="16dp"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- NUEVA Card de MODO OSCURO -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardDarkMode"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/ce_spacing_md"
@@ -215,7 +268,51 @@
         app:layout_constraintEnd_toEndOf="parent"
         style="@style/Widget.CE.Card"
         android:foreground="?attr/selectableItemBackground"
-        android:backgroundTint="#E0E0E0"
+        android:backgroundTint="@color/ce_bg_card"
+        android:layout_marginHorizontal="@dimen/ce_spacing_md">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/ce_spacing_md">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_dark_mode"
+                android:contentDescription="Icono modo oscuro" />
+
+            <TextView
+                android:id="@+id/tvDarkMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Modo oscuro"
+                android:textColor="@color/ce_text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginStart="16dp"/>
+        </LinearLayout>
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switchDarkMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="16dp"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardLogout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ce_spacing_md"
+        app:layout_constraintTop_toBottomOf="@id/cardDarkMode"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/Widget.CE.Card"
+        android:foreground="?attr/selectableItemBackground"
+        android:backgroundTint="@color/ce_bg_card"
         android:layout_marginHorizontal="@dimen/ce_spacing_md">
 
         <LinearLayout
@@ -225,12 +322,11 @@
             android:padding="@dimen/ce_spacing_md"
             android:gravity="center_vertical">
 
-
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_logout_24"
-                android:tint="#555555"
+                android:tint="@color/ce_text_secondary"
                 android:contentDescription="Icono salir" />
 
             <TextView
@@ -238,54 +334,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Cerrar sesión"
-                android:textColor="#555555"
+                android:textColor="@color/ce_text_secondary"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_marginStart="16dp"/>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:id="@+id/cardNotificaciones"
-        app:layout_constraintTop_toBottomOf="@id/cardCuenta"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        style="@style/Widget.CE.Card"
-        android:foreground="?attr/selectableItemBackground"
-        android:backgroundTint="#E0E0E0"
-        android:layout_marginHorizontal="@dimen/ce_spacing_md">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/ce_spacing_md">
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_notifiaction"
-                android:contentDescription="Icono noti" />
-            <TextView
-                android:id="@+id/tvNotificaciones"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Notificaciones"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginStart="16dp"/>
-        </LinearLayout>
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|end"
-            android:layout_marginEnd="16dp"
-            android:id="@+id/switchNotificaciones"
-            android:checked="true"
-            />
-    </com.google.android.material.card.MaterialCardView>
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
@@ -303,7 +358,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:elevation="8dp" />
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-

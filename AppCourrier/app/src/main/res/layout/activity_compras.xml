@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@color/ce_bg_screen">
 
-    <!-- HEADER -->
+    <!-- Header -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
         android:layout_width="0dp"
@@ -43,7 +42,7 @@
             android:id="@+id/tvMensaje"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Compras que ya nos informaste, cuando lleguen al deposito las podras enviar"
+            android:text="Compras que ya informaste. Cuando lleguen al depósito las podrás enviar."
             android:textColor="@android:color/white"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@id/tvCompras"
@@ -52,7 +51,7 @@
             app:layout_constraintBottom_toBottomOf="@id/imgCompras"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- LISTA -->
+    <!-- Recycler -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCompras"
         android:layout_width="0dp"
@@ -66,7 +65,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- EMPTY STATE -->
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleLarge"
@@ -78,20 +76,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Estado de mensajes (vacío / error) -->
     <TextView
         android:id="@+id/tvStateMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/purchases_empty_message"
+        android:textColor="@color/ce_text_secondary"
         android:textSize="16sp"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintBottom_toTopOf="@id/bottomNav"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- BOTTOM NAV -->
+    <!-- Bottom Nav -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
@@ -102,34 +99,9 @@
         app:menu="@menu/bottom_nav_menu"
         app:itemIconSize="40dp"
         app:itemIconTint="@null"
-        app:itemRippleColor="@color/purple_200"
         app:labelVisibilityMode="unlabeled"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:elevation="8dp" />
-
-    <!-- FAB central para nueva compra -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAdd"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="Nueva compra"
-        app:srcCompat="@drawable/ic_add_24"
-        app:tint="@android:color/white"
-        app:backgroundTint="@color/purple_700"
-        app:fabCustomSize="72dp"
-        android:layout_marginBottom="-28dp"
-        app:elevation="12dp"
-        app:maxImageSize="28dp"
-        app:useCompatPadding="false"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Courier.FAB"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottomNav" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-

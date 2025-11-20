@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- HEADER -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
         android:layout_width="0dp"
@@ -21,7 +22,7 @@
             android:src="@drawable/ic_box"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <TextView
             android:id="@+id/tvTitle"
@@ -33,7 +34,7 @@
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/imgIcon"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/tvSub"
@@ -45,9 +46,10 @@
             app:layout_constraintStart_toStartOf="@id/tvTitle"
             app:layout_constraintTop_toBottomOf="@id/tvTitle"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!-- FORMULARIO -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -57,47 +59,58 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+        <!-- Nombre -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hintEnabled="false">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etNombreSignup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Carlos"/>
+                android:hint="Carlos" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Space android:layout_width="match_parent" android:layout_height="12dp"/>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="12dp" />
 
+        <!-- Apellido -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hintEnabled="false">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etApellidoSignup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Gomez"/>
+                android:hint="Gomez" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Space android:layout_width="match_parent" android:layout_height="12dp"/>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="12dp" />
 
+        <!-- DNI -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hintEnabled="false">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etDniSignUp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="DNI / Pasaporte"/>
+                android:hint="DNI / Pasaporte" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Space android:layout_width="match_parent" android:layout_height="12dp"/>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="12dp" />
 
-
-
+        <!-- CUIL -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -107,28 +120,61 @@
                 android:id="@+id/etCuilSignUp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="20-30303030-1"/>
+                android:hint="20-30303030-1" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Space android:layout_width="match_parent" android:layout_height="16dp"/>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="12dp" />
 
+        <!-- PROVINCIA (nuevo campo auto-completado por GPS) -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etProvinciaSignup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Provincia"
+                android:focusable="false"
+                android:clickable="false" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="8dp" />
+
+        <!-- Botón que usa el GPS -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDetectProvincia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Usar mi ubicación"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
+
+        <!-- Botones atrás / continuar -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnBack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Atr&#225;s"/>
+            android:text="Atr&#225;s" />
 
-        <Space android:layout_width="match_parent" android:layout_height="8dp"/>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="8dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Continuar"
-            style="@style/Widget.CE.Button.Primary"/>
+            style="@style/Widget.CE.Button.Primary" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
