@@ -57,6 +57,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,6 +76,12 @@
 
         <Space android:layout_width="match_parent" android:layout_height="12dp"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Apellido"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -83,6 +95,12 @@
 
         <Space android:layout_width="match_parent" android:layout_height="12dp"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="DNI / Pasaporte"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -91,13 +109,17 @@
                 android:id="@+id/etDniSignUp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="DNI / Pasaporte"/>
+                android:hint="12345678"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space android:layout_width="match_parent" android:layout_height="12dp"/>
 
-
-
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CUIL"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"/>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
