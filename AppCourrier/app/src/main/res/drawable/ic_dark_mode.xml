@@ -5,7 +5,7 @@
     android:viewportWidth="24"
     android:viewportHeight="24">
 
-    <!-- Icono de luna simple -->
+    
     <path
         android:fillColor="@color/black"
         android:pathData="M21,12.79C20.71,12.86 20.41,12.9 20.1,12.9

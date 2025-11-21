@@ -212,7 +212,7 @@
             android:layout_marginEnd="16dp"/>
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Card de NOTIFICACIONES -->
+    
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardNotificaciones"
         android:layout_width="0dp"
@@ -257,7 +257,7 @@
             android:layout_marginEnd="16dp"/>
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- NUEVA Card de MODO OSCURO -->
+    
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardDarkMode"
         android:layout_width="0dp"

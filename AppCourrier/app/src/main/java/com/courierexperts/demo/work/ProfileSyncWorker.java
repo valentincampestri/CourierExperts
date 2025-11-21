@@ -62,7 +62,6 @@ public class ProfileSyncWorker extends Worker {
                     .collection("users")
                     .document(uid)
                     .set(map, SetOptions.merge()));
-            // marcar clean
             e.dirty = Boolean.FALSE;
             AppDatabase.get(getApplicationContext()).userProfileDao().upsert(e);
             return Result.success();

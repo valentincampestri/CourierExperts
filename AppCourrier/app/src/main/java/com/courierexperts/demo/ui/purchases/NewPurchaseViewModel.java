@@ -37,16 +37,16 @@ public class NewPurchaseViewModel extends AndroidViewModel {
         return events;
     }
 
-    /**
-     * Guarda una nueva compra con todos los datos del formulario.
-     *
-     * @param productName  Nombre del producto
-     * @param description  Descripción
-     * @param storeName    Nombre de la tienda (OBLIGATORIO)
-     * @param carrierName  Nombre del carrier / empresa de envío
-     * @param priceStr     Precio como texto (se parsea a Double)
-     * @param orderId      Id de orden / tracking (OBLIGATORIO)
-     */
+    
+
+
+
+
+
+
+
+
+
     public void savePurchase(
             String productName,
             String description,
@@ -58,7 +58,7 @@ public class NewPurchaseViewModel extends AndroidViewModel {
         String store  = safe(storeName);
         String order  = safe(orderId);
 
-        // Validación mínima: tienda y orden son obligatorios
+        
         if (store.isEmpty() || order.isEmpty()) {
             events.setValue(new Event<>(
                     NewPurchaseEvent.showMessage(
@@ -91,7 +91,7 @@ public class NewPurchaseViewModel extends AndroidViewModel {
 
         String nowIso = nowIso();
 
-        // Llamamos al repositorio con TODOS los campos
+        
         repository.createLocalAndSync(
                 prod,
                 store,
@@ -111,7 +111,7 @@ public class NewPurchaseViewModel extends AndroidViewModel {
         events.setValue(new Event<>(NewPurchaseEvent.success(message)));
     }
 
-    // Helpers
+    
 
     private static String safe(String value) {
         return value != null ? value.trim() : "";

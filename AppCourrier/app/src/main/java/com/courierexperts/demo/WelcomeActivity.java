@@ -19,7 +19,6 @@ public class WelcomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
-        // APLICAR MODO OSCURO / CLARO ANTES DEL setContentView
         SharedPreferences prefs = getSharedPreferences("settings", MODE_PRIVATE);
         boolean isDark = prefs.getBoolean("dark_mode", false);
 

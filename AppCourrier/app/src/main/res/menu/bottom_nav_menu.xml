@@ -6,7 +6,7 @@
         android:icon="@drawable/nav_icon_home_inset"
         android:title="Inicio" />
 
-    <!-- Espaciador central (deshabilitado) para dejar lugar al FAB -->
+    
     <item
         android:id="@+id/nav_spacer"
         android:enabled="false"

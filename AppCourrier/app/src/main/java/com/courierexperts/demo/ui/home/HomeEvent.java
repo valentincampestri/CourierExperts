@@ -2,9 +2,9 @@ package com.courierexperts.demo.ui.home;
 
 import androidx.annotation.Nullable;
 
-/**
- * Eventos puntuales para Home (toasts, recordatorios, navegaciA3n).
- */
+
+
+
 public class HomeEvent {
 
     public enum Type { PROMPT_DEPOSIT, SHOW_ERROR }

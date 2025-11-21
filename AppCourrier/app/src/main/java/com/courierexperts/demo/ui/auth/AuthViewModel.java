@@ -15,9 +15,9 @@ import com.courierexperts.demo.util.Event;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-/**
- * Gestiona login, recordatorio de contraseña y navegación de Welcome/SignIn.
- */
+
+
+
 public class AuthViewModel extends AndroidViewModel {
 
     private final FirebaseAuth auth;
@@ -96,7 +96,7 @@ public class AuthViewModel extends AndroidViewModel {
             events.setValue(new Event<>(AuthEvent.showMessage(getApplication().getString(R.string.auth_error_generic))));
             return;
         }
-        // Sincronizar perfil local <-> Firestore
+        
         profileRepository.syncFromFirestore();
         String email = user.getEmail();
         if (!TextUtils.isEmpty(email)) {

@@ -46,10 +46,8 @@ public class SignUpStep1Fragment extends Fragment {
     }
 
     private void setupFormatters() {
-        // Formato automático de CUIL: 20303030301 → 20-30303030-1
         binding.etCuilSignUp.addTextChangedListener(new CUILTextWatcher());
-        
-        // Capitalizar primera letra de nombre y apellido
+
         binding.etNombreSignup.addTextChangedListener(new CapitalizeTextWatcher(binding.etNombreSignup));
         binding.etApellidoSignup.addTextChangedListener(new CapitalizeTextWatcher(binding.etApellidoSignup));
     }

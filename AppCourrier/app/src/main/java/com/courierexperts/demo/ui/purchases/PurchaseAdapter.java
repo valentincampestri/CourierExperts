@@ -57,46 +57,35 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.VH> {
     public void onBindViewHolder(@NonNull VH h, int position) {
         PurchaseEntity it = items.get(position);
 
-        // Texto principal
         h.b.tvProductName.setText(it.productName);
         h.b.tvProductDescription.setText(it.description);
 
-        // --- LÓGICA DE ESTADO (mezcla de la versión nueva + vieja) ---
-
-        // Enum de estado
         StatusMapper.PurchaseStatus statusEnum = StatusMapper.purchaseFrom(it.status);
 
-        // Label a mostrar (usamos la lógica "nueva"; si preferís la vieja, podés usar StatusMapper.label(statusEnum))
         String statusLabel = StatusMapper.labelPurchase(it.status);
         h.b.tvStatus.setText(statusLabel);
 
-        // Color del chip según estado (lógica vieja)
         switch (statusEnum) {
             case PENDING:
-                // Pendiente → amarillo
                 h.b.tvStatus.setBackgroundResource(R.drawable.bg_status_chip_pending);
                 break;
 
             case RECEIVED:
             case SHIPPED:
             case DELIVERED:
-                // En curso / terminada → verde
                 h.b.tvStatus.setBackgroundResource(R.drawable.bg_status_chip_delivered);
                 break;
 
             case CANCELLED:
             default:
-                // Cancelada u otros → amarillo (podés cambiar a otro chip si querés)
                 h.b.tvStatus.setBackgroundResource(R.drawable.bg_status_chip_pending);
                 break;
         }
 
-        // Imagen
         Glide.with(h.b.getRoot())
                 .load(it.thumbnailUrl)
                 .into(h.b.ivThumb);
 
-        // Click del item
         h.b.getRoot().setOnClickListener(v -> {
             if (listener != null) listener.onClick(it);
         });

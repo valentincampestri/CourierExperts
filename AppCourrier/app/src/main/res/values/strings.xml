@@ -11,7 +11,7 @@
         <item>Madrid</item>
     </string-array>
 
-    <!-- Envíos -->
+    
     <string name="envios_icon_desc">Icono envíos</string>
     <string name="envios_title">Tus envíos</string>
     <string name="envios_subtitle">Revisa el estado de tus envíos</string>
@@ -19,7 +19,7 @@
     <string name="shipment_cost_placeholder">Costo: $ 0.00</string>
     <string name="shipment_status_with_cost">%1$s&#10;&#10;| Costo: %2$s</string>
 
-    <!-- Home -->
+    
     <string name="greeting_name">Hola, Maria</string>
     <string name="greeting_message">Qué bueno volver a verte!</string>
     <string name="label_packages">Paquetes</string>
@@ -48,7 +48,7 @@
     <string name="signup_error_phone">Teléfono inválido (usar + y dígitos, 6 a 20)</string>
     <string name="signup_error_register">No se pudo registrar</string>
     <string name="signup_missing_step">Debes completar el paso anterior</string>
-    <!-- Actividad reciente -->
+    
     <string name="home_recent_purchase_fallback_title">Compra</string>
     <string name="home_recent_purchase_subtitle">Orden %1$s</string>
     <string name="home_recent_package_fallback_title">Paquete</string>
@@ -56,7 +56,7 @@
     <string name="home_recent_shipment_subtitle">Envío #%1$d</string>
 
 
-    <!-- Nueva compra -->
+    
     <string name="new_purchase_title">Nueva compra</string>
     <string name="new_purchase_subtitle">Infórmanos sobre tu compra</string>
     <string name="hint_store">Tienda</string>
@@ -72,7 +72,7 @@
     <string name="new_purchase_saved_online">Compra guardada</string>
     <string name="new_purchase_saved_offline">Guardado local, se sincronizará luego</string>
 
-    <!-- Perfil -->
+    
     <string name="profile_title">Tus datos</string>
     <string name="hint_name">Nombre</string>
     <string name="hint_last_name">Apellido</string>
@@ -125,7 +125,7 @@
 
     <string name="default_web_client_id">REEMPLAZAR_CON_CLIENT_ID</string>
 
-    <!-- Signup Step 2 -->
+    
     <string name="signup_title_hello">Hola</string>
     <string name="signup_sub_welcome">Te damos la bienvenida</string>
     <string name="label_province">Provincia</string>

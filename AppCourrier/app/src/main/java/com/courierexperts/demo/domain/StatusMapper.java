@@ -1,11 +1,11 @@
 package com.courierexperts.demo.domain;
 
-/** Centraliza enums y mapeos de estado (Firestore ⇄ UI). */
+
 public final class StatusMapper {
 
     private StatusMapper() {}
 
-    // Purchases
+    
     public enum PurchaseStatus { PENDING, RECEIVED, SHIPPED, DELIVERED, CANCELLED }
 
     public static PurchaseStatus purchaseFrom(String raw) {
@@ -32,13 +32,13 @@ public final class StatusMapper {
         }
     }
 
-    // Packages
+    
     public enum PackageStatus { PENDING, IN_WAREHOUSE, IN_TRANSIT, DELIVERED, CANCELLED }
 
     public static PackageStatus packageFrom(String raw) {
         if (raw == null) return PackageStatus.PENDING;
         String r = raw.toUpperCase();
-        // Compat con valores antiguos en español
+        
         if ("EN_DEPOSITO".equals(r)) r = "IN_WAREHOUSE";
         switch (r) {
             case "IN_WAREHOUSE": return PackageStatus.IN_WAREHOUSE;
@@ -62,13 +62,13 @@ public final class StatusMapper {
         }
     }
 
-    // Shipments
+    
     public enum ShipmentStatus { CREATED, IN_TRANSIT, OUT_FOR_DELIVERY, DELIVERED, CANCELLED }
 
     public static ShipmentStatus shipmentFrom(String raw) {
         if (raw == null) return ShipmentStatus.CREATED;
         String r = raw.toUpperCase();
-        // Compat con valores antiguos
+        
         if ("EN_TRANSITO".equals(r)) r = "IN_TRANSIT";
         switch (r) {
             case "IN_TRANSIT": return ShipmentStatus.IN_TRANSIT;

@@ -15,7 +15,7 @@ import com.courierexperts.demo.util.Event;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-// Se eliminaron imports de Firestore directos para evitar conflictos
+
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -65,7 +65,7 @@ public class SignUpStep2ViewModel extends AndroidViewModel {
             return;
         }
         String phone = safe(telefono);
-        // Permitir +, dígitos, espacios y guiones
+        
         if (!phone.matches("[+0-9\\s\\-]{6,25}")) {
             events.setValue(new Event<>(SignUpStep2Event.showMessage(getApplication().getString(R.string.signup_error_phone))));
             return;
@@ -105,17 +105,17 @@ public class SignUpStep2ViewModel extends AndroidViewModel {
                               String email) {
         FirebaseUser user = auth.getCurrentUser();
         if (user != null) {
-            // 1. Actualizar DisplayName en Auth (Opcional pero recomendado)
+            
             user.updateProfile(new UserProfileChangeRequest.Builder()
                     .setDisplayName(step1.getNombre())
                     .build());
 
-            // 2. Obtener el UID seguro
+            
             String uid = user.getUid();
 
-            // 3. Delegar todo el guardado al Repositorio pasando el UID explícito
+            
             profileRepository.saveAllSignupProfile(
-                    uid, // <--- IMPORTANTE: Pasamos el UID aquí
+                    uid, 
                     step1.getNombre(),
                     step1.getApellido(),
                     step1.getDni(),

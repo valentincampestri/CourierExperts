@@ -155,7 +155,7 @@ public class ShipmentRepository {
                 String uid = safeUid();
                 if (uid == null) { AppExecutors.main().execute(cb::onOffline); return; }
 
-                // Map local package IDs (long) -> Firestore doc ids (String)
+                
                 PackageDao pdao = packageDao;
                 java.util.List<String> pkgFsIds = new java.util.ArrayList<>();
                 if (packageIds != null) {
@@ -200,7 +200,7 @@ public class ShipmentRepository {
                         .addOnFailureListener(err -> AppExecutors.main().execute(cb::onOffline));
 
             } catch (Exception ex) {
-                // Offline: crear envío local y marcar packages localmente como IN_TRANSIT + shipmentId local
+                
                 AppExecutors.io().execute(() -> {
                     String localId = "local-" + System.currentTimeMillis();
                     ShipmentEntity e = new ShipmentEntity();
@@ -211,7 +211,7 @@ public class ShipmentRepository {
                     e.status = "CREATED";
                     e.lastUpdate = System.currentTimeMillis();
                     e.thumbnailUrl = "";
-                    // build local package ids list for json
+                    
                     PackageDao pdao = packageDao;
                     java.util.List<String> pkgJsonIds = new java.util.ArrayList<>();
                     if (packageIds != null) {
@@ -228,7 +228,7 @@ public class ShipmentRepository {
                     one.add(e);
                     dao.upsertAll(one);
 
-                    // Actualizar paquetes localmente
+                    
                     long now = System.currentTimeMillis();
                     if (packageIds != null) {
                         for (Long pid : packageIds) {

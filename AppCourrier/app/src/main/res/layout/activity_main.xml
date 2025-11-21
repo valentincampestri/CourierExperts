@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/ce_bg_screen">
 
-    <!-- Header -->
+    
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
         android:layout_width="0dp"
@@ -54,7 +54,7 @@
             app:layout_constraintEnd_toStartOf="@id/imgAvatar"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Carousel -->
+    
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvBanner"
         android:layout_width="0dp"
@@ -67,7 +67,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Menú Principal -->
+    
     <LinearLayout
         android:id="@+id/menuPrincipal"
         android:layout_width="0dp"
@@ -79,7 +79,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Compras -->
+        
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/btnCompras"
             android:layout_width="0dp"
@@ -119,7 +119,7 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Paquetes -->
+        
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/btnPaquetes"
             android:layout_width="0dp"
@@ -159,7 +159,7 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Envíos -->
+        
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/btnEnvios"
             android:layout_width="0dp"
@@ -200,7 +200,7 @@
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
-    <!-- Actividad Reciente -->
+    
     <TextView
         android:id="@+id/tvActividad"
         android:layout_width="wrap_content"
@@ -227,7 +227,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Bottom Navigation -->
+    
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"

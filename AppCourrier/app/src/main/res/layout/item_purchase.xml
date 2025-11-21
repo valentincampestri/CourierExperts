@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- IMAGEN HORIZONTAL REDONDEADA (MENOS ALTA) -->
+        
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivThumb"
             android:layout_width="match_parent"
@@ -23,14 +23,14 @@
             android:adjustViewBounds="true"
             />
 
-        <!-- CONTENIDO DEBAJO -->
+        
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="12dp">
 
-            <!-- Fila: tienda + estado -->
+            
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
                     android:layout_marginStart="8dp" />
             </LinearLayout>
 
-            <!-- ORDER ID -->
+            
             <TextView
                 android:id="@+id/tvProductDescription"
                 android:layout_width="wrap_content"

@@ -55,16 +55,16 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
     public void onBindViewHolder(@NonNull VH h, int position) {
         RecentActivityItem it = items.get(position);
 
-        // Icono según tipo (ya viene resuelto en iconResId)
+        
         h.b.ivTypeIcon.setImageResource(it.getIconResId());
 
-        // Títulos / texto
+        
         h.b.tvTitle.setText(it.getTitle() != null ? it.getTitle() : "");
         h.b.tvSubtitle.setText(it.getSubtitle() != null ? it.getSubtitle() : "");
         h.b.tvStatus.setText(it.getStatusLabel() != null ? it.getStatusLabel() : "");
         h.b.tvDate.setText(it.getDateLabel() != null ? it.getDateLabel() : "");
 
-        // (Opcional) pill de estado: color según texto
+        
         if (it.getStatusLabel() != null) {
             String s = it.getStatusLabel().toLowerCase();
             int bgRes;
@@ -80,7 +80,7 @@ public class RecentActivityAdapter extends RecyclerView.Adapter<RecentActivityAd
             h.b.tvStatus.setBackgroundResource(bgRes);
         }
 
-        // Click en la card
+        
         h.b.getRoot().setOnClickListener(v -> {
             if (listener != null) listener.onClick(it);
         });

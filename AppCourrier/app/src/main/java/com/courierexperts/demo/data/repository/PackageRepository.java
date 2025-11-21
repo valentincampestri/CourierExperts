@@ -73,7 +73,7 @@ public class PackageRepository {
                 if (pe != null) list.add(pe);
             }
             AppExecutors.io().execute(() -> {
-                // opcional: dao.clear(); // preferimos Upsert para mantener selección
+                
                 dao.upsertAll(list);
             });
         });

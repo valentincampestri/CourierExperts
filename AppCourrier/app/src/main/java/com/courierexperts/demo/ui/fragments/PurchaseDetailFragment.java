@@ -90,7 +90,7 @@ public class PurchaseDetailFragment extends Fragment {
         binding.tvStoreValue.setText(safe(p.storeName));
         binding.tvOrderValue.setText(safe(p.orderId));
         
-        // Long press para copiar Order ID
+        
         binding.tvOrderValue.setOnLongClickListener(v -> {
             String orderId = safe(p.orderId);
             if (!orderId.isEmpty()) {

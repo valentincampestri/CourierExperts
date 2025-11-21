@@ -62,7 +62,7 @@ public class SignUpStep2Fragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        // Registrar launcher de permisos
+        
         locationPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestMultiplePermissions(),
                 result -> {
@@ -104,7 +104,7 @@ public class SignUpStep2Fragment extends Fragment {
             binding.btnUseLocation.setOnClickListener(v -> requestLocationAndSetProvince());
         }
         
-        // Capitalizar primera letra de dirección
+        
         if (binding.etDireccionSignup != null) {
             binding.etDireccionSignup.addTextChangedListener(new CapitalizeTextWatcher(binding.etDireccionSignup));
         }
@@ -144,17 +144,17 @@ public class SignUpStep2Fragment extends Fragment {
         clearAllErrors();
         if (binding == null || message == null) return;
         
-        // Convertir a minúsculas para comparación case-insensitive
+        
         String msgLower = message.toLowerCase();
         
-        // Identificar qué campo tiene error por el mensaje
+        
         if (msgLower.contains("dirección") || msgLower.contains("direccion")) {
             if (binding.tilDireccionSignup != null) {
-                binding.tilDireccionSignup.setError(" "); // Espacio para mostrar solo el indicador rojo
+                binding.tilDireccionSignup.setError(" "); 
                 binding.etDireccionSignup.requestFocus();
             }
         } else if (msgLower.contains("provincia")) {
-            // Spinner no tiene setError, pero el mensaje lo indica
+            
         } else if (msgLower.contains("teléfono") || msgLower.contains("telefono")) {
             if (binding.tilTelefonoSignup != null) {
                 binding.tilTelefonoSignup.setError(" ");
@@ -187,11 +187,11 @@ public class SignUpStep2Fragment extends Fragment {
                 ? binding.spProvinciaSignup.getSelectedItem().toString()
                 : "";
         
-        // Combinar código de país + número de teléfono
+        
         String countryCode = "";
         if (binding.spCountryCode != null && binding.spCountryCode.getSelectedItem() != null) {
             String selected = binding.spCountryCode.getSelectedItem().toString();
-            // Extraer solo el código: "🇦🇷 +54" -> "+54"
+            
             if (selected.contains("+")) {
                 countryCode = selected.substring(selected.indexOf("+")).trim();
             }
@@ -213,10 +213,10 @@ public class SignUpStep2Fragment extends Fragment {
     }
 
     private void requestLocationAndSetProvince() {
-        // Verificar permisos
+        
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            // Pedir permisos usando el launcher moderno
+            
             locationPermissionLauncher.launch(new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION
@@ -237,13 +237,13 @@ public class SignUpStep2Fragment extends Fragment {
                 return;
             }
             
-            // Verificar permisos nuevamente
+            
             if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
             
-            // Obtener última ubicación conocida
+            
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (location == null) {
                 location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -305,7 +305,7 @@ public class SignUpStep2Fragment extends Fragment {
     private void setProvinceInSpinner(String provinceName) {
         if (binding.spProvinciaSignup == null) return;
         
-        // Buscar la provincia en el spinner
+        
         for (int i = 0; i < binding.spProvinciaSignup.getCount(); i++) {
             String item = binding.spProvinciaSignup.getItemAtPosition(i).toString();
             if (item.equalsIgnoreCase(provinceName) || 

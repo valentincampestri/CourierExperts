@@ -34,7 +34,7 @@ public class UserProfileRepository {
         return dao.observeProfile(uid);
     }
 
-    // --- NUEVO MÉTODO ATÓMICO (SOLUCIÓN AL PROBLEMA) ---
+    
     public void updateProfileData(String name, String lastName, String phone, String address, String email, Long depositId) {
         AppExecutors.io().execute(() -> {
             String uid = currentUid();
@@ -42,7 +42,7 @@ public class UserProfileRepository {
 
             UserProfileEntity e = getOrCreate(uid);
 
-            // Actualizamos todos los campos en el mismo objeto antes de guardar
+            
             e.name = name;
             e.lastName = lastName;
             e.phone = phone;
@@ -50,13 +50,13 @@ public class UserProfileRepository {
             e.email = email;
             e.depositId = depositId;
 
-            stamp(e);       // Marcamos fecha y dirty
-            dao.upsert(e);  // Guardamos en Room (1 sola vez)
-            pushToFirestoreAsync(e); // Subimos a Firestore (1 sola vez)
+            stamp(e);       
+            dao.upsert(e);  
+            pushToFirestoreAsync(e); 
         });
     }
 
-    // --- Métodos individuales (Se mantienen por compatibilidad) ---
+    
     public void updateAddress(String address) {
         AppExecutors.io().execute(() -> {
             String uid = currentUid();
@@ -141,7 +141,7 @@ public class UserProfileRepository {
         });
     }
 
-    // --- Helpers ---
+    
 
     private void ensureSeed() {
         AppExecutors.io().execute(() -> {

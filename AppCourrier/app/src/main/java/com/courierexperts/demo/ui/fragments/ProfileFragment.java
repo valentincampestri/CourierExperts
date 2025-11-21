@@ -89,12 +89,12 @@ public class ProfileFragment extends Fragment {
         binding.telefono.setOnClickListener(v -> navigateToEditProfile());
         binding.cardLogout.setOnClickListener(v -> showLogoutDialog());
 
-        // NOTIFICACIONES (igual que antes)
+        
         binding.switchNotificaciones.setOnCheckedChangeListener((buttonView, isChecked) ->
                 viewModel.updateNotifications(isChecked));
     }
 
-    // MODO OSCURO
+    
     private void setupDarkModeSwitch() {
         SwitchMaterial switchDark = binding.switchDarkMode;
 

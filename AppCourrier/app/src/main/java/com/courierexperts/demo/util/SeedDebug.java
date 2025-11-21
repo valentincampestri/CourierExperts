@@ -1,4 +1,4 @@
-package com.courierexperts.demo.util;
+    package com.courierexperts.demo.util;
 
 import android.content.Context;
 import android.widget.Toast;
@@ -66,7 +66,7 @@ public class SeedDebug {
 
     public static void seedNow(Context ctx) {
         try {
-            // Only intended for debug builds; guarded by caller.
+            
             final String uid = safeUid();
             if (uid == null || uid.isEmpty()) {
                 Toast.makeText(ctx, "Seed: uid no disponible (inicia sesión)", Toast.LENGTH_SHORT).show();
@@ -78,7 +78,7 @@ public class SeedDebug {
 
             Random rnd = new Random();
             List<PurchaseSeed> purchaseSeeds = new ArrayList<>();
-            // Purchases distribution
+            
             List<String> purchaseStatuses = new ArrayList<>();
             addTimes(purchaseStatuses, "PENDING", 3);
             addTimes(purchaseStatuses, "RECEIVED", 2);
@@ -121,7 +121,7 @@ public class SeedDebug {
                 purchaseSeeds.add(new PurchaseSeed(doc, price, productName, store));
             }
 
-            // Packages distribution
+            
             List<String> packageStatuses = new ArrayList<>();
             addTimes(packageStatuses, "PENDING", 3);
             addTimes(packageStatuses, "IN_WAREHOUSE", 2);
@@ -164,12 +164,12 @@ public class SeedDebug {
                 if (linkedPurchase != null) {
                     m.put("purchaseFsId", linkedPurchase.doc.getId());
                 }
-                // shipmentId se setea luego para algunos
+                
                 batch.set(doc, m);
                 packagePriceMap.put(doc.getId(), packagePrice);
             }
 
-            // Shipments distribution
+            
             List<String> shipmentStatuses = new ArrayList<>();
             addTimes(shipmentStatuses, "CREATED", 2);
             addTimes(shipmentStatuses, "IN_TRANSIT", 3);

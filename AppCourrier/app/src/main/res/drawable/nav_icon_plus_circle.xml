@@ -4,7 +4,7 @@
     android:viewportWidth="24"
     android:viewportHeight="24"
     android:tint="@null">
-    <!-- C&#237;rculo con recorte en forma de "+" usando evenOdd -->
+    
     <path
         android:fillType="evenOdd"
         android:fillColor="@color/purple_700"

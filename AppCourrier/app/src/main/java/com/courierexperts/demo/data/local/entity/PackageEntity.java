@@ -13,14 +13,14 @@ import androidx.room.PrimaryKey;
         })
 public class PackageEntity {
     @PrimaryKey public long id;
-    public String fsId;           // Firestore document id
-    public String purchaseFsId;   // Referencia a la compra origen
-    public String label;          // "Paquete 1"
-    public String description;    // "Descripción del paquete"
-    public double price;          // Copia del precio declarado en la compra
-    public String status;         // PENDING / IN_WAREHOUSE / IN_TRANSIT / DELIVERED / CANCELLED
-    public long lastUpdate;       // epoch millis (Firestore Timestamp)
-    public String thumbnailUrl;   // imagen opcional
-    public String shipmentId;     // id del shipment asociado (mismo usuario)
+    public String fsId;
+    public String purchaseFsId;
+    public String label;
+    public String description;
+    public double price;
+    public String status;
+    public long lastUpdate;
+    public String thumbnailUrl;
+    public String shipmentId;
 }
 

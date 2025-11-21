@@ -64,41 +64,41 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.VH> {
         int bgRes;
         String status = it.status != null ? it.status.toUpperCase(Locale.ROOT) : "";
 
-        // Selección del color según el estado
+        
         switch (status) {
             case "DELIVERED":
             case "RECEIVED":
-                bgRes = com.courierexperts.demo.R.drawable.bg_status_chip_delivered; // verde
+                bgRes = com.courierexperts.demo.R.drawable.bg_status_chip_delivered; 
                 break;
 
             case "IN_TRANSIT":
-                bgRes = com.courierexperts.demo.R.drawable.bg_status_chip_transit; // azul o violeta
+                bgRes = com.courierexperts.demo.R.drawable.bg_status_chip_transit; 
                 break;
 
             case "CANCELLED":
-                bgRes = com.courierexperts.demo.R.drawable.bg_status_chip_cancelled; // rojo
+                bgRes = com.courierexperts.demo.R.drawable.bg_status_chip_cancelled; 
                 break;
 
             case "PENDING":
             default:
-                bgRes = com.courierexperts.demo.R.drawable.bg_status_chip_pending; // amarillo o gris
+                bgRes = com.courierexperts.demo.R.drawable.bg_status_chip_pending; 
                 break;
         }
 
         h.b.tvStatus.setBackgroundResource(bgRes);
 
-        // checkbox state (hide if selection disabled)
+        
         if (!selectionEnabled) {
             h.b.cbSelect.setVisibility(android.view.View.GONE);
         } else {
             h.b.cbSelect.setVisibility(android.view.View.VISIBLE);
 
-            // ✅ CORRECCIÓN: Ahora permite seleccionar si es RECEIVED o DELIVERED
+            
             boolean selectable = "RECEIVED".equalsIgnoreCase(status) || "DELIVERED".equalsIgnoreCase(status);
 
             h.b.cbSelect.setEnabled(selectable);
 
-            // Es importante limpiar el listener antes de setear el estado para evitar recursividad
+            
             h.b.cbSelect.setOnClickListener(null);
             h.b.cbSelect.setOnCheckedChangeListener(null);
 
@@ -114,7 +114,7 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.VH> {
                 if (selectionListener != null) selectionListener.onSelectionChanged(selectedIds.size());
             });
         }
-        // click en fila mantiene navegación existente
+        
         h.b.getRoot().setOnClickListener(v -> { if (listener != null) listener.onClick(it); });
     }
 

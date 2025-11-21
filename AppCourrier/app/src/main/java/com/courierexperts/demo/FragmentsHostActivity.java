@@ -26,7 +26,7 @@ public class FragmentsHostActivity extends AppCompatActivity {
         }
         NavController navController = navHostFragment.getNavController();
 
-        // Configurar FAB para agregar nueva compra
+        
         binding.fabAdd.setOnClickListener(v -> {
             navController.navigate(R.id.newPurchaseFragment);
         });

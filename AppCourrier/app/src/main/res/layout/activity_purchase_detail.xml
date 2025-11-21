@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/ce_bg_screen">
 
-    <!-- HEADER (SIN CAMBIOS) -->
+    
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
         android:layout_width="0dp"
@@ -52,7 +52,7 @@
             app:layout_constraintBottom_toBottomOf="@id/imgCompras"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- CARD DETALLES DE LA COMPRA -->
+    
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/ticketCard"
         android:layout_width="0dp"
@@ -74,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- TÍTULO -->
+            
             <TextView
                 android:id="@+id/tvTicketTitle"
                 android:layout_width="match_parent"
@@ -93,7 +93,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="12dp"/>
 
-            <!-- IMAGEN REAL DEL PRODUCTO -->
+            
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/imgCompraDetalle"
                 android:layout_width="120dp"
@@ -103,7 +103,7 @@
                 android:contentDescription="Imagen de la compra"
                 app:shapeAppearanceOverlay="@style/RoundedImageStyle"/>
 
-            <!-- CHIP DE ESTADO (SE CAMBIA POR CÓDIGO) -->
+            
             <TextView
                 android:id="@+id/tvEstado"
                 android:layout_width="wrap_content"
@@ -119,9 +119,9 @@
                 android:textColor="@android:color/white"
                 android:background="@drawable/bg_status_chip_pending"/>
 
-            <!-- TEXTO DE DETALLE (MISMO ID QUE USABAS) -->
+            
 
-            <!-- Nombre -->
+            
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
                     android:textSize="16sp"/>
             </LinearLayout>
 
-            <!-- Descripcion -->
+            
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -171,7 +171,7 @@
                     android:textSize="16sp"/>
             </LinearLayout>
 
-            <!-- TIENDA -->
+            
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -196,7 +196,7 @@
                     android:textSize="16sp"/>
             </LinearLayout>
 
-            <!-- ORDEN -->
+            
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -222,7 +222,7 @@
                     android:textSize="16sp"/>
             </LinearLayout>
 
-            <!-- TIENDA -->
+            
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -248,7 +248,7 @@
             </LinearLayout>
 
 
-            <!-- FECHA -->
+            
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -287,7 +287,7 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- BOTTOM NAV (SIN CAMBIOS) -->
+    
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"

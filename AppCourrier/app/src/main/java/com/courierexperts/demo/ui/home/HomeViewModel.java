@@ -32,10 +32,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Combina perfil + actividad reciente (compras, paquetes y envíos)
- * para renderizar HomeActivity y expone eventos puntuales.
- */
+
+
+
+
 public class HomeViewModel extends AndroidViewModel {
 
     private final UserProfileRepository profileRepository;
@@ -68,7 +68,7 @@ public class HomeViewModel extends AndroidViewModel {
         profilePrefs = application.getSharedPreferences("profile_prefs", Application.MODE_PRIVATE);
         uiState.setValue(new HomeUiState.Loading());
 
-        // Perfil
+        
         LiveData<UserProfileEntity> profileSource = profileRepository.observeProfile();
         uiState.addSource(profileSource, profile -> {
             profileLoaded = true;
@@ -77,7 +77,7 @@ public class HomeViewModel extends AndroidViewModel {
             publishState();
         });
 
-        // Envíos
+        
         LiveData<List<ShipmentEntity>> shipmentsSource = shipmentRepository.observeShipments();
         uiState.addSource(shipmentsSource, list -> {
             shipmentsLoaded = true;
@@ -85,7 +85,7 @@ public class HomeViewModel extends AndroidViewModel {
             publishState();
         });
 
-        // Compras
+        
         LiveData<List<PurchaseEntity>> purchasesSource = purchaseRepository.observePurchases();
         uiState.addSource(purchasesSource, list -> {
             purchasesLoaded = true;
@@ -93,7 +93,7 @@ public class HomeViewModel extends AndroidViewModel {
             publishState();
         });
 
-        // Paquetes (ordenados por lastUpdate)
+        
         LiveData<List<PackageEntity>> packagesSource = packageRepository.observeAllOrdered();
         uiState.addSource(packagesSource, list -> {
             packagesLoaded = true;
@@ -101,7 +101,7 @@ public class HomeViewModel extends AndroidViewModel {
             publishState();
         });
 
-        // Errores remotos (por ahora usamos el de envíos, podés sumar los otros si querés)
+        
         LiveData<String> shipmentErrors = shipmentRepository.getErrors();
         uiState.addSource(shipmentErrors, message -> {
             if (message != null && !message.trim().isEmpty()) {
@@ -118,16 +118,16 @@ public class HomeViewModel extends AndroidViewModel {
         return events;
     }
 
-    // Si querés refrescar a mano desde la Home (por ahora sólo envíos)
+    
     public void refreshShipments() {
         shipmentRepository.refreshFromNetwork();
     }
 
-    /**
-     * Publica el estado combinado: saludo + lista de actividad reciente.
-     */
+    
+
+
     private void publishState() {
-        // Si todavía no cargó nada, mostramos loading
+        
         if (!profileLoaded && !shipmentsLoaded && !purchasesLoaded && !packagesLoaded) {
             uiState.setValue(new HomeUiState.Loading());
             return;
@@ -143,7 +143,7 @@ public class HomeViewModel extends AndroidViewModel {
         uiState.setValue(new HomeUiState.Content(greeting, recent));
     }
 
-    // ---------- Greeting / Perfil ----------
+    
 
     private String formatGreeting(@Nullable UserProfileEntity profile) {
         Application app = getApplication();
@@ -185,14 +185,14 @@ public class HomeViewModel extends AndroidViewModel {
         }
     }
 
-    // ---------- Actividad reciente mezclada (compras + paquetes + envíos) ----------
+    
 
-    /**
-     * Construye la lista de las últimas 5 actividades recientes mezclando:
-     * - Compras
-     * - Paquetes
-     * - Envíos
-     */
+    
+
+
+
+
+
     private List<RecentActivityItem> buildRecentActivityList(
             @Nullable List<PurchaseEntity> purchases,
             @Nullable List<PackageEntity> packages,
@@ -205,7 +205,7 @@ public class HomeViewModel extends AndroidViewModel {
 
         List<Row> rows = new ArrayList<>();
 
-        // Compras
+        
         if (purchases != null) {
             for (PurchaseEntity p : purchases) {
                 if (p == null) continue;
@@ -241,7 +241,7 @@ public class HomeViewModel extends AndroidViewModel {
             }
         }
 
-        // Paquetes
+        
         if (packages != null) {
             for (PackageEntity pkg : packages) {
                 if (pkg == null) continue;
@@ -260,7 +260,7 @@ public class HomeViewModel extends AndroidViewModel {
                 String dateLabel = formatShortDate(r.epoch);
                 String thumb = (pkg.thumbnailUrl != null) ? pkg.thumbnailUrl : "";
 
-                int iconRes = R.drawable.ic_paquetes; // o ic_box
+                int iconRes = R.drawable.ic_paquetes; 
 
                 r.item = new RecentActivityItem(
                         pkg.id,
@@ -277,7 +277,7 @@ public class HomeViewModel extends AndroidViewModel {
             }
         }
 
-        // Envíos
+        
         if (shipments != null) {
             for (ShipmentEntity s : shipments) {
                 if (s == null) continue;
@@ -289,7 +289,7 @@ public class HomeViewModel extends AndroidViewModel {
                         : getApplication().getString(R.string.shipment_title_placeholder);
 
                 String subtitle = getApplication().getString(
-                        R.string.home_recent_shipment_subtitle,  // ej: "Envío #%1$d"
+                        R.string.home_recent_shipment_subtitle,  
                         s.id
                 );
 
@@ -314,7 +314,7 @@ public class HomeViewModel extends AndroidViewModel {
             }
         }
 
-        // Ordenar por fecha (más reciente primero)
+        
         Collections.sort(rows, new Comparator<Row>() {
             @Override
             public int compare(Row a, Row b) {
@@ -322,7 +322,7 @@ public class HomeViewModel extends AndroidViewModel {
             }
         });
 
-        // Tomar solo las últimas 5
+        
         List<RecentActivityItem> result = new ArrayList<>();
         int max = Math.min(rows.size(), 5);
         for (int i = 0; i < max; i++) {

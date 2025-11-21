@@ -29,13 +29,11 @@ android {
         }
     }
 
-    // 🔧 Java 17 (para que no choque la toolchain)
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    // 🧩 ViewBinding para usar bindings en Activities/Adapters
     buildFeatures {
         viewBinding = true
     }
@@ -69,28 +67,20 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
-    // Firebase Auth + Google Sign-In
     implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
     implementation("com.google.firebase:firebase-auth")
-    // Firestore for profile sync
     implementation("com.google.firebase:firebase-firestore")
-    // WorkManager for offline retries
     implementation("androidx.work:work-runtime:2.9.0")
-    // ListenableFuture API required by WorkManager
     implementation("androidx.concurrent:concurrent-futures:1.1.0")
-    // Provide actual Guava ListenableFuture (android variant)
     implementation("com.google.guava:guava:32.1.3-android")
 
-    // Credential Manager + Google Identity Services (nuevo flujo de Google Sign-In)
     implementation("androidx.credentials:credentials:1.3.0")
     implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
 
-    //Ubicacion
     implementation("com.google.android.gms:play-services-location:21.0.1")
 }
 
-// Task helpers to compile with -Xlint flags and surface deprecation details
 tasks.register("compileDebugWithLint") {
     doFirst {
         tasks.withType<org.gradle.api.tasks.compile.JavaCompile>().configureEach {
@@ -109,7 +99,6 @@ tasks.register("compileReleaseWithLint") {
     dependsOn("compileReleaseJavaWithJavac")
 }
 
-// Always enable -Xlint:deprecation details for Java compile tasks (visible in Android Studio builds)
 tasks.withType<org.gradle.api.tasks.compile.JavaCompile>().configureEach {
     options.compilerArgs.addAll(listOf("-Xlint:deprecation", "-Xlint:unchecked"))
 }

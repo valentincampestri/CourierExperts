@@ -46,7 +46,7 @@ public class PurchaseRepository {
         this.packageDao = db.packageDao();
     }
 
-    /** Observa la lista desde Room y, en paralelo, hace refresh desde red. */
+    
     public LiveData<List<PurchaseEntity>> observePurchases() {
         ensureListener();
         return dao.observeAll();
@@ -61,15 +61,15 @@ public class PurchaseRepository {
         return dao.observeById(id);
     }
 
-    /** Descarga (mock/real), mapea y actualiza Room. */
+    
     public void refreshFromNetwork() {
         ensureListener();
     }
 
-    /**
-     * Crea localmente y trata de sincronizar con backend.
-     * Ahora soporta: productName, storeName, carrierName, price, orderId, description.
-     */
+    
+
+
+
     public void createLocalAndSync(
             String productName,
             String storeName,
@@ -83,7 +83,7 @@ public class PurchaseRepository {
         final long createdAtEpoch = parseIsoToEpoch(createdAtIso);
 
         if (uid == null) {
-            // Sin usuario → guardar solo local, pendingSync
+            
             AppExecutors.io().execute(() -> {
                 PurchaseEntity e = new PurchaseEntity();
                 e.id = 0;
@@ -125,7 +125,7 @@ public class PurchaseRepository {
                 )
                 .addOnFailureListener(err ->
                         AppExecutors.io().execute(() -> {
-                            // Offline / error → guardar local con pendingSync
+                            
                             PurchaseEntity e = new PurchaseEntity();
                             e.id = 0;
                             e.fsId = doc.getId();
@@ -217,7 +217,7 @@ public class PurchaseRepository {
         } catch (Exception ignored) {}
         e.id = existingId != null ? existingId : HashUtils.stableLongFromString(e.fsId);
 
-        // 🔹 Campos nuevos
+        
         e.productName = d.getString("productName");
         e.storeName = d.getString("storeName");
         e.carrierName = d.getString("carrierName");

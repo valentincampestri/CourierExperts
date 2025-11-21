@@ -4,9 +4,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
-/**
- * TextWatcher que fuerza la primera letra de cada palabra a mayúscula
- */
+
+
+
 public class CapitalizeTextWatcher implements TextWatcher {
     
     private final EditText editText;
@@ -18,12 +18,12 @@ public class CapitalizeTextWatcher implements TextWatcher {
     
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        // No action needed
+        
     }
     
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        // No action needed
+        
     }
     
     @Override
@@ -41,7 +41,7 @@ public class CapitalizeTextWatcher implements TextWatcher {
             int cursorPosition = editText.getSelectionStart();
             s.replace(0, s.length(), capitalized);
             
-            // Mantener la posición del cursor
+            
             if (cursorPosition <= capitalized.length()) {
                 editText.setSelection(cursorPosition);
             }
@@ -50,9 +50,9 @@ public class CapitalizeTextWatcher implements TextWatcher {
         isFormatting = false;
     }
     
-    /**
-     * Capitaliza la primera letra de cada palabra
-     */
+    
+
+
     private String capitalizeWords(String text) {
         if (text == null || text.isEmpty()) {
             return text;

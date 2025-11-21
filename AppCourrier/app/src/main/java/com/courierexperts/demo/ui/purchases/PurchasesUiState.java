@@ -4,14 +4,14 @@ import com.courierexperts.demo.data.local.entity.PurchaseEntity;
 
 import java.util.List;
 
-/**
- * Representa los estados posibles de la pantalla de compras.
- * Se usa para que la Activity reaccione a Loading/Success/Error sin conocer detalles del repositorio.
- */
+
+
+
+
 public abstract class PurchasesUiState {
 
     private PurchasesUiState() {
-        // evitar instanciación directa
+        
     }
 
     public static final class Loading extends PurchasesUiState {

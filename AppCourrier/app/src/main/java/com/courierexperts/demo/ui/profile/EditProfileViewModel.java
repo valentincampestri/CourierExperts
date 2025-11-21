@@ -50,7 +50,7 @@ public class EditProfileViewModel extends AndroidViewModel {
     public LiveData<EditProfileUiState> getUiState() { return uiState; }
 
     public void normalizeNamesIfNeeded(String name, String lastName) {
-        // Aquí usamos las versiones individuales porque son actualizaciones parciales reactivas
+        
         if (!TextUtils.isEmpty(name)) {
             userRepo.updateName(name);
         }
@@ -65,7 +65,7 @@ public class EditProfileViewModel extends AndroidViewModel {
                      String address,
                      String email,
                      Long depositId) {
-        // Validaciones
+        
         if (TextUtils.isEmpty(name) || name.length() < 2) {
             uiState.setValue(new EditProfileUiState.Error("Nombre inválido"));
             return;
@@ -87,8 +87,8 @@ public class EditProfileViewModel extends AndroidViewModel {
             return;
         }
 
-        // SOLUCIÓN: Usamos el nuevo método que actualiza todo junto
-        // Esto evita que los hilos se pisen entre sí.
+        
+        
         userRepo.updateProfileData(name, lastName, phone, address, email, depositId);
 
         saveSelectedDeposit(depositId);

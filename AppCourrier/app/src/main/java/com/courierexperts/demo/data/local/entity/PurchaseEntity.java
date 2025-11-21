@@ -11,14 +11,14 @@ import androidx.room.PrimaryKey;
         })
 public class PurchaseEntity {
     @PrimaryKey(autoGenerate = true) public long id;
-    public String fsId;         // Firestore document id (users/{uid}/purchases/{fsId})
+    public String fsId;
     public String storeName;
     public String orderId;
-    public String description;  // Descripción ingresada por el usuario
-    public String status;       // PENDING / RECEIVED / SHIPPED / DELIVERED / CANCELLED
-    public long createdAt;      // epoch millis (Firestore Timestamp)
-    public String thumbnailUrl; // URL del logo/imagen de la tienda
-    public boolean pendingSync; // true si falta enviar al servidor
+    public String description;
+    public String status;
+    public long createdAt;
+    public String thumbnailUrl;
+    public boolean pendingSync;
 
     public String productName;
     public String carrierName;

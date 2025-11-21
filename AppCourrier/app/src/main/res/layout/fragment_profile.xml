@@ -27,7 +27,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- HEADER -->
+    
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
         android:layout_width="0dp"
@@ -75,7 +75,7 @@
             app:layout_constraintEnd_toStartOf="@id/imgAvatar"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- DIRECCIÓN -->
+    
     <LinearLayout
         android:id="@+id/direccion"
         android:layout_width="0dp"
@@ -123,7 +123,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- TELÉFONO -->
+    
     <LinearLayout
         android:id="@+id/telefono"
         android:layout_width="0dp"
@@ -172,7 +172,7 @@
     </LinearLayout>
 
 
-    <!-- MIS DATOS -->
+    
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardCuenta"
         android:layout_width="0dp"
@@ -217,7 +217,7 @@
             android:layout_marginEnd="16dp"/>
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- NOTIFICACIONES -->
+    
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardNotificaciones"
         android:layout_width="0dp"
@@ -263,7 +263,7 @@
             android:checked="true"/>
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- MODO OSCURO -->
+    
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardDarkMode"
         android:layout_width="0dp"
@@ -283,7 +283,7 @@
             android:orientation="horizontal"
             android:padding="@dimen/ce_spacing_md">
 
-            <!-- 👇 ACÁ TIENE QUE IR EL NUEVO ÍCONO -->
+            
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -309,7 +309,7 @@
             android:layout_marginEnd="16dp"/>
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- CERRAR SESIÓN -->
+    
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardLogout"
         android:layout_width="0dp"
@@ -349,7 +349,7 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- BOTTOM NAV -->
+    
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"

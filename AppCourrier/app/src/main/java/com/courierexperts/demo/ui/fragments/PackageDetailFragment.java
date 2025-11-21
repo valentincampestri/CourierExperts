@@ -102,9 +102,9 @@ public class PackageDetailFragment extends Fragment {
 
         binding.tvTitle.setText(label);
         binding.tvDesc.setText(entity.description != null ? entity.description : "");
-        //binding.tvPriceValue.setText(entity.price != null
-            //    ? String.format(Locale.getDefault(), "$ %.2f", entity.price)
-              //  : "");
+        
+            
+              
         binding.tvPriceValue.setText(
                 String.format(Locale.getDefault(), "$ %.2f", entity.price)
         );

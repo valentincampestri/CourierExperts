@@ -13,7 +13,7 @@ public class RecentActivityItem {
 
     private final long id;
 
-    // 🔹 NUEVO: guardamos el firestoreId para envíos
+    
     @Nullable
     private final String firestoreId;
 
@@ -28,7 +28,7 @@ public class RecentActivityItem {
     private final int iconResId;
 
     public RecentActivityItem(long id,
-                              @Nullable String firestoreId,   // 🔹 agregado al constructor
+                              @Nullable String firestoreId,   
                               Type type,
                               String title,
                               String subtitle,
@@ -52,7 +52,7 @@ public class RecentActivityItem {
     }
 
     @Nullable
-    public String getFirestoreId() {  // ✅ este es el getter que faltaba
+    public String getFirestoreId() {  
         return firestoreId;
     }
 
